@@ -1,0 +1,198 @@
+﻿@page "/client-assessment"
+@using NeedAnalysisApp.Client.Pages.Common
+@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using NeedAnalysisApp.Shared.Dto
+@using System.Security.Claims
+
+
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+    <MudGrid>
+        <MudItem xs="12">
+            <MudPaper Elevation="2" Class="p-3">
+                <MudText Typo="Typo.h6">Assessments</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" Class="mt-2 p-3">
+
+            <MudTabs @ref=MudTabs Elevation="2" ApplyEffectsToContainer="true" Rounded="true" Centered="true" Class="my-6" PanelClass="pa-6" Color="Color.Dark">
+
+                <MudTabPanel @ref=AllAssessmentsTab Text="All" Icon="@Icons.Material.Filled.Assessment" BadgeData="AllAssessments.Count" BadgeColor="Color.Info">
+                    <MudItem Class="mt-4">
+                        <MudGrid Spacing="20" Justify="Justify.Center">
+                            @foreach (var assessment in AllAssessments)
+                            {
+                                <MudItem xs="3">
+                                    <MudCard>
+                                        <MudCardHeader>
+                                            <CardHeaderContent>
+                                                <MudText Typo="Typo.h6">@assessment.Name</MudText>
+                                            </CardHeaderContent>
+                                        </MudCardHeader>
+                                        <MudCardContent>
+                                            <MudText>@assessment.Title</MudText>
+                                            <MudText Typo="Typo.body2">@assessment.Description</MudText>
+                                        </MudCardContent>
+                                        <MudCardActions>
+                                            <MudIconButton Icon="@Icons.Material.Filled.AddBox" Color="Color.Primary" OnClick="() => OnAddAssessment(assessment)" />
+                                        </MudCardActions>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudItem>
+
+                </MudTabPanel>
+
+                <MudTabPanel @ref=MyAssessmentsTab Text="Mine" Icon="@Icons.Material.Filled.SupervisedUserCircle" BadgeData="MyAssessments?.Count ?? 0">
+                    <MudItem Class="mt-4">
+                        <MudGrid Spacing="20" Justify="Justify.Center">
+                            @foreach (var assessment in MyAssessments)
+                            {
+                                <MudItem xs="3">
+                                    <MudCard>
+                                        <MudCardHeader>
+                                            <CardHeaderContent>
+                                                <MudText Typo="Typo.h6">@assessment.Name</MudText>
+                                            </CardHeaderContent>
+                                        </MudCardHeader>
+                                        <MudCardContent>
+                                            <MudText>@assessment.Title</MudText>
+                                            <MudText Typo="Typo.body2">@assessment.Description</MudText>
+                                        </MudCardContent>
+                                        <MudCardActions>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Start" Color="Color.Primary" OnClick="() => OnPerformAssessmentClicked(assessment.UniqueId)" />
+                                        </MudCardActions>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudItem>
+
+                </MudTabPanel>
+
+            </MudTabs>
+
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    public List<AssessmentDto> AllAssessments = [];
+
+    public List<AssessmentDto> MyAssessments = [];
+
+    [Inject] AuthenticationStateProvider _persistentAuthenticationStateProvider { get; set; } = null!;
+
+    [Inject] IAssessmentClientService _assessmentClientService { get; set; } = null!;
+
+    [Inject] IDialogService DialogService { get; set; } = null!;
+
+    [Inject] ISnackbar Snackbar { get; set; } = null!;
+
+    [Inject] NavigationManager NavigationManager { get; set; } = null!;
+
+    MudTabs MudTabs;
+
+    MudTabPanel AllAssessmentsTab;
+    MudTabPanel MyAssessmentsTab;
+
+    public string userId = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await _persistentAuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        userId = authenticationState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var userAssessment = await _assessmentClientService.GetUserAssessment(userId);
+
+        if (userAssessment.Success)
+        {
+            if (userAssessment.Model != null)
+            {
+                MyAssessments = JsonConvert.DeserializeObject<List<AssessmentDto>>(userAssessment.Model.ToString() ?? string.Empty);
+            }
+        }
+
+        var assessments = await _assessmentClientService.GetAll();
+
+        if (MyAssessments.Any())
+        {
+            var myAssessmentIds = new HashSet<string>(MyAssessments.Select(a => a.UniqueId));
+
+            // Filter to get only new assessments
+            AllAssessments = assessments.Where(assessment => !myAssessmentIds.Contains(assessment.UniqueId)).ToList();
+
+        }
+        else
+        {
+
+            AllAssessments = assessments;
+        }
+
+        StateHasChanged();
+    }
+
+    public async Task OnAddAssessment(AssessmentDto assessment)
+    {
+        var parameters = new DialogParameters<ConfirmDeleteDialog>
+        {
+            { x => x.ContentText, $"Do you want to add `{assessment.Name}` To your collection?" },
+            { x => x.ButtonText, "Yes" },
+            { x => x.Color, Color.Success }
+        };
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Large };
+
+        var dialog = await DialogService.ShowAsync<ConfirmDeleteDialog>("Confirm", parameters, options);
+
+        var result = await dialog.Result;
+
+        if ((bool)result.Data)
+        {
+            var response = await _assessmentClientService.AssignAssessment(assessment.UniqueId, userId);
+
+            if (response.Success)
+            {
+                Snackbar.Add($"You have successfully added : {assessment.Name}", Severity.Success);
+
+                // Assuming MyAssessments is a collection of assessments you already have
+                var myAssessmentIds = new HashSet<string>(MyAssessments.Select(a => a.UniqueId));
+
+                // Filter to get only new assessments
+                AllAssessments = AllAssessments.Where(assessment => !myAssessmentIds.Contains(assessment.UniqueId)).ToList();
+
+                AllAssessments.Remove(assessment);
+
+                var userAssessment = await _assessmentClientService.GetUserAssessment(userId);
+
+                if (userAssessment.Success)
+                {
+                    if (userAssessment.Model != null)
+                    {
+                        MyAssessments = JsonConvert.DeserializeObject<List<AssessmentDto>>(userAssessment.Model.ToString() ?? string.Empty);
+                    }
+                }
+
+                // navigate to MyAssessment Tab
+
+                MudTabs.ActivatePanel(MyAssessmentsTab);
+
+                StateHasChanged();
+            }
+            else
+            {
+                foreach (var error in response.Errors)
+                {
+                    Snackbar.Add(error.Message, Severity.Error);
+                }
+            }
+        }
+    }
+
+    public async Task OnPerformAssessmentClicked(string uniqueId)
+    {
+        NavigationManager.NavigateTo($"/client/analysis/{uniqueId}");
+    }
+}

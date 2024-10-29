@@ -1,0 +1,65 @@
+﻿@page "/section/{AssessmentId}/{SectionName}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large">
+    <MudItem>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Label" Color="Color.Primary" OnClick="() => AddLabel()">Add Label</MudButton>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.QuestionAnswer" Color="Color.Primary" OnClick="() => AddQuestion()">AddQuestion</MudButton>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Save" Color="Color.Primary" OnClick="Save" Disabled="false">Save</MudButton>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Default" OnClick="OnNavigateBack" Disabled="false">Back</MudButton>
+    </MudItem>
+    <MudPaper Elevation="2" Height="100%">
+        <MudGrid Class="mt-2">
+            <MudItem xs="12">
+                <MudText Align="Align.Center" Class="ms-4" Typo="Typo.h4">@SectionName</MudText>
+            </MudItem>
+
+            <MudItem xs="12">
+                <MudPaper>
+                    <MudContainer>
+                        <MudGrid>
+                            <MudItem xs="6">
+                                <MudList SelectionMode="SelectionMode.SingleSelection" T="string">
+                                    <MudListItem Icon="@Icons.Material.Filled.QuestionAnswer" Text="Questions" Expanded="true">  </MudListItem>
+                                    @if (!Questions.Any())
+                                    {
+                                        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.QuestionAnswer" Color="Color.Primary" OnClick="() => AddQuestion()">Add questions</MudButton>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var (question, index) in Questions.OrderBy(x => x.DisplayOrder).Select((option, index) => (option, index)))
+                                        {
+                                            <MudListItem Icon="@(question.GeneralLookUp_QuestionTypeId == 2 
+                                                            ? @Icons.Material.Filled.Check 
+                                                            : question.GeneralLookUp_QuestionTypeId == 1 
+                                                                    ? @Icons.Material.Filled.FormatListNumbered 
+                                                                    : question.GeneralLookUp_QuestionTypeId == 3 
+                                                                            ? @Icons.Material.Filled.TextSnippet 
+                                                                            : question.GeneralLookUp_QuestionTypeId == 4 
+                                                                                ? @Icons.Material.Filled.Score 
+                                                                                : @Icons.Material.Filled.Label)"
+                                                OnClick="@(() => OpenQuestion(question))"
+                                                Text="@((index+ 1)  + " . " + question.Value)" />
+                                        }
+                                    }
+                                </MudList>
+                            </MudItem>
+                            <MudItem xs="6">
+                                @if (!Questions.Any())
+                                {
+                                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.QuestionAnswer" Color="Color.Primary" OnClick="() => AddQuestion()">AddQuestion</MudButton>
+                                }
+                                else
+                                {
+                                    <DynamicComponent Type="SelectedQuestionTemplate" Parameters="parameters" />
+                                }
+                            </MudItem>
+                        </MudGrid>
+                    </MudContainer>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+</MudContainer>

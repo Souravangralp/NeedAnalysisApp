@@ -1,0 +1,53 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudContainer>
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudList T="string">
+                        @foreach (var item in QuestionTypes)
+                        {
+                            <MudListItem Text="@item.Question" Icon="@Icons.Material.Filled.Inbox" OnClick="() => onOptionSelect(item.Id)" />
+                        }
+                    </MudList>
+                </MudItem>
+                <MudItem xs="6">
+
+                    @switch (SelectedQuestionTypeId)
+                    {
+                        case 1:
+                            <MudCard Class="p-2">
+                                <NeedAnalysisApp.Client.Pages.Assessments.Templates.MultipleChoice IsTemplate=true QuestionUniqueId="" />
+                            </MudCard>
+                            <MudText Class="py-2">Allows you to provide multiple possible answers in which only one is correct.</MudText>
+                            break;
+
+                        case 2:
+                            <MudCard Class="p-2">
+                                <NeedAnalysisApp.Client.Pages.Assessments.Templates.TrueFalse IsTemplate=true QuestionUniqueId="" />
+                            </MudCard>
+                            <MudText Class="py-2">Allows you to provide multiple possible answers in which only one is correct.</MudText>
+                            break;
+
+                        case 3:
+                            <MudCard Class="p-2">
+                                <NeedAnalysisApp.Client.Pages.Assessments.Templates.Text IsTemplate=true QuestionUniqueId="" />
+                            </MudCard>
+                            <MudText Class="py-2">Allows you to provide multiple possible answers in which only one is correct.</MudText>
+                            break;
+
+                        case 4:
+                            <MudCard Class="p-2">
+                                <NeedAnalysisApp.Client.Pages.Assessments.Templates.Percentage IsTemplate="true" QuestionUniqueId="" />
+                            </MudCard>
+                            <MudText Class="py-2">Allows you to provide multiple possible answers in which only one is correct.</MudText>
+                            break;
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Select</MudButton>
+    </DialogActions>
+</MudDialog>

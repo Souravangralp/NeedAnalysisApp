@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "NeedAnalysisApp.Shared/1.0.0": {
+        "runtime": {
+          "NeedAnalysisApp.Shared.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NeedAnalysisApp.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

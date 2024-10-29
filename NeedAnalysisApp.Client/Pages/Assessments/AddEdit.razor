@@ -1,0 +1,217 @@
+﻿@page "/assessment/add-edit/{AssessmentId?}"
+@attribute [Authorize]
+
+@using Microsoft.AspNetCore.Authorization
+@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using NeedAnalysisApp.Shared.Common
+@using NeedAnalysisApp.Shared.Common.Constants
+@using NeedAnalysisApp.Shared.Dto
+@using Newtonsoft.Json;
+@inject IIndustryClientService industryService;
+@inject IAssessmentClientService AssessmentClientService;
+@inject NavigationManager NavigationManager;
+@inject ISnackbar Snackbar;
+
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large">
+
+    @* <MudItem xs="12">
+    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Save" Color="Color.Primary" OnClick="OnSaveAssessment" Disabled="(string.IsNullOrWhiteSpace(value1) || IsLoading)">Save</MudButton>
+    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Default" OnClick="OnNavigateBack" Disabled="false">Back</MudButton>
+    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Default" OnClick="OnNavigateBack" Disabled="false">Send for review</MudButton>
+    </MudItem> *@
+
+    <MudItem xs="12">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Save" Color="Color.Primary" OnClick="OnSaveAssessment" Disabled="(string.IsNullOrWhiteSpace(value1) || IsLoading)">Save</MudButton>
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Default" OnClick="OnNavigateBack" Disabled="false">Back</MudButton>
+            </div>
+            @if (!Model.IsLive)
+            {
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Info" OnClick="OnSendForReview" Disabled="(Questions.Count < 10)">Send for review</MudButton>
+            }
+        </div>
+    </MudItem>
+
+    <MudItem xs="12" Class="mt-2">
+        <MudTextField Label="Assessment" @bind-Value=Model.Name></MudTextField>
+    </MudItem>
+
+    <MudItem xs="12" Class="mt-2">
+
+        <MudText Typo="Typo.caption">Choose the industry Type </MudText>
+
+        <MudAutocomplete T="string" Label="Industries" @bind-Value="value1" SearchFunc="@Search1"
+                         ResetValueOnEmptyText="true"
+                         TextChanged="(e) => OnIndustryTypeChange(e)"
+                         AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+    </MudItem>
+
+    @if (string.IsNullOrWhiteSpace(value1))
+    {
+        <MudItem xs="12">
+            Please choose the industry type to continue
+        </MudItem>
+    }
+    else
+    {
+        <MudItem xs="12" Class="mt-8">
+            <MudGrid Spacing="20" Justify="Justify.Center">
+                <MudItem>
+                    <MudBadge Content="WhoWeAreQuestionCount" Color="Color.Primary" Overlap="true" Class="mx-6 my-4">
+                        <MudButton OnClick="() => OnSectionClick(SectionName.WhoWeAre)">
+                            <MudPaper Height="140px" Width="140px" Elevation="2" Class="d-flex align-items-center p-2">
+                                <MudText Typo="Typo.h5">Who we are</MudText>
+                            </MudPaper>
+                        </MudButton>
+                    </MudBadge>
+                </MudItem>
+                <MudItem>
+                    <MudBadge Content="WhatWeDoQuestionCount" Color="Color.Primary" Overlap="true" Class="mx-6 my-4">
+                        <MudButton OnClick="() => OnSectionClick(SectionName.WhatWeDo)">
+                            <MudPaper Height="140px" Width="140px" Elevation="2" Class="d-flex align-items-center justify-content-center p-2">
+                                <MudText Typo="Typo.h5">What we do</MudText>
+                            </MudPaper>
+                        </MudButton>
+                    </MudBadge>
+                </MudItem>
+                <MudItem>
+                    <MudBadge Content="HowWeDoItQuestionCount" Color="Color.Primary" Overlap="true" Class="mx-6 my-4">
+                        <MudButton OnClick="() => OnSectionClick(SectionName.HowWeDoIt)">
+                            <MudPaper Height="140px" Width="140px" Elevation="2" Class="d-flex align-items-center justify-content-center p-2">
+                                <MudText Typo="Typo.h5">How we do it</MudText>
+                            </MudPaper>
+                        </MudButton>
+                    </MudBadge>
+                </MudItem>
+            </MudGrid>
+
+        </MudItem>
+    }
+</MudContainer>
+
+@code
+{
+    [Inject] IQuestionClientService _questionClientService { get; set; } = null!;
+
+    [Parameter] public string? AssessmentId { get; set; } = "";
+
+    public int WhoWeAreQuestionCount { get; set; } = 0;
+    public int WhatWeDoQuestionCount { get; set; } = 0;
+    public int HowWeDoItQuestionCount { get; set; } = 0;
+
+    public bool IsLoading { get; set; } = false;
+
+    private string value1 = "";
+
+    private async Task<IEnumerable<string>> Search1(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+            return Industries.Select(x => x.Name);
+
+        StateHasChanged();
+
+        return Industries.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase)).Select(x => x.Name);
+    }
+
+    public List<IndustryDto> Industries { get; set; } = [];
+    public List<QuestionDto> Questions { get; set; } = [];
+
+    public AssessmentDto Model { get; set; } = new AssessmentDto() { Name = "" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrWhiteSpace(AssessmentId))
+        {
+            Model = new() { Name = "Assessment Name", IndustryType = "", IsActive = true, TotalScore = 300 };
+        }
+        else
+        {
+            Model = await AssessmentClientService.GetWithId(AssessmentId);
+
+            var result = await _questionClientService.GetAll(AssessmentId);
+
+            var questions = JsonConvert.DeserializeObject<List<QuestionDto>>(result.Model.ToString() ?? string.Empty);
+
+            Questions = questions;
+
+            if (questions.Any())
+            {
+                WhoWeAreQuestionCount = questions.Count(x => x.GeneralLookUp_SectionTypeId == 6);
+                WhatWeDoQuestionCount = questions.Count(x => x.GeneralLookUp_SectionTypeId == 7);
+                HowWeDoItQuestionCount = questions.Count(x => x.GeneralLookUp_SectionTypeId == 8);
+            }
+        }
+
+        Industries = await industryService.GetAll();
+
+        value1 = Model.IndustryType ?? "";
+
+        StateHasChanged();
+    }
+
+    public async Task OnSectionClick(string sectionName)
+    {
+        if (string.IsNullOrWhiteSpace(Model.UniqueId))
+        {
+            var success = await OnSaveAssessment();
+
+            if (success) { NavigationManager.NavigateTo($"/section/{Model.UniqueId}/{sectionName}"); }
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"/section/{Model.UniqueId}/{sectionName}");
+        }
+    }
+
+    public void OnIndustryTypeChange(string value)
+    {
+        Model.IndustryType = value;
+    }
+
+    public async Task<bool> OnSaveAssessment()
+    {
+        Result result = string.IsNullOrWhiteSpace(Model.UniqueId) ? result = await AssessmentClientService.Create(Model) : result = await AssessmentClientService.Update(Model);
+
+        if (result.Success)
+        {
+            Snackbar.Add($"Cheers! You have successfully {(string.IsNullOrWhiteSpace(Model.UniqueId) ? "added " : "updated ")}{Model.Name}", Severity.Success);
+
+            Model = JsonConvert.DeserializeObject<AssessmentDto>(result.Model.ToString() ?? string.Empty);
+
+            StateHasChanged();
+
+            return true;
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                Snackbar.Add(error.Message, Severity.Error);
+            }
+
+            return false;
+        }
+    }
+
+    public async void OnSendForReview()
+    {
+        Model.IsLive = true;
+
+        var result = await OnSaveAssessment();
+
+        if (result)
+        {
+            Snackbar.Add($"{Model.Name} sent for review!", Severity.Success);
+
+            NavigationManager.NavigateTo($"/assessment");
+        }
+    }
+
+    public async void OnNavigateBack()
+    {
+        NavigationManager.NavigateTo($"/assessment");
+    }
+}

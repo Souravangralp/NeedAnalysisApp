@@ -1,0 +1,76 @@
+﻿@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using NeedAnalysisApp.Shared.Dto
+
+<h3>DefaultTemplate</h3>
+
+@code {
+    [Inject] public IQuestionClientService _questionClientService { get; set; } = null!;
+
+    [Parameter] public EventCallback<bool> OnDelete { get; set; }
+
+    [Parameter] public EventCallback<bool> OnSave { get; set; }
+
+    [Parameter] public string? AssessmentUniqueId { get; set; }
+
+    [Parameter] public string? QuestionUniqueId { get; set; }
+
+    [Parameter] public bool IsTemplate { get; set; }
+
+    MudForm form;
+
+    int SelectedOption { get; set; }
+
+    public QuestionDto Model { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrWhiteSpace(QuestionUniqueId))
+        {
+            Model = GetDemoQuestion();
+        }
+        else
+        {
+            var result = await _questionClientService.GetWithId(AssessmentUniqueId, QuestionUniqueId); // call api service here
+
+            if (result.Success)
+            {
+                var response = JsonConvert.DeserializeObject<QuestionDto>(result.Model.ToString() ?? string.Empty);
+
+            }
+
+            if (result.Success)
+            {
+                Model = JsonConvert.DeserializeObject<QuestionDto>(result.Model.ToString() ?? string.Empty);
+            }
+        }
+    }
+
+    public static QuestionDto GetDemoQuestion()
+    {
+        return new QuestionDto()
+            {
+                Value = "Reuters is the News Agency of which country?",
+                GeneralLookUp_QuestionTypeId = 2,
+                Options = new List<OptionDto>()
+                {
+                    new(){ Value = "True", ISCorrect = true},
+                    new(){ Value = "False", ISCorrect = false}
+                }
+            };
+    }
+
+    private async void SaveQuestion()
+    {
+        await OnSave.InvokeAsync(true);
+
+        StateHasChanged();
+    }
+
+    private async void RemoveQuestion(QuestionDto question)
+    {
+        await OnDelete.InvokeAsync(true);
+
+        StateHasChanged();
+    }
+
+}

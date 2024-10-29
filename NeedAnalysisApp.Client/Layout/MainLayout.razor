@@ -1,0 +1,76 @@
+﻿@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using System.Security.Claims
+@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
+        <MudSpacer />
+        <AuthorizeView>
+            <Authorized>
+                <MudAvatar>
+                    <MudImage Src=@ImageUrl></MudImage>
+                </MudAvatar>
+            </Authorized>
+        </AuthorizeView>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent Class="mt-16 pa-4">
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@code {
+    // [Inject] PersistentAuthenticationStateProvider _persistentAuthenticationStateProvider { get; set; } = null!;
+
+    public string ImageUrl { get; set; } = "https://randomuser.me/api/portraits/women/47.jpg";
+
+    private bool _drawerOpen = true;
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    protected async override void OnInitialized()
+    {
+        // var authState = await _persistentAuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        // var emailId = authState.User.FindFirst(ClaimTypes.Email)?.Value;
+
+        // var user = await _userClientService.GetWithId(emailId);
+
+        // ImageUrl = user.ProfilePictureUrl;
+
+        StateHasChanged();
+    }
+
+    // public async string GetImageUrl(string userId)
+    // {
+    //     var authState = await _persistentAuthenticationStateProvider.GetAuthenticationStateAsync();
+
+    //     var emailId = authState.User.FindFirst(ClaimTypes.Email)?.Value;
+
+    //     var user = await _userClientService.GetWithId(emailId);
+
+    //     ImageUrl = user.ProfilePictureUrl;
+
+    // }
+
+}
+
+

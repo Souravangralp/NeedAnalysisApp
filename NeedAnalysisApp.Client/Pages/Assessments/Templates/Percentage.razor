@@ -1,0 +1,204 @@
+﻿@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using NeedAnalysisApp.Shared.Common.Utilities
+@using NeedAnalysisApp.Shared.Dto
+
+<MudContainer>
+    @if (IsTemplate)
+    {
+        <MudItem Class="row">
+            <MudItem Class="col"><b>@Model.Value</b></MudItem>
+        </MudItem>
+
+        <MudItem Class="row">
+            <MudTextField T="string" Label="Filled" Variant="Variant.Filled" Text="@Model.Options[0].Value" Lines="3" />
+        </MudItem>
+
+        <MudItem Class="row">
+            <MudItem Class="col d-flex justify-content-end">
+                <MudItem Class="row">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Disabled="true">Submit</MudButton>
+                </MudItem>
+            </MudItem>
+        </MudItem>
+    }
+    @if (!string.IsNullOrWhiteSpace(AssessmentUniqueId) && !string.IsNullOrWhiteSpace(QuestionUniqueId))
+    {
+        <MudForm @ref="@form" Model="Model" Class="question-list-form pe-2">
+            <MudItem Class="row gap-y-3">
+                <MudItem Class="col-9">
+                </MudItem>
+
+                <MudItem Class="col-3">
+                    Points : <MudAvatar Size="Size.Small" Color="Color.Primary">@TotalPoints</MudAvatar>
+                </MudItem>
+
+            </MudItem>
+
+            <MudItem Class="row gap-y-3">
+
+                <MudItem Class="col-xxl-9">
+                    <MudTextField @bind-Value="Model.Value" For="@(() => Model.Value)" Immediate="true" Label="Question" Placeholder="Write the topic for the percentage result" />
+                </MudItem>
+
+            </MudItem>
+
+            <MudItem Class="row gap-y-3">
+
+                <MudItem Class="col-xxl-9">
+                    <MudTextField @bind-Value="Model.Description" For="@(() => Model.Description)" Immediate="true" Label="Description" Placeholder="Write the topic for the percentage result" />
+                </MudItem>
+
+            </MudItem>
+
+            <MudItem Class="mt-8 row gap-y-3">
+
+                @foreach (var (option, index) in Model.Options.OrderBy(option => option.DisplayOrder).Select((option, index) => (option, index)))
+                {
+                    <MudItem Class="row ms-2">
+                        <MudItem Class="col-3">
+                            <MudNumericField Class="px-0" Min="0" Max="10" Value="@option.Point" ValueChanged="(double e) => OnPointsChange(e, option.UniqueId)" Label="Point" Immediate="true" />
+                        </MudItem>
+
+                    </MudItem>
+                }
+
+            </MudItem>
+
+        </MudForm>
+
+        <MudItem Class="row py-3 align-items-center">
+
+            <MudItem Class="col d-flex justify-content-end">
+                <MudButton StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Primary" Class="me-3 text-capitalize" DisableElevation="true" OnClick="@(() => SaveQuestion())">Save</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Class="me-3 text-capitalize" Color="Color.Error" DisableElevation="true" OnClick="@(() => RemoveQuestion(Model))">Remove</MudButton>
+            </MudItem>
+
+        </MudItem>
+    }
+</MudContainer>
+@code {
+    [Inject] public IQuestionClientService _questionClientService { get; set; } = null!;
+
+    [Parameter] public EventCallback<bool> OnDelete { get; set; }
+
+    [Parameter] public EventCallback<bool> OnSave { get; set; }
+
+    [Parameter] public string? AssessmentUniqueId { get; set; }
+
+    [Parameter] public string? QuestionUniqueId { get; set; }
+
+    [Parameter] public bool IsTemplate { get; set; }
+
+    [Inject] ISnackbar Snackbar { get; set; } = null!;
+
+    MudForm form;
+
+    double TotalPoints { get; set; } = 0.0;
+
+    int SelectedOption { get; set; }
+
+    public QuestionDto Model { get; set; } = new();
+
+    private bool _parametersInitialized = false; // To avoid unnecessary calls
+
+    public async Task OnPointsChange(double value, string uniqueId)
+    {
+        if (!string.IsNullOrWhiteSpace(uniqueId))
+        {
+            var option = Model.Options.Where(x => x.UniqueId == uniqueId).FirstOrDefault();
+
+            option.Point = value;
+
+            TotalPoints = Model.Options.Sum(option => option.Point);
+        }
+
+        StateHasChanged();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        // Check if parameters have been initialized
+        if (_parametersInitialized &&
+            (QuestionUniqueId != null || AssessmentUniqueId != null))
+        {
+            await LoadDataAsync();
+        }
+
+        _parametersInitialized = true; // Set this to true after the first initialization
+    }
+
+    private async Task LoadDataAsync()
+    {
+        if (IsTemplate)
+        {
+            Model = SectionUtility.GetDemoQuestion(1, 0);
+            TotalPoints = Model.Options.Any() ? Model.Options.Sum(x => x.Point) : 0.0;
+        }
+        else
+        {
+            if (!string.IsNullOrWhiteSpace(AssessmentUniqueId) && !string.IsNullOrWhiteSpace(QuestionUniqueId))
+            {
+                var result = await _questionClientService.GetWithId(AssessmentUniqueId, QuestionUniqueId); // Call API service here
+
+                if (result.Success)
+                {
+                    Model = JsonConvert.DeserializeObject<QuestionDto>(result.Model.ToString() ?? string.Empty);
+                    TotalPoints = Model.Options.Any() ? Model.Options.Sum(x => x.Point) : 0.0;
+                }
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (IsTemplate)
+        {
+            Model = SectionUtility.GetDemoQuestion(4, 0);
+        }
+        else
+        {
+            if (!string.IsNullOrWhiteSpace(AssessmentUniqueId) && !string.IsNullOrWhiteSpace(QuestionUniqueId))
+            {
+                var result = await _questionClientService.GetWithId(AssessmentUniqueId, QuestionUniqueId); // call api service here
+
+                if (result.Success)
+                {
+                    Model = JsonConvert.DeserializeObject<QuestionDto>(result.Model.ToString() ?? string.Empty);
+
+                    TotalPoints = Model.Options.Any() ? Model.Options.Sum(x => x.Point) : 0.0;
+                }
+            }
+        }
+    }
+
+    private async void SaveQuestion()
+    {
+        var result = await _questionClientService.Update(Model, AssessmentUniqueId);
+
+        if (result.Success)
+        {
+            await OnSave.InvokeAsync(true);
+
+            Model = JsonConvert.DeserializeObject<QuestionDto>(result.Model.ToString() ?? string.Empty);
+
+            Snackbar.Add("Question saved", Severity.Success);
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                Snackbar.Add(error.Message, Severity.Error);
+            }
+        }
+
+        StateHasChanged();
+    }
+
+    private async void RemoveQuestion(QuestionDto question)
+    {
+        await OnDelete.InvokeAsync(true);
+
+        StateHasChanged();
+    }
+
+}

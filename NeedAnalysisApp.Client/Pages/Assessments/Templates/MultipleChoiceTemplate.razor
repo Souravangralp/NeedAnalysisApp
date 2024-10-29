@@ -1,0 +1,193 @@
+﻿@if (string.IsNullOrWhiteSpace(ExamId))
+{
+    <MudItem Class="row">
+        <MudItem Class="col"><b>@model.Name</b></MudItem>
+    </MudItem>
+
+    <MudRadioGroup T="int" @bind-Value='SelectedOption'>
+
+        @for (var i = 0; i < model.Options.Count; i++)
+        {
+            var option = model.Options[i];
+            <MudItem Class="row">
+                <MudItem Class="col" style="display: flex; justify-content: start; align-items: center;">
+                    <MudRadio T="int" Color="Color.Primary" Value="@i" Disabled="true" Size="Size.Small">
+                        @option.Name
+                    </MudRadio>
+                </MudItem>
+            </MudItem>
+        }
+    </MudRadioGroup>
+
+    <MudItem Class="row">
+        <MudItem Class="col d-flex justify-content-end">
+            <MudItem Class="row">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Disabled="true">Submit</MudButton>
+            </MudItem>
+        </MudItem>
+    </MudItem>
+}
+else
+{
+    @if (!IsDeleted)
+    {
+        @if (IsOptionRearrangeSelected)
+        {
+            <MudItem Class="px-3 my-2">
+                <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Class="text-capitalize my-3" OnClick="RearrangeOptionsOrder">Reset Options Order</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateOptionDisplayOrder" Class="text-capitalize ms-2">Save</MudButton>
+            </MudItem>
+        }
+        @if (!string.IsNullOrWhiteSpace(model.UniqueId) && !IsOptionRearrangeSelected)
+        {
+            <MudItem Class="px-3">
+                <MudButton StartIcon="@Icons.Material.Filled.FormatListNumbered" Variant="Variant.Filled" Class="text-capitalize my-3" OnClick="RearrangeOptionsOrder">Rearrange Options Order</MudButton>
+
+                @if (IsQuestionPointEnabled)
+                {
+                    <MudItem Class="row gap-y-3">
+                        <MudTextField @bind-Value="model.QuestionPoint" For="@(() => model.QuestionPoint)" Immediate="true" Label="Question Points" ReadOnly="IsOptionRearrangeSelected" Placeholder="0" />
+                    </MudItem>
+                }
+            </MudItem>
+        }
+
+        <MudForm @ref="@form" Model="@model" Class="question-list-form pe-2">
+
+            <MudItem Class="row gap-y-3">
+                <MudItem Class="@(!IsOptionRearrangeSelected ? "col-xxl-9" : "col-xxl-7")">
+                    <MudTextField @bind-Value="model.Name" For="@(() => model.Name)" Immediate="true" Label="Question" ReadOnly="IsOptionRearrangeSelected" Placeholder="Which one do you like?" />
+                </MudItem>
+
+                @if (!IsOptionRearrangeSelected)
+                {
+                    <MudItem Class="col-2">
+                        <MudButton HtmlTag="label" for="questionImage">
+                            <MudAvatar>
+                                <MudImage Src="@(model.Media is null ? FileDirectory.DefaultImage : model.Media.Url)" Alt="Exam Image" Elevation="25" Class="rounded-lg" />
+                            </MudAvatar>
+                        </MudButton>
+                        <InputFile id="questionImage" OnChange="((e) => UploadImages(e, null))" Accept=".png, .jpg" hidden />
+                    </MudItem>
+                }
+            </MudItem>
+
+            <MudRadioGroup T="int" @bind-Value='SelectedOption'>
+
+                @foreach (var option in model.Options.OrderBy(option => option.DisplayOrder))
+                {
+                    var componentId = "optionImage " + option.DisplayOrder;
+
+                    @if (IsOptionRearrangeSelected)
+                    {
+                        <MudItem Class="col-8">
+                            <MudItem Class="row">
+                                <MudItem Class="col-1 px-0 d-flex align-items-end">
+                                    <input class="form-control form-control-sm w-50px" type="text" pattern="[A-Za-z]" maxlength="1" value=@(CommonHelper.GetAlphabetByIndex(option.DisplayOrder)) oninput="@((ChangeEventArgs e) => CommonHelper.ParseDisplayOrder(e.Value.ToString(), option, model))" />
+                                </MudItem>
+                                <MudItem Class="col-11 px-0">
+                                    <MudTextField Class="px-0" @bind-Value="option.Name" For="@(() => option.Name)" ReadOnly="IsOptionRearrangeSelected" Immediate="true" Label="Option" />
+                                </MudItem>
+                            </MudItem>
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <div class="@(SelectedFeedbackType is not null && (SelectedFeedbackType == FeedBackTypes.FeedbackForEachOption || SelectedFeedbackType == FeedBackTypes.FeedbackForEachSelectedOption) ? "p-4 bg-light rounded-3 my-3 shadow-sm" : "")">
+                            <MudItem Class="row">
+
+                                <MudItem Class="col-1 mt-4 px-0">
+                                    <MudTooltip Text="Mark Correct">
+                                        <MudRadio T="int" Disabled="false" Color="Color.Primary" Value=@(option.DisplayOrder) />
+                                    </MudTooltip>
+                                </MudItem>
+
+                                <MudItem Class="col-8">
+                                    <MudItem Class="row">
+                                        <MudItem Class="col-1 px-0 d-flex align-items-end">
+                                            <MudText>@(CommonHelper.GetAlphabetByIndex(option.DisplayOrder)).</MudText>
+                                        </MudItem>
+                                        <MudItem Class="col-11 px-0">
+                                            <MudTextField Class="px-0" @bind-Value="option.Name" For="@(() => option.Name)" Immediate="true" Label="Option"/>
+                                        </MudItem>
+                                    </MudItem>
+                                </MudItem>
+
+                                <MudItem Class="col-2">
+
+                                    <MudButton HtmlTag="label" for=@componentId>
+                                        <MudAvatar>
+                                            <MudImage Src="@(option.Media is null ? DefaultImage : option.Media.Url)" Alt="Option Image" Elevation="25" Class="rounded-lg" />
+                                        </MudAvatar>
+                                    </MudButton>
+                                    <InputFile id=@componentId OnChange="(e)=> UploadImages(e, option, false)" Accept=".png, .jpg" hidden />
+
+                                </MudItem>
+
+                                <MudItem Class="col-1 mt-2 justify-content-center">
+                                    <MudTooltip Text="Remove Options">
+                                        <MudIconButton Size="Size.Medium" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => RemoveOption(option))"></MudIconButton>
+                                    </MudTooltip>
+                                </MudItem>
+                            </MudItem>
+
+                            @if (SelectedFeedbackType is not null && (SelectedFeedbackType == FeedBackTypes.FeedbackForEachOption || SelectedFeedbackType == FeedBackTypes.FeedbackForEachSelectedOption))
+                            {
+                                <MudItem Class="row gap-y-3">
+                                    <MudItem Class="col-12">
+                                        <MudTextField @bind-Value="option.Feedback" For="@(() => option.Feedback)" Immediate="true" Label="Add explanation shown after question is attempted" />
+                                    </MudItem>
+                                </MudItem>
+                            }
+                        </div>
+                    }
+
+                }
+
+            </MudRadioGroup>
+
+            @if (SelectedFeedbackType is not null && !IsOptionRearrangeSelected)
+            {
+                <MudItem Class="row gap-y-3">
+                    @if (SelectedFeedbackType == FeedBackTypes.CommonFeedback)
+                    {
+                        <MudItem Class="col-12">
+                            <MudTextField @bind-Value="model.Feedback" For="@(() => model.Feedback)" Immediate="true" Label="Add explanation shown after question is attempted" />
+                        </MudItem>
+                    }
+                    else if (SelectedFeedbackType == FeedBackTypes.FeedbackForCorrectAndIncorrectAnswer)
+                    {
+                        <MudItem Class="col-12">
+                            <MudTextField Value="CorrectOptionFeedback" Immediate="true" Label="Feedback for correct answer" ValueChanged="(string value) => HandleCorrectOptionFeedback(value)" />
+                        </MudItem>
+
+                        <MudItem Class="col-12">
+                            <MudTextField Value="IncorrectOptionFeedback" Immediate="true" Label="Feedback for incorrect answer" ValueChanged="(string value) => HandleIncorrectOptionFeedback(value)" />
+                        </MudItem>
+                    }
+                </MudItem>
+            }
+        </MudForm>
+
+        <MudItem Class="row py-3 align-items-center">
+
+            <MudItem Class="col">
+                <MudTooltip Text="Add Options">
+                    <MudButton StartIcon="@Icons.Material.Filled.AddCircle" Variant="Variant.Filled"
+                               Color="Color.Primary" DisableElevation="true" Disabled=@(IsOptionRearrangeSelected)
+                               OnClick=@(() => AddOptions())
+                               Class="text-capitalize">
+                        Add Option
+                    </MudButton>
+                </MudTooltip>
+            </MudItem>
+
+            <MudItem Class="col d-flex justify-content-end">
+                <MudButton StartIcon="@Icons.Material.Filled.Feedback" Variant="Variant.Filled" Color="Color.Primary" Class="me-3 text-capitalize" DisableElevation="true" Disabled=@(IsOptionRearrangeSelected) OnClick="@(() => Feedback())">Rationale</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Primary" Class="me-3 text-capitalize" DisableElevation="true" Disabled=@(IsOptionRearrangeSelected) OnClick="@(() => SaveQuestion())">Save</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Class="me-3 text-capitalize" Color="Color.Primary" DisableElevation="true" Disabled=@(IsOptionRearrangeSelected) OnClick="@(() => RemoveQuestion(model))">Remove</MudButton>
+            </MudItem>
+
+        </MudItem>
+    }
+}

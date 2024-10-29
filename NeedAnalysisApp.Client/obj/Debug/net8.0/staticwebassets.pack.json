@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\compressed\\mlmsvep12n.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\NeedAnalysisApp.Client.bundle.scp.css",
+      "PackagePath": "staticwebassets\\NeedAnalysisApp.Client.bundle.scp.css"
+    },
+    {
+      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\wwwroot\\appsettings.Development.json",
+      "PackagePath": "staticwebassets\\appsettings.Development.json"
+    },
+    {
+      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\wwwroot\\appsettings.json",
+      "PackagePath": "staticwebassets\\appsettings.json"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.NeedAnalysisApp.Client.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.NeedAnalysisApp.Client.props",
+      "PackagePath": "build\\NeedAnalysisApp.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.NeedAnalysisApp.Client.props",
+      "PackagePath": "buildMultiTargeting\\NeedAnalysisApp.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.NeedAnalysisApp.Client.props",
+      "PackagePath": "buildTransitive\\NeedAnalysisApp.Client.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

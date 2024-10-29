@@ -1,0 +1,150 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.MudDebugAnalyzer = 
+build_property.MudAllowedAttributePattern = 
+build_property.MudIllegalParameters = 
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = NeedAnalysisApp.Client
+build_property.RootNamespace = NeedAnalysisApp.Client
+build_property.ProjectDir = D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Client\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Client
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Admins/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5zXERhc2hib2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/AddEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcQWRkRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/AddEditLabelDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcQWRkRWRpdExhYmVsRGlhbG9nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/Admin.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcQWRtaW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/Client.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcQ2xpZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/QuestionDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcUXVlc3Rpb25EaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/Section.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcU2VjdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/Templates/DefaultTemplate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcVGVtcGxhdGVzXERlZmF1bHRUZW1wbGF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/Templates/Label.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcVGVtcGxhdGVzXExhYmVsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/Templates/MultipleChoice.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcVGVtcGxhdGVzXE11bHRpcGxlQ2hvaWNlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/Templates/Percentage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcVGVtcGxhdGVzXFBlcmNlbnRhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/Templates/Text.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcVGVtcGxhdGVzXFRleHQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Assessments/Templates/TrueFalse.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzZXNzbWVudHNcVGVtcGxhdGVzXFRydWVGYWxzZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Auth.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Clients/ClientAssessment.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xDbGllbnRBc3Nlc3NtZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Clients/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xEYXNoYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Clients/Form.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xGb3JtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Common/ConfirmDeleteDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXENvbmZpcm1EZWxldGVEaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Industries/AddEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kdXN0cmllc1xBZGRFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Industries/ConfirmSaveDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kdXN0cmllc1xDb25maXJtU2F2ZURpYWxvZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Industries/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kdXN0cmllc1xIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/ScoreCategories/AddEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2NvcmVDYXRlZ29yaWVzXEFkZEVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/ScoreCategories/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2NvcmVDYXRlZ29yaWVzXEhvbWUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Pages/Weather.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/RedirectToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = UmVkaXJlY3RUb0xvZ2luLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Um91dGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-90fkh4bvm5
+
+[D:/LpInfotech/work 2/NeedAnalysis/NeedAnalysisApp.Client/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-xlrzfd3f6p

@@ -1,0 +1,387 @@
+﻿@page "/analysis"
+
+<AuthorizeView>
+    <Authorized>
+        <MudPaper Class="mt-3" Style="@($"color:{Colors.Indigo.Default};background:{Colors.Indigo.Lighten5};")">
+            <MudTabs @ref=tabs Centered="true" Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Color="Color.Primary">
+
+                <MudTabPanel Text="Who we are" @ref="WhoWeAreTab">
+
+                    <MudText Align="Align.Center" Typo="Typo.h6">Leadership Innovation Vision and Mission Alignment</MudText>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                Q1. How clearly does your leadership define innovation?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Measures the clarity of leadership’s innovation vision" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Not Defined</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Clearly Defined</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText>
+                                Q2. How often does leadership communicate innovation goals to the organization?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Evaluates the frequency and effectiveness of leadership
+                        communication" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Never</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Always</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                Q3. To what extent does your organization’s mission emphasize innovation and
+                                progress?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Determines whether innovation is embedded in the mission" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Not at All</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Central to the Mission</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText>
+                                Q4. How often does leadership review and adapt the organizational mission to reflect
+                                new trends, customer needs, or market shifts?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Assesses adaptability and responsiveness to change" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Rarely</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Constantly</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                Q5. What percentage of your leadership team actively engages in innovation-related
+                                activities (e.g., strategy sessions, workshops)?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Quantifies leadership involvement in innovation" />
+                            </MudText>
+                            <MudNumericField Class="mt-2" @bind-Value="DoubleValue" Label="Percentage" Variant="Variant.Outlined" Min="0.0" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText>
+                                Q6. Do stakeholders (clients, partners, employees) perceive the organization’s
+                                mission as innovative and forward-looking?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Measures external and internal alignment with innovation" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">No Perception</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Strong Perception</MudRadio>
+                            </MudRadioGroup>
+
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudText Class="mt-5" Align="Align.Center" Typo="Typo.h6">Cultural Alignment with Innovation</MudText>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                Q7. How supportive is your organization’s culture of creative thinking and innovation?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Assesses the cultural climate around innovation" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Hostile</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Highly Supportive</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText>
+                                Q8. How frequently does your organization run workshops or programs aimed at
+                                fostering innovation?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Captures efforts made to encourage innovation across teams" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Rarely</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Frequently</MudRadio>
+                            </MudRadioGroup>
+
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                Q9. How open is your organization to challenging the status quo and experimenting
+                                with new ideas?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Evaluates the organization’s willingness to embrace change" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Resistant</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Fully Open</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText>
+                                Q10. To what extent does the organization reward or recognize employees for their
+                                innovative ideas or solutions?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Understands whether the organization incentivizes innovation" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">No Rewards</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">
+                                    Highly Rewarded
+                                </MudRadio>
+                            </MudRadioGroup>
+
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudItem Class="mt-2 d-flex justify-content-end">
+                        <MudButton OnClick="(e)=> OnNextClick(WhatWeDoTab)" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Primary">Next</MudButton>
+                    </MudItem>
+
+                </MudTabPanel>
+
+                <MudTabPanel Text="What We Do" @ref="WhatWeDoTab">
+
+                    <MudText Align="Align.Center" Typo="Typo.h6">Product/Service Innovation</MudText>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                Q1. How innovative are your current products/services compared to your competitors?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Provides a comparative innovation metric" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Not Innovative</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Extremely Innovative</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText>
+                                Q2. How frequently does your organization launch new products or iterate on existing ones?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Measures product development cycles and iteration frequency" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Never</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Constantly</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                Q3. What percentage of your current revenue is derived from products/services introduced in the last 3 years?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Assesses reliance on innovative offerings for revenue" />
+                            </MudText>
+                            <MudNumericField Class="mt-2" @bind-Value="DoubleValue" Label="Percentage" Variant="Variant.Outlined" Min="0.0" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText>
+                                Q4. To what extent do your products/services address evolving customer needs?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Determines how aligned products/services are with customer expectations and trends." />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Not at All</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Fully Address</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                Q5. How integrated is customer feedback into the product/service development process?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Gauges the role of feedback in shaping innovation" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Rarely Integrated</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Fully Integrated</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText>
+                                Q6. How willing is your organization to phase out underperforming products in favor of more innovative solutions?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Measures flexibility in product/service offerings" />
+                            </MudText>
+                            <MudRadioGroup Class="ms-2" @bind-Value="Dense_Radio">
+                                <MudRadio Value="true" Color="Color.Error" Dense="true">Resistant</MudRadio>
+                                <MudRadio Value="false" Color="Color.Primary" Dense="false">Fully Committed</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-1">
+                        <MudItem xs="12">
+                            <MudText>
+                                Q7. Does your organization have a formal research and development (R&D) team focused on innovation?
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="Identifies resources allocated to innovation" />
+                            </MudText>
+                            <MudSwitch Class="ms-2" @bind-Value="Basic_Switch2" ThumbIcon="@(Basic_Switch2==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(Basic_Switch2==true ? Color.Success : Color.Error)"></MudSwitch>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudItem Class="mt-2 d-flex justify-content-end">
+                        <MudButton OnClick="(e)=> OnNextClick(WhoWeAreTab)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.NavigateBefore" Color="Color.Primary">Previous</MudButton>
+                        <MudButton Class="ms-2" OnClick="(e)=> OnNextClick(HowWeDoItTab)" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Primary">Next</MudButton>
+                    </MudItem>
+                </MudTabPanel>
+
+                <MudTabPanel Text="How We Do It" @ref="HowWeDoItTab">
+
+                    <MudText Align="Align.Center" Typo="Typo.h6">Operational Innovation and Efficiency</MudText>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="6">
+                            <MudText>Q1. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudText>Q2. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="6">
+                            <MudText>Q3. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudText>Q4. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="6">
+                            <MudText>Q5. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudText>Q6. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Success"></MudSlider>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudText Align="Align.Center" Class="mt-4" Typo="Typo.h6">Learning & Development and Employee Engagement</MudText>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="6">
+                            <MudText>Q1. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudText>Q2. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="6">
+                            <MudText>Q3. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudText>Q4. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="6">
+                            <MudText>Q5. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            @* <MudSlider Step="50" Value="100" Color="Color.Warning"></MudSlider> *@
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudText>Q6. How clearly does your leadership define innovation?</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.subtitle2">
+                                Measures the clarity of leadership’s innovation vision
+                            </MudText>
+                            @* <MudSlider Step="25" Value="100" Color="Color.Success"></MudSlider> *@
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudItem Class="mt-2 d-flex justify-content-end">
+                        <MudButton OnClick="(e)=> OnNextClick(WhatWeDoTab)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.NavigateBefore" Color="Color.Primary">Previous</MudButton>
+                        <MudButton Class="ms-2" OnClick="(e)=> OnSubmitClick()" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Primary">Analysis</MudButton>
+                    </MudItem>
+
+                </MudTabPanel>
+
+            </MudTabs>
+        </MudPaper>
+    </Authorized>
+</AuthorizeView>
+@code
+{
+    @inject ISnackbar Snackbar;
+
+    MudTabs tabs;
+    MudTabPanel WhoWeAreTab;
+    MudTabPanel WhatWeDoTab;
+    MudTabPanel HowWeDoItTab;
+
+    public bool Basic_Switch2 { get; set; } = false;
+
+
+    public bool Dense_Radio { get; set; } = true;
+
+    public double DoubleValue { get; set; }
+
+    public void OnNextClick(MudTabPanel mudTabPanel)
+    {
+        tabs.ActivatePanel(mudTabPanel);
+    }
+
+    public void OnSubmitClick()
+    {
+        Snackbar.Add("You have completed the analyses", Severity.Success);
+    }
+}

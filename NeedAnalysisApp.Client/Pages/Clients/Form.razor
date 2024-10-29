@@ -1,0 +1,367 @@
+﻿@page "/client/analysis/{AssessmentId}"
+@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using NeedAnalysisApp.Shared.Common.Utilities
+@using NeedAnalysisApp.Shared.Dto
+
+
+<MudPaper Class="mt-3" Style="@($"color:{Colors.Indigo.Default};background:{Colors.Indigo.Lighten5};")">
+
+    <MudTabs @ref=tabs Centered="true" Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Color="Color.Primary">
+
+        <MudTabPanel Text="Who we are" @ref="WhoWeAreTab">
+
+            @foreach (var (question, index) in Questions.Where(x => x.GeneralLookUp_SectionTypeId == 6).OrderBy(x => x.DisplayOrder).Select((question, index) => (question, index)))
+            {
+                if (question.GeneralLookUp_QuestionTypeId == 5)
+                {
+                    <MudText Class="mt-5" Align="Align.Center" Typo="Typo.h6">@question.Value</MudText>
+                }
+                if (question.GeneralLookUp_QuestionTypeId == 1 || question.GeneralLookUp_QuestionTypeId == 2)
+                {
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                @(index + 1). @question.Value
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="@question.Description" />
+                            </MudText>
+
+                            <MudItem Class="row">
+                                <MudRadioGroup Class="ms-2 row" T="string" Value="@GetSelectedValue(question.UniqueId)" ValueChanged="(x) => OnSelectedOptionChanged(x, question.UniqueId)">
+                                    @foreach (var (option, optionIndex) in question.Options.OrderBy(x => x.DisplayOrder).Select((option, optionIndex) => (option, optionIndex)))
+                                    {
+                                        <MudItem Class="col-6">
+                                            @(optionIndex + 1). <MudRadio Color="Color.Primary" Value="@option.Value">@option.Value</MudRadio>
+                                        </MudItem>
+                                    }
+                                </MudRadioGroup>
+                            </MudItem>
+
+                        </MudItem>
+                    </MudGrid>
+                }
+                if (question.GeneralLookUp_QuestionTypeId == 3)
+                {
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                @(index + 1). @question.Value
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="@question.Description" />
+                            </MudText>
+                            <MudItem Class="row">
+                                @foreach (var (option, index) in question.Options.OrderBy(x => x.DisplayOrder).Select((option, index) => (option, index)))
+                                {
+                                    <MudItem Class="col-12">
+                                        <MudTextField @bind-Value="@option.Value" Lines="3"></MudTextField>
+                                    </MudItem>
+                                }
+                            </MudItem>
+                        </MudItem>
+                    </MudGrid>
+                }
+                if (question.GeneralLookUp_QuestionTypeId == 4)
+                {
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                @(index + 1). @question.Value
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="@question.Description" />
+                            </MudText>
+                            <MudItem Class="row">
+                                @foreach (var (option, index) in question.Options.OrderBy(x => x.DisplayOrder).Select((option, index) => (option, index)))
+                                {
+                                    <MudItem Class="col-12">
+                                        <MudNumericField @bind-Value="@option.Value"></MudNumericField>
+                                    </MudItem>
+                                }
+                            </MudItem>
+                        </MudItem>
+                    </MudGrid>
+                }
+            }
+
+            <MudItem Class="mt-2 d-flex justify-content-end">
+                <MudButton OnClick="(e)=> OnNextClick(WhatWeDoTab)" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Primary">Next</MudButton>
+            </MudItem>
+
+        </MudTabPanel>
+
+        <MudTabPanel Text="What we do" @ref="WhatWeDoTab">
+            @foreach (var (question, index) in Questions.Where(x => x.GeneralLookUp_SectionTypeId == 7).OrderBy(x => x.DisplayOrder).Select((question, index) => (question, index)))
+            {
+                if (question.GeneralLookUp_QuestionTypeId == 5)
+                {
+                    <MudText Class="mt-5" Align="Align.Center" Typo="Typo.h6">@question.Value</MudText>
+                }
+                if (question.GeneralLookUp_QuestionTypeId == 1 || question.GeneralLookUp_QuestionTypeId == 2)
+                {
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                @(index + 1). @question.Value
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="@question.Description" />
+                            </MudText>
+                            <MudItem Class="row">
+                                <MudRadioGroup Class="ms-2 row" T="string" Value="@GetSelectedValue(question.UniqueId)" ValueChanged="(x) => OnSelectedOptionChanged(x, question.UniqueId)">
+                                    @foreach (var (option, optionIndex) in question.Options.OrderBy(x => x.DisplayOrder).Select((option, optionIndex) => (option, optionIndex)))
+                                    {
+                                        <MudItem Class="col-6">
+                                            @(optionIndex + 1). <MudRadio Color="Color.Primary" Value="@option.Value">@option.Value</MudRadio>
+                                        </MudItem>
+                                    }
+                                </MudRadioGroup>
+                            </MudItem>
+                        </MudItem>
+                    </MudGrid>
+                }
+                if (question.GeneralLookUp_QuestionTypeId == 3)
+                {
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                @(index + 1). @question.Value
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="@question.Description" />
+                            </MudText>
+                            <MudItem Class="row">
+                                @foreach (var (option, index) in question.Options.OrderBy(x => x.DisplayOrder).Select((option, index) => (option, index)))
+                                {
+                                    <MudItem Class="col-12">
+                                        <MudTextField @bind-Value="@option.Value" Lines="3"></MudTextField>
+                                    </MudItem>
+                                }
+                            </MudItem>
+                        </MudItem>
+                    </MudGrid>
+                }
+                if (question.GeneralLookUp_QuestionTypeId == 4)
+                {
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                @(index + 1). @question.Value
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="@question.Description" />
+                            </MudText>
+                            <MudItem Class="row">
+                                @foreach (var (option, index) in question.Options.OrderBy(x => x.DisplayOrder).Select((option, index) => (option, index)))
+                                {
+                                    <MudItem Class="col-12">
+                                        <MudNumericField @bind-Value="@option.Value"></MudNumericField>
+                                    </MudItem>
+                                }
+                            </MudItem>
+                        </MudItem>
+                    </MudGrid>
+                }
+            }
+
+            <MudItem Class="mt-2 d-flex justify-content-end">
+                <MudButton OnClick="(e)=> OnNextClick(WhoWeAreTab)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.NavigateBefore" Color="Color.Primary">Previous</MudButton>
+                <MudButton Class="ms-2" OnClick="(e)=> OnNextClick(HowWeDoItTab)" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Primary">Next</MudButton>
+            </MudItem>
+        </MudTabPanel>
+
+        <MudTabPanel Text="How we do it" @ref="HowWeDoItTab">
+            @foreach (var (question, index) in Questions.Where(x => x.GeneralLookUp_SectionTypeId == 8).OrderBy(x => x.DisplayOrder).Select((question, index) => (question, index)))
+            {
+                if (question.GeneralLookUp_QuestionTypeId == 5)
+                {
+                    <MudText Class="mt-5" Align="Align.Center" Typo="Typo.h6">@question.Value</MudText>
+                }
+                if (question.GeneralLookUp_QuestionTypeId == 1 || question.GeneralLookUp_QuestionTypeId == 2)
+                {
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                @(index + 1). @question.Value
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="@question.Description" />
+                            </MudText>
+                            <MudItem Class="row">
+                                <MudRadioGroup Class="ms-2 row" T="string" Value="@GetSelectedValue(question.UniqueId)" ValueChanged="(x) => OnSelectedOptionChanged(x, question.UniqueId)">
+                                    @foreach (var (option, optionIndex) in question.Options.OrderBy(x => x.DisplayOrder).Select((option, optionIndex) => (option, optionIndex)))
+                                    {
+                                        <MudItem Class="col-6">
+                                            @(optionIndex + 1). <MudRadio Color="Color.Primary" Value="@option.Value">@option.Value</MudRadio>
+                                        </MudItem>
+                                    }
+                                </MudRadioGroup>
+                            </MudItem>
+                        </MudItem>
+                    </MudGrid>
+                }
+                if (question.GeneralLookUp_QuestionTypeId == 3)
+                {
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                @(index + 1). @question.Value
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="@question.Description" />
+                            </MudText>
+                            <MudItem Class="row">
+                                @foreach (var (option, index) in question.Options.OrderBy(x => x.DisplayOrder).Select((option, index) => (option, index)))
+                                {
+                                    <MudItem Class="col-12">
+                                        <MudTextField @bind-Value="@option.Value" Lines="3"></MudTextField>
+                                    </MudItem>
+                                }
+                            </MudItem>
+                        </MudItem>
+                    </MudGrid>
+                }
+                if (question.GeneralLookUp_QuestionTypeId == 4)
+                {
+                    <MudGrid Class="mt-5">
+                        <MudItem xs="12">
+                            <MudText>
+                                @(index + 1). @question.Value
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Title="@question.Description" />
+                            </MudText>
+                            <MudItem Class="row">
+                                @foreach (var (option, index) in question.Options.OrderBy(x => x.DisplayOrder).Select((option, index) => (option, index)))
+                                {
+                                    <MudItem Class="col-12">
+                                        <MudNumericField @bind-Value="@option.Value"></MudNumericField>
+                                    </MudItem>
+                                }
+                            </MudItem>
+                        </MudItem>
+                    </MudGrid>
+                }
+            }
+
+            <MudItem Class="mt-2 d-flex justify-content-end">
+                <MudButton OnClick="(e)=> OnNextClick(WhatWeDoTab)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.NavigateBefore" Color="Color.Primary">Previous</MudButton>
+                <MudButton Class="ms-2" OnClick="(e)=> OnSubmitClick()" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Primary">Analysis</MudButton>
+            </MudItem>
+        </MudTabPanel>
+
+    </MudTabs>
+
+</MudPaper>
+
+@code
+{
+    private Dictionary<string, string> SelectedOptions = new Dictionary<string, string>();
+
+    private void OnSelectedOptionChanged(string selectedValue, string questionId)
+    {
+        if (SelectedOptions.ContainsKey(questionId))
+        {
+            SelectedOptions[questionId] = selectedValue;
+        }
+        else
+        {
+            SelectedOptions.Add(questionId, selectedValue);
+        }
+    }
+
+    private string GetSelectedValue(string questionId)
+    {
+        return SelectedOptions.TryGetValue(questionId, out var selectedValue) ? selectedValue : null;
+    }
+
+    [Inject] ISnackbar Snackbar { get; set; } = null!;
+
+    [Inject] IQuestionClientService _questionClientService { get; set; } = null!;
+
+    [Inject] IAssessmentClientService _assessmentClientService { get; set; } = null!;
+
+    [Parameter] public string AssessmentId { get; set; } = "";
+
+    public List<QuestionDto> Questions { get; set; } = [];
+
+    public bool Dense_Radio { get; set; } = false;
+
+    public AssessmentDto Model { get; set; } = new AssessmentDto() { Name = "" };
+
+    //[Comment("This property is being used to get the Selected Option")]
+    string SelectedOption { get; set; }
+
+    MudTabs tabs;
+    MudTabPanel WhoWeAreTab;
+    MudTabPanel WhatWeDoTab;
+    MudTabPanel HowWeDoItTab;
+
+    // private async void OnSelectedOptionChanged(string selectedOption, string questionUniqueId)
+    // {
+    //     SelectedOption = selectedOption;
+
+    //     // call your stuff
+    // }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await _assessmentClientService.GetWithId(AssessmentId);
+
+        var result = await _questionClientService.GetAll(AssessmentId);
+
+        if (result.Success)
+        {
+            var questions = JsonConvert.DeserializeObject<List<QuestionDto>>(result.Model.ToString() ?? string.Empty);
+
+            Questions = questions;
+        }
+
+        StateHasChanged();
+    }
+
+    public void OnNextClick(MudTabPanel mudTabPanel)
+    {
+        tabs.ActivatePanel(mudTabPanel);
+    }
+
+
+    public void OnSubmitClick()
+    {
+        double marks = 0.0;
+        double totalMarks = 0.0;
+        double WhoWeAre_Marks = 0.0;
+        double WhatWeDo_Marks = 0.0;
+        double HowWeDoIt_Marks = 0.0;
+
+        //check if selected options contains the values of user selected options
+        if (SelectedOptions.Any() && Questions.Any())
+        {
+            foreach (var question in Questions)
+            {
+                totalMarks += question.Options.Sum(x => x.Point);
+
+                if (question.GeneralLookUp_SectionTypeId == 6)
+                {
+                    WhoWeAre_Marks += question.Options.Sum(x => x.Point);
+                }
+                if (question.GeneralLookUp_SectionTypeId == 7)
+                {
+                    WhatWeDo_Marks += question.Options.Sum(x => x.Point);
+                }
+                if (question.GeneralLookUp_SectionTypeId == 8)
+                {
+                    HowWeDoIt_Marks += question.Options.Sum(x => x.Point);
+                }
+            }
+
+            foreach (var selectedOption in SelectedOptions)
+            {
+                foreach (var question in Questions)
+                {
+                    var option = question.Options.Where(x => x.Value == selectedOption.Value).FirstOrDefault();
+
+                    if (option != null) { marks += option.Point; }
+                }
+            }
+        }
+
+        var percentage = (marks / totalMarks) * 100;
+
+        if (percentage <= 60)
+        {
+            Snackbar.Add("You are under Innovation-Lagging Organization", Severity.Warning);
+        }
+        if (percentage >= 61 && percentage <= 120)
+        {
+            Snackbar.Add("You are under Innovation-Aware Organization", Severity.Success);
+        }
+        Snackbar.Add($"You have got {marks} out of {totalMarks}", Severity.Success);
+
+        // Snackbar.Add("You have completed the analyses", Severity.Success);
+    }
+}
+

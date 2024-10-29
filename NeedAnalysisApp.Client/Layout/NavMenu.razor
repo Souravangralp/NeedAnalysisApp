@@ -1,0 +1,69 @@
+﻿@using System.Security.Claims
+@implements IDisposable
+
+@inject NavigationManager NavigationManager
+
+<MudNavMenu>
+    <AuthorizeView>
+        <Authorized>
+            @if (context.User.IsInRole("Admin"))
+            {
+                <MudNavLink Href="/admin-dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Home</MudNavLink>
+                <MudNavLink Href="/assessment" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.QuestionAnswer">Assessments</MudNavLink>
+                <MudNavLink Href="/scoreCategories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Scoreboard">Score categories</MudNavLink>
+                <MudNavLink Href="/industries" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Industries</MudNavLink>
+
+                @* <MudNavGroup Title="Settings" Expanded="true">
+                    <MudNavLink Href="/generalLookups">GeneraLookUps</MudNavLink>
+                    <MudNavLink Href="/industries" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Industries</MudNavLink>
+                </MudNavGroup> *@
+            }
+            @if (context.User.IsInRole("User"))
+            {
+                <MudNavLink Href="/analysis" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Demo analysis</MudNavLink>
+                <MudNavLink Href="/client-dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Home</MudNavLink>
+                <MudNavLink Href="/client-assessment" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.QuestionAnswer">Assessments</MudNavLink>
+                @* <MudNavLink Href="/analysis" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink> *@
+            }
+
+            @* <MudNavLink Href="Account/Manage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">@context.User.Identity?.Name</MudNavLink> *@
+
+            <form action="Account/Logout" method="post">
+                <AntiforgeryToken />
+                <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                <button type="submit" class="mud-nav-link mud-ripple">
+                    <MudIcon Icon="@Icons.Material.Filled.Logout" Color="Color.Info" Class="mr-3"></MudIcon> Logout
+                </button>
+            </form>
+        </Authorized>
+        <NotAuthorized>
+            <MudNavLink Href="Account/Register" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Register</MudNavLink>
+            <MudNavLink Href="Account/Login" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Password">Login</MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+</MudNavMenu>
+
+
+@code {
+
+    private string? currentUrl;
+
+    protected async override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}
+
+
