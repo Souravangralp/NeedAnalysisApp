@@ -1,13 +1,11 @@
-using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using NeedAnalysisApp;
 using NeedAnalysisApp.Components;
 using NeedAnalysisApp.Components.Account;
 using NeedAnalysisApp.Data;
-using NeedAnalysisApp.Data.Models;
+using NeedAnalysisApp.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,9 +38,13 @@ builder.Services.AddAuthentication(options =>
 });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -108,7 +110,7 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(NeedAnalysisApp.Client._Imports).Assembly);
 
 app.MapControllers();
-
+app.MapHub<ChatHub>("/hubs/blazing-chat");
 app.MapFallbackToFile("index.html");
 
 // Add additional endpoints required by the Identity /Account Razor components.

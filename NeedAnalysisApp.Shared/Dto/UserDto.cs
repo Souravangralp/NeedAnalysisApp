@@ -23,4 +23,6 @@ public class UserDto
     public string? IndustryType { get; set; }
 
     public string? GenderType { get; set; }
+
+    public bool IsOnline { get; set; }
 }

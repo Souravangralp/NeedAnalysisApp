@@ -35,7 +35,7 @@ public class UserClientService : IUserClientService
 
     public async Task<UserDto> GetWithId(string id)
     {
-        var response = await _httpClient.GetAsync("https://localhost:7028/api/users/{id}");
+        var response = await _httpClient.GetAsync($"https://localhost:7028/api/users/{id}");
 
         if (response.IsSuccessStatusCode)
         {

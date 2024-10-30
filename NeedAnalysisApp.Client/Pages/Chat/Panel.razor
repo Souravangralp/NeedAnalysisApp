@@ -1,0 +1,268 @@
+﻿@page "/chat/{UserId}"
+@using Microsoft.AspNetCore.SignalR.Client
+@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using NeedAnalysisApp.Shared.Dto
+@using NeedAnalysisApp.Shared.Dto.Chat
+@using System.Security.Claims
+
+@if (IsDefault)
+{
+    <h3>Panel</h3>
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <MudList T="string">
+                <MudListItem Text="@(User.FirstName)">
+                    <MudAvatar>
+                        <MudImage Src="@User.ProfilePictureUrl" />
+                    </MudAvatar>
+                </MudListItem>
+            </MudList>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudContainer>
+                @foreach (var message in Messages)
+                {
+                    <MudChip T="string">
+                        <AvatarContent>
+                            <MudAvatar>
+                                <MudImage Src="@message.User.ProfilePictureUrl"></MudImage>
+                            </MudAvatar>
+                        </AvatarContent>
+                        <ChildContent>@message.Content</ChildContent>
+                    </MudChip>
+
+                    @*  <MudChip T="string">
+            <MudAvatar>
+            <MudImage Src="@message.User.Profi" />
+            </MudAvatar>
+            <ChildContent>
+            <div>@message.Content</div>
+            <small>@message.Timestamp?.ToString("g")</small>
+            <small>@(message.IsRead ? "Read" : "Unread")</small>
+            </ChildContent>
+            </MudChip> *@
+                }
+            </MudContainer>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudTextField @bind-Value="MessageText" Label="Type a message" Variant="Variant.Outlined" />
+            <MudButton Color="Color.Primary" OnClick="SendMessage">Send</MudButton>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    [Inject] public IUserClientService _userClientService { get; set; } = null!;
+    [Inject] public NavigationManager _navigationManager { get; set; } = null!;
+    [Inject] public AuthenticationStateProvider PersistentAuthenticationStateProvider { get; set; } = null!;
+    private HubConnection? _hubConnection;
+
+    [Parameter] public required string UserId { get; set; }
+    [Parameter] public bool IsDefault { get; set; }
+
+    UserDto User { get; set; } = new();
+    private string MessageText { get; set; } = "";
+    private List<MessageTT> Messages { get; set; } = new List<MessageTT>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _hubConnection = ConfigureHubConnection();
+
+        if (!string.IsNullOrWhiteSpace(UserId))
+        {
+            User = await _userClientService.GetWithId(UserId);
+
+            await _hubConnection.StartAsync();
+
+            // Listen for incoming messages
+            _hubConnection.On<MessageDto>("MessageRecieved", (messageDto) =>
+            {
+                // Only add messages that are sent to the current user
+                if (messageDto.ReceiverId == User.Id)
+                {
+                    Messages.Add(new MessageTT
+                        {
+                            Content = messageDto.Content,
+                            User = new UserDto { Id = messageDto.SenderId, ProfilePictureUrl = "your_default_image_url" } // Replace with actual user data
+                        });
+                    StateHasChanged(); // Refresh UI
+                }
+            });
+        }
+    }
+
+    private async Task<string> GetCurrentUserIdAsync()
+    {
+        var authState = await PersistentAuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            return user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        }
+        return null;
+    }
+
+    private HubConnection ConfigureHubConnection()
+    {
+        return new HubConnectionBuilder()
+            .WithUrl(_navigationManager.ToAbsoluteUri("/hubs/blazing-chat"))
+            .Build();
+    }
+
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(MessageText))
+        {
+            var authState = await PersistentAuthenticationStateProvider.GetAuthenticationStateAsync();
+
+            var messageDto = new MessageDto
+                {
+                    SenderId = User.Id,
+                    ReceiverId = await GetCurrentUserIdAsync(), // Make sure _selectedUser is defined
+                    Content = MessageText,
+                    Timestamp = DateTime.UtcNow,
+                    IsRead = false
+                };
+
+            Messages.Add(new MessageTT
+                {
+                    Content = MessageText,
+                    User = User
+                });
+            MessageText = ""; // Clear the input
+
+            // Send message through SignalR
+            await _hubConnection.SendAsync("SendMessage", messageDto);
+        }
+    }
+
+    public class MessageTT
+    {
+        public string Content { get; set; }
+        public UserDto User { get; set; }
+        public DateTime? Timestamp { get; set; } // Optional: Add timestamp to MessageTT if needed
+        public bool IsRead { get; set; } // Optional: Add IsRead status if needed
+    }
+}
+
+
+@* @page "/chat/{UserId}"
+@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using NeedAnalysisApp.Shared.Dto
+
+@if (IsDefault)
+{
+    <h3>Panel</h3>
+}
+else
+{
+    <MudGrid>
+
+        <MudItem xs="12">
+            <MudList T="string">
+                <MudListItem Text="@(User.FirstName)">
+                    <AvatarContent>
+                        <MudBadge Dot="true" Color="Color.Info" Class="mx-6 my-4">
+                            <MudAvatar>
+                                <MudImage Src="@User.ProfilePictureUrl" />
+                            </MudAvatar>
+                        </MudBadge>
+                    </AvatarContent>
+                </MudListItem>
+            </MudList>
+        </MudItem>
+
+        <MudItem Class="mt-1" xs="12">
+            <MudContainer>
+                @foreach (var message in Messages)
+                {
+                    <MudItem Class="row">
+
+                        <MudChip T="string">
+                            <AvatarContent>
+                                <MudAvatar>
+                                    <MudImage Src="@message.User.ProfilePictureUrl"></MudImage>
+                                </MudAvatar>
+                            </AvatarContent>
+                            <ChildContent>@message.Content</ChildContent>
+                        </MudChip>
+                    </MudItem>
+
+                }
+            </MudContainer>
+        </MudItem>
+
+        <MudItem Class="mt-2" xs="12">
+            <MudContainer>
+                <MudTextField @bind-Value="MessageText" Label="Type a message" Variant="Variant.Outlined" />
+                <MudButton Color="Color.Primary" OnClick="SendMessage">Send</MudButton>
+            </MudContainer>
+        </MudItem>
+    </MudGrid>
+}
+
+@code{
+    [Inject] public IUserClientService _userClientService { get; set; } = null!;
+
+    UserDto User { get; set; } = new();
+
+    [Parameter] public required string UserId { get; set; }
+
+    [Parameter] public bool IsDefault { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(UserId))
+        {
+            User = await _userClientService.GetWithId(UserId);
+        }
+
+        StateHasChanged();
+    }
+
+    //private bool _parametersInitialized = false; // To avoid unnecessary calls
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(UserId))
+        {
+            User = await _userClientService.GetWithId(UserId);
+        }
+
+        // Check if parameters have been initialized
+        //if (_parametersInitialized &&
+        //    (!string.IsNullOrWhiteSpace(UserId)) && !IsDefault)
+        //{
+        //    User = await _userClientService.GetWithId(UserId);
+        //}
+
+        //_parametersInitialized = true; // Set this to true after the first initialization
+
+        StateHasChanged();
+    }
+
+    private string MessageText { get; set; } = "";
+    private List<MessageTT> Messages { get; set; } = new List<MessageTT>();
+
+    private void SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(MessageText))
+        {
+            Messages.Add(new MessageTT { Content = MessageText, User = User });
+            MessageText = ""; // Clear the input field
+        }
+    }
+
+    public class MessageTT
+    {
+        public string Content { get; set; }
+        public UserDto User { get; set; }
+    }
+} *@

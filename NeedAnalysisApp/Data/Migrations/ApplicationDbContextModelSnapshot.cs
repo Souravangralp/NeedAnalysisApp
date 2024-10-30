@@ -384,6 +384,132 @@ namespace NeedAnalysisApp.Data.Migrations
                     b.ToTable("Questions");
                 });
 
+            modelBuilder.Entity("NeedAnalysisApp.Data.Models.Chat.File", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDateUTC")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("File_MessageId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UniqueId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("File_MessageId")
+                        .IsUnique()
+                        .HasFilter("[File_MessageId] IS NOT NULL");
+
+                    b.ToTable("Files");
+                });
+
+            modelBuilder.Entity("NeedAnalysisApp.Data.Models.Chat.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUser_ReceiverId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUser_SenderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDateUTC")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("SentOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UniqueId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUser_ReceiverId");
+
+                    b.HasIndex("ApplicationUser_SenderId");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("NeedAnalysisApp.Data.Models.Chat.UserSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ConnectedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedDateUTC")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DisconnectedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UniqueId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserSessions");
+                });
+
             modelBuilder.Entity("NeedAnalysisApp.Data.Models.Common.GeneralLookUp", b =>
                 {
                     b.Property<int>("Id")
@@ -640,6 +766,30 @@ namespace NeedAnalysisApp.Data.Migrations
                     b.Navigation("Question_Assessment");
                 });
 
+            modelBuilder.Entity("NeedAnalysisApp.Data.Models.Chat.File", b =>
+                {
+                    b.HasOne("NeedAnalysisApp.Data.Models.Chat.Message", "File_Message")
+                        .WithOne("File")
+                        .HasForeignKey("NeedAnalysisApp.Data.Models.Chat.File", "File_MessageId");
+
+                    b.Navigation("File_Message");
+                });
+
+            modelBuilder.Entity("NeedAnalysisApp.Data.Models.Chat.Message", b =>
+                {
+                    b.HasOne("NeedAnalysisApp.Data.Models.ApplicationUser", "ApplicationUser_Receiver")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUser_ReceiverId");
+
+                    b.HasOne("NeedAnalysisApp.Data.Models.ApplicationUser", "ApplicationUser_Sender")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUser_SenderId");
+
+                    b.Navigation("ApplicationUser_Receiver");
+
+                    b.Navigation("ApplicationUser_Sender");
+                });
+
             modelBuilder.Entity("NeedAnalysisApp.Data.Models.UserAssessmentMapper", b =>
                 {
                     b.HasOne("NeedAnalysisApp.Data.Models.Common.GeneralLookUp", "GeneralLookUp_AssessmentStatusType")
@@ -657,6 +807,11 @@ namespace NeedAnalysisApp.Data.Migrations
             modelBuilder.Entity("NeedAnalysisApp.Data.Models.Assessment.Question", b =>
                 {
                     b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("NeedAnalysisApp.Data.Models.Chat.Message", b =>
+                {
+                    b.Navigation("File");
                 });
 #pragma warning restore 612, 618
         }

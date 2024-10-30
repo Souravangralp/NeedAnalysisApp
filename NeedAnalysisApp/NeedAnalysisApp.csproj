@@ -15,6 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ChatController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <ProjectReference Include="..\NeedAnalysisApp.Client\NeedAnalysisApp.Client.csproj" />
     <ProjectReference Include="..\NeedAnalysisApp.Shared\NeedAnalysisApp.Shared.csproj" />
     <PackageReference Include="AutoMapper" Version="13.0.1" />

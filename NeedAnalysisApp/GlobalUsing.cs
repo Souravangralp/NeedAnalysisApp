@@ -1,1 +1,9 @@
 ﻿global using MudBlazor;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore;
+global using NeedAnalysisApp.Data.Models;
+global using NeedAnalysisApp.Data.Models.Assessment;
+global using NeedAnalysisApp.Data.Models.Chat;
+global using NeedAnalysisApp.Data.Models.Common;
+global using NeedAnalysisApp.Data.Models.Industries;
+global using NeedAnalysisApp.Data.Models.Scores;

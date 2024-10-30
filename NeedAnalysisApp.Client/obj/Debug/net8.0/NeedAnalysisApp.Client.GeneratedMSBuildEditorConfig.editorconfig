@@ -81,6 +81,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/LpInfotech/Vivek/NeedAnalysisApp/NeedAnalysisApp.Client/Pages/Chat/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hhdFxIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/LpInfotech/Vivek/NeedAnalysisApp/NeedAnalysisApp.Client/Pages/Chat/Panel.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hhdFxQYW5lbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/LpInfotech/Vivek/NeedAnalysisApp/NeedAnalysisApp.Client/Pages/Clients/AnalysisForm.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xBbmFseXNpc0Zvcm0ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

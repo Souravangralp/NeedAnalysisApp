@@ -1,0 +1,205 @@
+﻿@page "/chat"
+@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using NeedAnalysisApp.Shared.Dto
+@using Microsoft.AspNetCore.SignalR.Client
+@using NeedAnalysisApp.Shared.Dto.Chat
+
+<MudGrid>
+    <MudItem xs="4">
+        <MudPaper>
+            <MudList T="string">
+                @foreach (var user in Users)
+                {
+                    <MudListItem OnClick="() => OpenChat(user.Id)">
+                        <MudAvatar>
+                            <MudImage Src="@user.ProfilePictureUrl" />
+                        </MudAvatar>
+                        @user.FirstName
+                    </MudListItem>
+                }
+            </MudList>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="8">
+        <MudPaper Elevation="0">
+            <DynamicComponent Type="typeof(Panel)" Parameters="parameters" />
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Inject] public IUserClientService _userClientService { get; set; } = null!;
+    [Inject] public NavigationManager _navigationManager { get; set; } = null!;
+
+    private HubConnection? _hubConnection;
+    public IList<UserDto> Users { get; set; } = new List<UserDto>();
+    public Dictionary<string, object> parameters { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = ConfigureHubConnection();
+        await _hubConnection.StartAsync();
+        Users = await _userClientService.GetAll("Client");
+
+        parameters["IsDefault"] = true; // Set default state
+    }
+
+    private HubConnection ConfigureHubConnection()
+    {
+        var hubConnection = new HubConnectionBuilder()
+            .WithUrl(_navigationManager.ToAbsoluteUri("/hubs/blazing-chat"))
+            .Build();
+
+        hubConnection.On<MessageDto>("MessageRecieved", (messageDto) =>
+        {
+            // Handle incoming message
+            // You might want to implement some logic to display it
+            StateHasChanged();
+        });
+
+        return hubConnection;
+    }
+
+    public async Task OpenChat(string id)
+    {
+        parameters["UserId"] = id;
+        parameters["IsDefault"] = false;
+        StateHasChanged();
+    }
+}
+
+
+
+@* @page "/chat"
+@using NeedAnalysisApp.Client.Repositories.Interfaces
+@using NeedAnalysisApp.Shared
+@using NeedAnalysisApp.Shared.Dto
+@using Microsoft.AspNetCore.SignalR.Client
+@using NeedAnalysisApp.Shared.Dto.Chat
+<MudGrid>
+    <MudItem xs="12">
+
+    </MudItem>
+
+    <MudItem Class="mt-2" xs="4">
+        <MudPaper>
+            <MudList T="string">
+                @foreach (var user in Users)
+                {
+                    <MudListItem OnClick="() => OpenChat(user.Id) ">
+                        <AvatarContent>
+                            <MudAvatar>
+                                <MudImage Src="@user.ProfilePictureUrl" />
+                            </MudAvatar>
+                        </AvatarContent>
+                        <ChildContent>
+                            @user.FirstName
+                        </ChildContent>
+                    </MudListItem>
+                }
+            </MudList>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem Class="mt-2" xs="8">
+        <MudPaper Elevation="0">
+            <DynamicComponent Type="typeof(Panel)" Parameters="parameters" />
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Inject] public IUserClientService _userClientService { get; set; } = null!;
+    [Inject] public NavigationManager _navigationManager { get; set; } = null!;
+
+    public PersistentAuthenticationStateProvider AuthenticationState { get; set; }
+    private HubConnection? _hubConnection;
+    private UserDto? _selectedUser = null; 
+    public IList<UserDto> Chats { get; set; } = new List<UserDto>();
+    private MessageDto? _newIncomingMessage = null;
+    List<UserDto> Users = [];
+
+    public Dictionary<string, object> parameters { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = ConfigureHubConnection();
+        var result = await _userClientService.GetAll("Client");
+
+        Users = result;
+
+        parameters.Remove("IsDefault");
+        parameters["IsDefault"] = true;
+    }
+
+    public async Task OpenChat(string id)
+    {
+        parameters.Remove("UserId");
+        parameters.Remove("IsDefault");
+        parameters["UserId"] = id;
+        parameters["IsDefault"] = false;
+
+        StateHasChanged();
+    }
+
+    private HubConnection ConfigureHubConnection()
+    {
+        var hubConnection = new HubConnectionBuilder()
+                            .WithUrl(_navigationManager.ToAbsoluteUri("/hubs/blazing-chat"))
+                               // options => options.AccessTokenProvider = () => Task.FromResult(AuthenticationState.Token))
+                            .Build();
+
+        hubConnection.On<UserDto>(nameof(IBlazingChatHubClient.UserConnected), (newUser) =>
+        {
+            Users.Add(newUser);
+            StateHasChanged();
+        });
+
+        hubConnection.On<ICollection<UserDto>>(nameof(IBlazingChatHubClient.OnlineUsersList), (onlineUsers) =>
+        {
+            foreach (var user in Users)
+            {
+                if (onlineUsers.Any(u => u.Id == user.Id))
+                {
+                    user.IsOnline = true;
+                }
+            }
+            StateHasChanged();
+        });
+
+        hubConnection.On<string>(nameof(IBlazingChatHubClient.UserIsOnline), (userId) =>
+        {
+            var user = Users.FirstOrDefault(u => u.Id == userId);
+            if (user is not null)
+            {
+                user.IsOnline = true;
+                StateHasChanged();
+            }
+        });
+
+        hubConnection.On<MessageDto>(nameof(IBlazingChatHubClient.MessageRecieved), (messageDto) =>
+        {
+            var fromUser = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
+
+            if (!Chats.Any(c => c.Id == messageDto.SenderId))
+            {
+                Chats.Insert(0, fromUser!);
+            }
+            else
+            {
+                if (_selectedUser?.Id == messageDto.SenderId)
+                {
+                    // Append the message to the messages list
+                    _newIncomingMessage = messageDto;
+                }
+            }
+            StateHasChanged();
+        });
+
+        return hubConnection;
+    }
+
+}
+ *@

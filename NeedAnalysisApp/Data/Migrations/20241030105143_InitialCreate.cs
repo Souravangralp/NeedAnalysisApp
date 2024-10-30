@@ -85,6 +85,25 @@ namespace NeedAnalysisApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserSessions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConnectedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DisconnectedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UniqueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDateUTC = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserSessions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -283,6 +302,38 @@ namespace NeedAnalysisApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUser_SenderId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ApplicationUser_ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SentOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsRead = table.Column<bool>(type: "bit", nullable: true),
+                    UniqueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDateUTC = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_ApplicationUser_ReceiverId",
+                        column: x => x.ApplicationUser_ReceiverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_ApplicationUser_SenderId",
+                        column: x => x.ApplicationUser_SenderId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Questions",
                 columns: table => new
                 {
@@ -316,6 +367,31 @@ namespace NeedAnalysisApp.Data.Migrations
                         name: "FK_Questions_GeneralLookUps_GeneralLookUp_SectionTypeId",
                         column: x => x.GeneralLookUp_SectionTypeId,
                         principalTable: "GeneralLookUps",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    File_MessageId = table.Column<int>(type: "int", nullable: true),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UniqueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDateUTC = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Files_Messages_File_MessageId",
+                        column: x => x.File_MessageId,
+                        principalTable: "Messages",
                         principalColumn: "Id");
                 });
 
@@ -401,6 +477,23 @@ namespace NeedAnalysisApp.Data.Migrations
                 column: "Assessment_IndustryID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Files_File_MessageId",
+                table: "Files",
+                column: "File_MessageId",
+                unique: true,
+                filter: "[File_MessageId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ApplicationUser_ReceiverId",
+                table: "Messages",
+                column: "ApplicationUser_ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ApplicationUser_SenderId",
+                table: "Messages",
+                column: "ApplicationUser_SenderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Options_Option_QuestionID",
                 table: "Options",
                 column: "Option_QuestionID");
@@ -445,6 +538,9 @@ namespace NeedAnalysisApp.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Files");
+
+            migrationBuilder.DropTable(
                 name: "Options");
 
             migrationBuilder.DropTable(
@@ -454,13 +550,19 @@ namespace NeedAnalysisApp.Data.Migrations
                 name: "UserAssessmentMapper");
 
             migrationBuilder.DropTable(
+                name: "UserSessions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "Questions");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Assessments");

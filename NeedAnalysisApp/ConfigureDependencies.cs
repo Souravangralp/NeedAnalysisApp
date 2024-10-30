@@ -1,6 +1,4 @@
-﻿using NeedAnalysisApp.Client.Repositories.Interfaces;
-using NeedAnalysisApp.Client.Repositories.Services;
-using NeedAnalysisApp.Data;
+﻿using NeedAnalysisApp.Data;
 using NeedAnalysisApp.Repositories.Interfaces;
 using NeedAnalysisApp.Repositories.Services;
 
@@ -18,6 +16,7 @@ public static class ConfigureDependencies
         services.AddScoped<IQuestionService, QuestionService>(); 
         services.AddScoped<IOptionService, OptionService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IMessageService, MessageService>();
 
         //services.AddTransient<HttpClient>();
 

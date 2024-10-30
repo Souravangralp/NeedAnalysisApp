@@ -542,6 +542,48 @@
     ]
   },
   {
+    "ContainingType": "BlazingChat.Server.Controllers.MessagesController",
+    "Method": "SendMessage",
+    "RelativePath": "api/messages",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "messageDto",
+        "Type": "NeedAnalysisApp.Shared.Dto.Chat.MessageDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlazingChat.Server.Controllers.MessagesController",
+    "Method": "GetMessages",
+    "RelativePath": "api/messages/{otherUserId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "otherUserId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[NeedAnalysisApp.Shared.Dto.Chat.MessageDto, NeedAnalysisApp.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "NeedAnalysisApp.Controllers.QuestionsController",
     "Method": "DeleteOption",
     "RelativePath": "api/options/{optionId}",
