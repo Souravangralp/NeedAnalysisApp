@@ -237,35 +237,42 @@ public partial class Section
 
         var result = await dialog.Result;
 
-        var question = (QuestionDto)result.Data;
-
-        var lastDisplayOrder = Questions.Count > 0 ? Questions.Max(x => x.DisplayOrder) : 1;
-
-        question.DisplayOrder = lastDisplayOrder + 1;
-        question.GeneralLookUp_SectionTypeId = SectionUtility.GetSectionId(SectionName);
-
-        var questionResult = await _questionClientService.Create(question, AssessmentId);
-
-        if (questionResult.Success)
+        if (!result.Canceled)
         {
-            Snackbar.Add("Label added successfully", Severity.Success);
 
-            SelectedQuestionTemplate = GetQuestionTemplate(0);
+            var question = (QuestionDto)result.Data;
 
-            var questions = await _questionClientService.GetAll(AssessmentId);
+            var lastDisplayOrder = Questions.Count > 0 ? Questions.Max(x => x.DisplayOrder) : 1;
 
-            if (questions.Success)
+            question.DisplayOrder = lastDisplayOrder + 1;
+            question.GeneralLookUp_SectionTypeId = SectionUtility.GetSectionId(SectionName);
+
+            var questionResult = await _questionClientService.Create(question, AssessmentId);
+
+            if (questionResult.Success)
             {
-                var questions1 = JsonConvert.DeserializeObject<List<QuestionDto>>(questions.Model.ToString() ?? string.Empty);
+                Snackbar.Add("Label added successfully", Severity.Success);
 
-                Questions = questions1.Where(x => x.GeneralLookUp_SectionTypeId == SectionUtility.GetSectionId(SectionName)).ToList();
+                SelectedQuestionTemplate = GetQuestionTemplate(0);
+
+                var questions = await _questionClientService.GetAll(AssessmentId);
+
+                if (questions.Success)
+                {
+                    var questions1 = JsonConvert.DeserializeObject<List<QuestionDto>>(questions.Model.ToString() ?? string.Empty);
+
+                    Questions = questions1.Where(x => x.GeneralLookUp_SectionTypeId == SectionUtility.GetSectionId(SectionName)).ToList();
+                }
             }
-        }
-        else 
-        {
-            foreach (var error in questionResult.Errors)
+            else
             {
-                Snackbar.Add(error.Message, Severity.Warning);
+                if (questionResult.Errors.Any())
+                {
+                    foreach (var error in questionResult.Errors)
+                    {
+                        Snackbar.Add(error.Message, Severity.Warning);
+                    }
+                }
             }
         }
 

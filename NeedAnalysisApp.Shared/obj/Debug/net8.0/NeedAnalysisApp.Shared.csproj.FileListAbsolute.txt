@@ -10,3 +10,15 @@ D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Shared\obj\Debug\net8.0\NeedAn
 D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Shared\obj\Debug\net8.0\refint\NeedAnalysisApp.Shared.dll
 D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Shared\obj\Debug\net8.0\NeedAnalysisApp.Shared.pdb
 D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Shared\obj\Debug\net8.0\ref\NeedAnalysisApp.Shared.dll
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\bin\Debug\net8.0\NeedAnalysisApp.Shared.deps.json
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\bin\Debug\net8.0\NeedAnalysisApp.Shared.dll
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\bin\Debug\net8.0\NeedAnalysisApp.Shared.pdb
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\obj\Debug\net8.0\NeedAnalysisApp.Shared.GeneratedMSBuildEditorConfig.editorconfig
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\obj\Debug\net8.0\NeedAnalysisApp.Shared.AssemblyInfoInputs.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\obj\Debug\net8.0\NeedAnalysisApp.Shared.AssemblyInfo.cs
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\obj\Debug\net8.0\NeedAnalysisApp.Shared.csproj.CoreCompileInputs.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\obj\Debug\net8.0\NeedAnalysisApp.Shared.sourcelink.json
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\obj\Debug\net8.0\NeedAnalysisApp.Shared.dll
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\obj\Debug\net8.0\refint\NeedAnalysisApp.Shared.dll
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\obj\Debug\net8.0\NeedAnalysisApp.Shared.pdb
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\obj\Debug\net8.0\ref\NeedAnalysisApp.Shared.dll

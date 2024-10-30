@@ -1,3 +1,4 @@
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -20,6 +21,7 @@ internal class Program
         builder.Services.AddScoped<IAssessmentClientService, AssessmentClientService>();
         builder.Services.AddScoped<IQuestionClientService, QuestionClientService>();
         builder.Services.AddScoped<IUserClientService, UserClientService>();
+
 
         await builder.Build().RunAsync();
     }

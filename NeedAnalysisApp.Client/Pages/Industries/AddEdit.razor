@@ -6,8 +6,8 @@
 
 <MudDialog>
     <DialogContent>
-        <MudTextField @bind-Value="Model.Name" Label="Name" />
-        <MudTextField @bind-Value="Model.Code" Label="Code" />
+        <MudTextField @bind-Value="Model.Name" Required="true" Label="Name" />
+        <MudTextField @bind-Value="Model.Code" Required="true" Label="Code" />
         <MudTextField @bind-Value="Model.Description" Label="Description" />
         @if (!string.IsNullOrWhiteSpace(Model.UniqueId))
         {
@@ -16,7 +16,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton EndIcon="@Icons.Material.Outlined.Cancel" Color="Color.Default" OnClick="Cancel">Cancel</MudButton>
-        <MudButton EndIcon="@Icons.Material.Outlined.Save" Color="Color.Success" OnClick="Save">Save</MudButton>
+        <MudButton EndIcon="@Icons.Material.Outlined.Save" Color="Color.Success" Disabled="@(string.IsNullOrWhiteSpace(Model.Name))" OnClick="Save">Save</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -32,41 +32,27 @@
 
     private async void Save()
     {
-        if (string.IsNullOrWhiteSpace(Model.UniqueId))
+        var isNew = string.IsNullOrWhiteSpace(Model.UniqueId);
+        var result = isNew
+            ? await industryService.Create(Model)
+            : await industryService.Update(Model);
+
+        HandleResult(result, isNew);
+    }
+
+    private void HandleResult(Result result, bool isNew)
+    {
+        if (!result.Success && result.Errors.Any())
         {
-            var result = await industryService.Create(Model);
-
-            if (!result.Success && result.Errors.Any())
+            foreach (var error in result.Errors)
             {
-                foreach (var error in result.Errors)
-                {
-                    Snackbar.Add(error.Message, Severity.Error);
-                }
-            }
-            else
-            {
-                Snackbar.Add("Industry Added", Severity.Success);
-
-                MudDialog.Close();
+                Snackbar.Add(error.Message, Severity.Error);
             }
         }
         else
         {
-            var result = await industryService.Update(Model);
-
-            if (!result.Success && result.Errors.Any())
-            {
-                foreach (var error in result.Errors)
-                {
-                    Snackbar.Add(error.Message, Severity.Error);
-                }
-            }
-            else
-            {
-                Snackbar.Add("Industry Updated", Severity.Success);
-
-                MudDialog.Close();
-            }
+            Snackbar.Add(isNew ? "Industry Added" : "Industry Updated", Severity.Success);
+            MudDialog.Close();
         }
     }
 

@@ -47,8 +47,8 @@
                     <MudTd>
                         @if (rowData.IsLive)
                         {
-                            <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.Reviews" />
-                            <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Download" />
+                            <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.Preview" OnClick="() => Preview(rowData.UniqueId)" />
+                            <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Download" OnClick="GeneratePdf" />
                         }
                         else
                         {
@@ -81,6 +81,15 @@
     protected override async Task OnInitializedAsync()
     {
         Assessments = await AssessmentClientService.GetAll();
+    }
+
+    private async Task GeneratePdf()
+    {
+    }
+
+    private async Task Preview(string assessmentId)
+    {
+        NavigationManager.NavigateTo($"/client/analysis/{assessmentId}?isPreview=true");
     }
 
     private bool FilterFunc1(AssessmentDto element) => FilterFunc(element, searchString1);

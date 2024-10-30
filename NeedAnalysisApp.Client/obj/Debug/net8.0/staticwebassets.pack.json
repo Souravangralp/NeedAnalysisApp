@@ -1,23 +1,23 @@
 {
   "Files": [
     {
-      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
     },
     {
-      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\compressed\\mlmsvep12n.gz",
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\compressed\\mlmsvep12n.gz",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
     },
     {
-      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\NeedAnalysisApp.Client.bundle.scp.css",
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\NeedAnalysisApp.Client.bundle.scp.css",
       "PackagePath": "staticwebassets\\NeedAnalysisApp.Client.bundle.scp.css"
     },
     {
-      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\wwwroot\\appsettings.Development.json",
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\wwwroot\\appsettings.Development.json",
       "PackagePath": "staticwebassets\\appsettings.Development.json"
     },
     {
-      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp.Client\\wwwroot\\appsettings.json",
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\wwwroot\\appsettings.json",
       "PackagePath": "staticwebassets\\appsettings.json"
     },
     {

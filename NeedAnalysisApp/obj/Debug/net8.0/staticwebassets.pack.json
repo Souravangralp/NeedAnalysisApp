@@ -1,19 +1,19 @@
 {
   "Files": [
     {
-      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp\\wwwroot\\app.css",
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
     {
-      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "D:\\LpInfotech\\work 2\\NeedAnalysis\\NeedAnalysisApp\\wwwroot\\favicon.png",
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {

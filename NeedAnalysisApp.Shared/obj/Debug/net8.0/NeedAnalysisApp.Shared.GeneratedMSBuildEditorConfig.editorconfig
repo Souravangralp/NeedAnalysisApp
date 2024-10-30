@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = NeedAnalysisApp.Shared
-build_property.ProjectDir = D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Shared\
+build_property.ProjectDir = D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Shared\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
