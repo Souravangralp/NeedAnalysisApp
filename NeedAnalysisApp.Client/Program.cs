@@ -1,9 +1,7 @@
-using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using NeedAnalysisApp.Client;
-using NeedAnalysisApp.Client.Repositories.Interfaces;
 using NeedAnalysisApp.Client.Repositories.Services;
 internal class Program
 {
@@ -21,6 +19,7 @@ internal class Program
         builder.Services.AddScoped<IAssessmentClientService, AssessmentClientService>();
         builder.Services.AddScoped<IQuestionClientService, QuestionClientService>();
         builder.Services.AddScoped<IUserClientService, UserClientService>();
+        builder.Services.AddScoped<IMessageClientService, MessageClientService>();
 
 
         await builder.Build().RunAsync();

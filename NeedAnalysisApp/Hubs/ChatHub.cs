@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using NeedAnalysisApp.Shared.Dto;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using NeedAnalysisApp.Shared;
-using NeedAnalysisApp.Shared.Dto.Chat;
-using Microsoft.AspNetCore.Authorization;
+using NeedAnalysisApp.Shared.Dto;
 
 namespace NeedAnalysisApp.Hubs;
 
 [Authorize]
 public class ChatHub : Hub<IBlazingChatHubClient>, IBlazingChatHubServer
 {
-    private static readonly IDictionary<string, UserDto> _onlineUsers = new Dictionary<string, UserDto>();
+    //private static readonly IDictionary<string, UserDto> _onlineUsers = new Dictionary<string, UserDto>();
+    private static readonly Dictionary<string, UserDto> _onlineUsers = new Dictionary<string, UserDto>();
 
     public ChatHub()
     {

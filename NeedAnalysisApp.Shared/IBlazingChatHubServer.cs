@@ -1,9 +1,6 @@
-﻿using NeedAnalysisApp.Shared.Dto;
+﻿namespace NeedAnalysisApp.Shared;
 
-namespace NeedAnalysisApp.Shared
+public interface IBlazingChatHubServer
 {
-    public interface IBlazingChatHubServer
-    {
-        Task SetUserOnline(UserDto user);
-    }
+    Task SetUserOnline(UserDto user);
 }

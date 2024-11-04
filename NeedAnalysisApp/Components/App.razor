@@ -19,6 +19,15 @@
     <script src="_framework/blazor.web.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_content/Extensions.MudBlazor.StaticInput/NavigationObserver.js"></script>
+
+    <script>
+        function scrollToBottom(containerId) {
+            var container = document.getElementById(containerId);
+            if (container) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+    </script>
 </body>
 
 </html>

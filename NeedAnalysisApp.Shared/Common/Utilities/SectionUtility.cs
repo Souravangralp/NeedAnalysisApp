@@ -1,6 +1,4 @@
-﻿using NeedAnalysisApp.Shared.Dto;
-
-namespace NeedAnalysisApp.Shared.Common.Utilities;
+﻿namespace NeedAnalysisApp.Shared.Common.Utilities;
 
 public static class SectionUtility
 {

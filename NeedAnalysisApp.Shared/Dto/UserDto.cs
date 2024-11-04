@@ -24,5 +24,6 @@ public class UserDto
 
     public string? GenderType { get; set; }
 
+    [DefaultValue(false)]
     public bool IsOnline { get; set; }
 }

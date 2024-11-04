@@ -1,10 +1,4 @@
-﻿using System.Net.Http.Json;
-using System.Xml;
-using NeedAnalysisApp.Client.Repositories.Interfaces;
-using NeedAnalysisApp.Shared.Common;
-using NeedAnalysisApp.Shared.Dto;
-
-namespace NeedAnalysisApp.Client.Repositories.Services;
+﻿namespace NeedAnalysisApp.Client.Repositories.Services;
 
 public class AssessmentClientService : IAssessmentClientService
 {

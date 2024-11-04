@@ -1,8 +1,4 @@
-﻿using NeedAnalysisApp.Client.Repositories.Interfaces;
-using NeedAnalysisApp.Shared.Dto;
-using System.Net.Http.Json;
-
-namespace NeedAnalysisApp.Client.Repositories.Services;
+﻿namespace NeedAnalysisApp.Client.Repositories.Services;
 
 public class LookUpClientService : ILookUpClientService
 {

@@ -1,9 +1,5 @@
 ﻿@page "/chat/{UserId}"
-@using Microsoft.AspNetCore.SignalR.Client
-@using NeedAnalysisApp.Client.Repositories.Interfaces
-@using NeedAnalysisApp.Shared.Dto
-@using NeedAnalysisApp.Shared.Dto.Chat
-@using System.Security.Claims
+@using NeedAnalysisApp.Shared
 
 @if (IsDefault)
 {
@@ -11,258 +7,291 @@
 }
 else
 {
-    <MudGrid>
-        <MudItem xs="12">
-            <MudList T="string">
-                <MudListItem Text="@(User.FirstName)">
-                    <MudAvatar>
-                        <MudImage Src="@User.ProfilePictureUrl" />
-                    </MudAvatar>
-                </MudListItem>
-            </MudList>
-        </MudItem>
+    <AuthorizeView>
 
-        <MudItem xs="12">
-            <MudContainer>
-                @foreach (var message in Messages)
-                {
-                    <MudChip T="string">
+        <MudGrid>
+
+            <MudItem xs="12">
+                <MudList T="string">
+                    <MudListItem Text="@(ChatPerson.FirstName)">
                         <AvatarContent>
-                            <MudAvatar>
-                                <MudImage Src="@message.User.ProfilePictureUrl"></MudImage>
-                            </MudAvatar>
+                            <MudBadge Dot="@(ChatPerson.IsOnline)" Color="@(ChatPerson.IsOnline ? Color.Success : Color.Error)" Class="mx-6 my-4">
+                                <MudAvatar>
+                                    <MudImage Src="@ChatPerson.ProfilePictureUrl" />
+                                </MudAvatar>
+                            </MudBadge>
                         </AvatarContent>
-                        <ChildContent>@message.Content</ChildContent>
-                    </MudChip>
+                    </MudListItem>
+                </MudList>
+            </MudItem>
 
-                    @*  <MudChip T="string">
-            <MudAvatar>
-            <MudImage Src="@message.User.Profi" />
-            </MudAvatar>
-            <ChildContent>
-            <div>@message.Content</div>
-            <small>@message.Timestamp?.ToString("g")</small>
-            <small>@(message.IsRead ? "Read" : "Unread")</small>
-            </ChildContent>
-            </MudChip> *@
-                }
-            </MudContainer>
-        </MudItem>
+            <MudItem Class="mt-1" xs="12">
+                <MudContainer id="chatContainer" Style="height: 300px; overflow-y: auto;">
 
-        <MudItem xs="12">
-            <MudTextField @bind-Value="MessageText" Label="Type a message" Variant="Variant.Outlined" />
-            <MudButton Color="Color.Primary" OnClick="SendMessage">Send</MudButton>
-        </MudItem>
-    </MudGrid>
+                    @foreach (var message in Messages)
+                    {
+                        @* Sender messages *@
+                        @if (message.SenderId == CurrentPerson.Id)
+                        {
+                            <MudItem xs="12" Class="d-flex justify-content-end mb-2">
+
+                                <MudChip T="string" Style="min-height: 50px; display: flex; align-items: center;">
+                                    <AvatarContent>
+                                        <MudAvatar>
+                                            <MudImage Src="@(CurrentPerson.ProfilePictureUrl)"></MudImage>
+                                        </MudAvatar>
+                                    </AvatarContent>
+                                    <ChildContent>
+                                        @message.Content
+                                    </ChildContent>
+                                </MudChip>
+                            </MudItem>
+                        }
+                        @* Receiver messages *@
+                        else
+                        {
+                            <MudItem xs="12" Class="d-flex justify-content-start mb-2">
+                                <MudChip T="string" Style="min-height: 50px; display: flex; align-items: center;">
+                                    <AvatarContent>
+                                        <MudAvatar>
+                                            <MudImage Src="@(ChatPerson.ProfilePictureUrl)"></MudImage>
+                                        </MudAvatar>
+                                    </AvatarContent>
+                                    <ChildContent>@message.Content</ChildContent>
+                                </MudChip>
+                            </MudItem>
+                        }
+                    }
+                </MudContainer>
+
+            </MudItem>
+
+            <MudItem Class="mt-2" xs="12">
+                <MudContainer>
+                    <MudGrid>
+                        <MudTextField Class="ms-2 xs=12 sm-8" @bind-Value="MessageText" Label="Type a message" Variant="Variant.Outlined" />
+                        <MudButton Class="xs=12 sm-4" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="SendMessage">Send</MudButton>
+                    </MudGrid>
+
+
+                </MudContainer>
+            </MudItem>
+
+        </MudGrid>
+
+    </AuthorizeView>
 }
 
 @code {
     [Inject] public IUserClientService _userClientService { get; set; } = null!;
-    [Inject] public NavigationManager _navigationManager { get; set; } = null!;
+    [Inject] public IMessageClientService _messageClientService { get; set; } = null!;
     [Inject] public AuthenticationStateProvider PersistentAuthenticationStateProvider { get; set; } = null!;
+    [Inject] public NavigationManager _navigationManager { get; set; } = null!;
+    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
+
     private HubConnection? _hubConnection;
 
+    // logged in person
+    UserDto CurrentPerson { get; set; } = new();
+
+    // selected person
+    UserDto ChatPerson { get; set; } = new();
+
     [Parameter] public required string UserId { get; set; }
+
     [Parameter] public bool IsDefault { get; set; }
 
-    UserDto User { get; set; } = new();
+    private bool _scrollToBottom = false;
+
+    private List<UserDto> Users = [];
+
+    private List<MessageTT> Messages { get; set; } = [];
+
+    private MessageDto NewMessage { get; set; } = new();
+
     private string MessageText { get; set; } = "";
-    private List<MessageTT> Messages { get; set; } = new List<MessageTT>();
 
     protected override async Task OnInitializedAsync()
     {
-
         _hubConnection = ConfigureHubConnection();
+
+        await _hubConnection.StartAsync();
 
         if (!string.IsNullOrWhiteSpace(UserId))
         {
-            User = await _userClientService.GetWithId(UserId);
-
-            await _hubConnection.StartAsync();
-
-            // Listen for incoming messages
-            _hubConnection.On<MessageDto>("MessageRecieved", (messageDto) =>
-            {
-                // Only add messages that are sent to the current user
-                if (messageDto.ReceiverId == User.Id)
-                {
-                    Messages.Add(new MessageTT
-                        {
-                            Content = messageDto.Content,
-                            User = new UserDto { Id = messageDto.SenderId, ProfilePictureUrl = "your_default_image_url" } // Replace with actual user data
-                        });
-                    StateHasChanged(); // Refresh UI
-                }
-            });
+            await LoadMessagesAsync();
         }
+
+        Users = await _userClientService.GetAll(null);
     }
 
-    private async Task<string> GetCurrentUserIdAsync()
+    protected override async Task OnParametersSetAsync()
     {
+        if (!string.IsNullOrWhiteSpace(UserId))
+        {
+            ChatPerson = await _userClientService.GetWithId(UserId);
+
+            await LoadMessagesAsync();
+
+            var currentUserId = await GetCurrentUserId();
+
+            CurrentPerson = await _userClientService.GetWithId(currentUserId);
+
+            _scrollToBottom = true;
+
+            Users = await _userClientService.GetAll(null);
+        }
+
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_scrollToBottom)
+        {
+            _scrollToBottom = false;
+        }
+
+        await JsRuntime.InvokeVoidAsync("scrollToBottom", "chatContainer");
+    }
+
+    private async Task<string> GetCurrentUserId()
+    {
+        string userId = "";
+
         var authState = await PersistentAuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        if (user.Identity?.IsAuthenticated == true)
+        if (user.Identity.IsAuthenticated)
         {
-            return user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
-        return null;
+
+        return userId;
     }
 
-    private HubConnection ConfigureHubConnection()
+    private async Task LoadMessagesAsync()
     {
-        return new HubConnectionBuilder()
-            .WithUrl(_navigationManager.ToAbsoluteUri("/hubs/blazing-chat"))
-            .Build();
+        Messages.Clear();
+
+        var senderId = await GetCurrentUserId();
+
+        var sender = await _userClientService.GetWithId(senderId);
+
+        var messages = await _messageClientService.GetAll(senderId, UserId);
+
+        List<MessageTT> newMessages = [];
+
+        foreach (var message in messages)
+        {
+            newMessages.Add(new MessageTT()
+                {
+                    Content = message.Content,
+                    User = await _userClientService.GetWithId(message.SenderId),
+                    SenderId = message.SenderId,
+                    ReceiverId = message.ReceiverId
+                });
+        }
+
+        Messages = newMessages;
+
+        _scrollToBottom = true;
+
+        StateHasChanged();
     }
 
     private async Task SendMessage()
     {
         if (!string.IsNullOrWhiteSpace(MessageText))
         {
-            var authState = await PersistentAuthenticationStateProvider.GetAuthenticationStateAsync();
-
             var messageDto = new MessageDto
                 {
-                    SenderId = User.Id,
-                    ReceiverId = await GetCurrentUserIdAsync(), // Make sure _selectedUser is defined
                     Content = MessageText,
-                    Timestamp = DateTime.UtcNow,
-                    IsRead = false
+                    SenderId = CurrentPerson.Id, // Ensure you have the current user's ID
+                    ReceiverId = ChatPerson.Id, // Ensure you have the current user's ID
                 };
 
-            Messages.Add(new MessageTT
-                {
-                    Content = MessageText,
-                    User = User
-                });
-            MessageText = ""; // Clear the input
+            var response = await _messageClientService.Send(messageDto);
 
-            // Send message through SignalR
-            await _hubConnection.SendAsync("SendMessage", messageDto);
+            if (response)
+            {
+                MessageText = ""; // Clear the input field
+
+                await LoadMessagesAsync();
+
+                _scrollToBottom = true;
+
+                StateHasChanged();
+            }
         }
+
     }
 
-    public class MessageTT
+    private HubConnection ConfigureHubConnection()
     {
-        public string Content { get; set; }
-        public UserDto User { get; set; }
-        public DateTime? Timestamp { get; set; } // Optional: Add timestamp to MessageTT if needed
-        public bool IsRead { get; set; } // Optional: Add IsRead status if needed
-    }
-}
+        var hubConnection = new HubConnectionBuilder()
+            .WithUrl(_navigationManager.ToAbsoluteUri("/hubs/blazing-chat"))
+            .Build();
 
+        hubConnection.On<UserDto>(nameof(IBlazingChatHubClient.UserConnected), (newUser) =>
+        {
+            Users.Add(newUser);
+            StateHasChanged();
+        });
 
-@* @page "/chat/{UserId}"
-@using NeedAnalysisApp.Client.Repositories.Interfaces
-@using NeedAnalysisApp.Shared.Dto
-
-@if (IsDefault)
-{
-    <h3>Panel</h3>
-}
-else
-{
-    <MudGrid>
-
-        <MudItem xs="12">
-            <MudList T="string">
-                <MudListItem Text="@(User.FirstName)">
-                    <AvatarContent>
-                        <MudBadge Dot="true" Color="Color.Info" Class="mx-6 my-4">
-                            <MudAvatar>
-                                <MudImage Src="@User.ProfilePictureUrl" />
-                            </MudAvatar>
-                        </MudBadge>
-                    </AvatarContent>
-                </MudListItem>
-            </MudList>
-        </MudItem>
-
-        <MudItem Class="mt-1" xs="12">
-            <MudContainer>
-                @foreach (var message in Messages)
+        hubConnection.On<ICollection<UserDto>>(nameof(IBlazingChatHubClient.OnlineUsersList), (onlineUsers) =>
+        {
+            foreach (var user in Users)
+            {
+                if (onlineUsers.Any(u => u.Id == user.Id))
                 {
-                    <MudItem Class="row">
-
-                        <MudChip T="string">
-                            <AvatarContent>
-                                <MudAvatar>
-                                    <MudImage Src="@message.User.ProfilePictureUrl"></MudImage>
-                                </MudAvatar>
-                            </AvatarContent>
-                            <ChildContent>@message.Content</ChildContent>
-                        </MudChip>
-                    </MudItem>
-
+                    user.IsOnline = true;
                 }
-            </MudContainer>
-        </MudItem>
+            }
+            StateHasChanged();
+        });
 
-        <MudItem Class="mt-2" xs="12">
-            <MudContainer>
-                <MudTextField @bind-Value="MessageText" Label="Type a message" Variant="Variant.Outlined" />
-                <MudButton Color="Color.Primary" OnClick="SendMessage">Send</MudButton>
-            </MudContainer>
-        </MudItem>
-    </MudGrid>
-}
-
-@code{
-    [Inject] public IUserClientService _userClientService { get; set; } = null!;
-
-    UserDto User { get; set; } = new();
-
-    [Parameter] public required string UserId { get; set; }
-
-    [Parameter] public bool IsDefault { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (!string.IsNullOrWhiteSpace(UserId))
+        hubConnection.On<string>(nameof(IBlazingChatHubClient.UserIsOnline), (userId) =>
         {
-            User = await _userClientService.GetWithId(UserId);
-        }
+            var user = Users.FirstOrDefault(u => u.Id == userId);
+            if (user is not null)
+            {
+                user.IsOnline = true;
+                StateHasChanged();
+            }
+        });
 
-        StateHasChanged();
+        hubConnection.On<MessageDto>(nameof(IBlazingChatHubClient.MessageReceived), (messageDto) =>
+        {
+            var fromUser = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
+
+            if (ChatPerson?.Id == messageDto.SenderId)
+            {
+                Messages.Add(new MessageTT()
+                {
+                    ReceiverId = messageDto.ReceiverId,
+                    SenderId = messageDto.SenderId,
+                    User = CurrentPerson,
+                    Content = messageDto.Content
+                });
+            }
+            StateHasChanged();
+        });
+
+        return hubConnection;
     }
 
-    //private bool _parametersInitialized = false; // To avoid unnecessary calls
-
-    protected override async Task OnParametersSetAsync()
+    public async ValueTask DisposeAsync()
     {
-        if (!string.IsNullOrWhiteSpace(UserId))
-        {
-            User = await _userClientService.GetWithId(UserId);
-        }
-
-        // Check if parameters have been initialized
-        //if (_parametersInitialized &&
-        //    (!string.IsNullOrWhiteSpace(UserId)) && !IsDefault)
-        //{
-        //    User = await _userClientService.GetWithId(UserId);
-        //}
-
-        //_parametersInitialized = true; // Set this to true after the first initialization
-
-        StateHasChanged();
-    }
-
-    private string MessageText { get; set; } = "";
-    private List<MessageTT> Messages { get; set; } = new List<MessageTT>();
-
-    private void SendMessage()
-    {
-        if (!string.IsNullOrWhiteSpace(MessageText))
-        {
-            Messages.Add(new MessageTT { Content = MessageText, User = User });
-            MessageText = ""; // Clear the input field
-        }
+        if (_hubConnection is not null)
+            await _hubConnection.DisposeAsync();
     }
 
     public class MessageTT
     {
+        public string SenderId { get; set; }
+        public string ReceiverId { get; set; }
         public string Content { get; set; }
         public UserDto User { get; set; }
     }
-} *@
+}

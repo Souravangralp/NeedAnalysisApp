@@ -360,6 +360,17 @@ D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp\obj\Debug\net8.0\NeedAnal.0763
 D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.genruntimeconfig.cache
 D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp\obj\Debug\net8.0\ref\NeedAnalysisApp.dll
 D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.csproj.AssemblyReference.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.AssemblyInfoInputs.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.AssemblyInfo.cs
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.csproj.CoreCompileInputs.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.MvcApplicationPartsAssemblyInfo.cs
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.MvcApplicationPartsAssemblyInfo.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.sourcelink.json
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.dll
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\refint\NeedAnalysisApp.dll
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.pdb
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\bin\Debug\net8.0\NeedAnalysisApp.Client.staticwebassets.runtime.json
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\bin\Debug\net8.0\appsettings.Development.json
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\bin\Debug\net8.0\appsettings.json
@@ -532,14 +543,6 @@ D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\bin\Debug\net8.0\NeedAnalysi
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\bin\Debug\net8.0\NeedAnalysisApp.Shared.dll
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\bin\Debug\net8.0\NeedAnalysisApp.Client.pdb
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\bin\Debug\net8.0\NeedAnalysisApp.Shared.pdb
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.csproj.AssemblyReference.cache
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.GeneratedMSBuildEditorConfig.editorconfig
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.AssemblyInfoInputs.cache
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.AssemblyInfo.cs
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.csproj.CoreCompileInputs.cache
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.MvcApplicationPartsAssemblyInfo.cs
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.MvcApplicationPartsAssemblyInfo.cache
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.sourcelink.json
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\staticwebassets.build.json
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\staticwebassets.development.json
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\staticwebassets\msbuild.NeedAnalysisApp.Microsoft.AspNetCore.StaticWebAssets.props
@@ -549,8 +552,5 @@ D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\staticwebas
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\staticwebassets.pack.json
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\scopedcss\bundle\NeedAnalysisApp.styles.css
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnal.07637BF0.Up2Date
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.dll
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\refint\NeedAnalysisApp.dll
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.pdb
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\NeedAnalysisApp.genruntimeconfig.cache
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp\obj\Debug\net8.0\ref\NeedAnalysisApp.dll

@@ -1,11 +1,4 @@
-﻿using NeedAnalysisApp.Client.Repositories.Interfaces;
-using System.Net.Http.Json;
-using NeedAnalysisApp.Shared.Common;
-using NeedAnalysisApp.Shared.Dto;
-using System.Text;
-using System.Text.Json;
-
-namespace NeedAnalysisApp.Client.Repositories.Services;
+﻿namespace NeedAnalysisApp.Client.Repositories.Services;
 
 public class IndustryClientService : IIndustryClientService
 {
@@ -65,7 +58,7 @@ public class IndustryClientService : IIndustryClientService
     public async Task<Result> Update(IndustryDto industry)
     {
         var url = "https://localhost:7028/api/industries";
-        var jsonContent = JsonSerializer.Serialize(industry);
+        var jsonContent = System.Text.Json.JsonSerializer.Serialize(industry);
         var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
         // Send the PATCH request

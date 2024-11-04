@@ -1,6 +1,4 @@
-﻿using DinkToPdf;
-using DinkToPdf.Contracts;
-
+﻿
 public class PdfService
 {
     private readonly IConverter _converter;

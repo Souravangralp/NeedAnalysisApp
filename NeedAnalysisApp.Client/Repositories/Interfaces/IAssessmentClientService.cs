@@ -1,7 +1,4 @@
-﻿using NeedAnalysisApp.Shared.Common;
-using NeedAnalysisApp.Shared.Dto;
-
-namespace NeedAnalysisApp.Client.Repositories.Interfaces;
+﻿namespace NeedAnalysisApp.Client.Repositories.Interfaces;
 
 public interface IAssessmentClientService
 {

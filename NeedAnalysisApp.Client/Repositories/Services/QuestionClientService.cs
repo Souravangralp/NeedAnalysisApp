@@ -1,12 +1,4 @@
-﻿using NeedAnalysisApp.Client.Repositories.Interfaces;
-using NeedAnalysisApp.Shared.Common;
-using NeedAnalysisApp.Shared.Dto;
-using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Xml;
-
-namespace NeedAnalysisApp.Client.Repositories.Services;
+﻿namespace NeedAnalysisApp.Client.Repositories.Services;
 
 public class QuestionClientService : IQuestionClientService
 {
@@ -80,7 +72,7 @@ public class QuestionClientService : IQuestionClientService
     public async Task<Result> Update(QuestionDto questionDto, string assessmentId)
     {
         var url = $"https://localhost:7028/api/questions/{assessmentId}";
-        var jsonContent = JsonSerializer.Serialize(questionDto);
+        var jsonContent = System.Text.Json.JsonSerializer.Serialize(questionDto);
         var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
         // Send the PATCH request

@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using NeedAnalysisApp.Data.Models.Common;
-using NeedAnalysisApp.Data.Models.Industries;
 
 namespace NeedAnalysisApp.Data.Models
 {
