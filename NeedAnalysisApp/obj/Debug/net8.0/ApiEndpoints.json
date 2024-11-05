@@ -392,6 +392,32 @@
     ]
   },
   {
+    "ContainingType": "NeedAnalysisApp.Controllers.FilesController",
+    "Method": "Upload",
+    "RelativePath": "api/files",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "NeedAnalysisApp.Shared.Dto.Chat.FileDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "NeedAnalysisApp.Controllers.IndustriesController",
     "Method": "GetAll",
     "RelativePath": "api/industries",
@@ -589,6 +615,32 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.List\u00601[[NeedAnalysisApp.Shared.Dto.Chat.MessageDto, NeedAnalysisApp.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "NeedAnalysisApp.Controllers.MessagesController",
+    "Method": "MarkRead",
+    "RelativePath": "api/messages/{messageId}/markRead",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "messageId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
         "MediaTypes": [
           "text/plain",
           "application/json",

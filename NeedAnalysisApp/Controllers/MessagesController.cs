@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NeedAnalysisApp.Repositories.Interfaces;
-using NeedAnalysisApp.Shared.Common;
-using NeedAnalysisApp.Shared.Dto.Chat;
-
-namespace NeedAnalysisApp.Controllers;
+﻿namespace NeedAnalysisApp.Controllers;
 
 [ApiController]
 public class MessagesController : ControllerBase
@@ -25,5 +20,11 @@ public class MessagesController : ControllerBase
     public async Task<List<MessageDto>> GetMessages(string senderId, string receiverId)
     {
         return await _messageService.GetMessages(senderId, receiverId);
+    }
+
+    [HttpPost("api/messages/{messageId}/markRead")]
+    public async Task<bool> MarkRead(string messageId)
+    {
+        return await _messageService.MarkRead(messageId);
     }
 }

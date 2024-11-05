@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\Chat\Panel.razor.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="Pages\Assessments\Templates\MultipleChoiceTemplate.razor" />
   </ItemGroup>
 
@@ -32,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\resources\chats\" />
     <Folder Include="wwwroot\resources\users\profilePics\" />
   </ItemGroup>
 

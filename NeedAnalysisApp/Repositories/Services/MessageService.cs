@@ -1,13 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using NeedAnalysisApp.Client.Pages.Assessments;
-using NeedAnalysisApp.Data;
-using NeedAnalysisApp.Hubs;
-using NeedAnalysisApp.Repositories.Interfaces;
-using NeedAnalysisApp.Shared;
-using NeedAnalysisApp.Shared.Common;
-using NeedAnalysisApp.Shared.Dto.Chat;
-
-namespace NeedAnalysisApp.Repositories.Services;
+﻿namespace NeedAnalysisApp.Repositories.Services;
 
 public class MessageService : IMessageService
 {
@@ -24,20 +15,28 @@ public class MessageService : IMessageService
 
     }
 
-    public async Task<List<MessageDto>> GetMessages(string senderId,string receiverId)
+    public async Task<List<MessageDto>> GetMessages(string senderId, string receiverId)
     {
         var messages = await _context.Messages
                         .AsNoTracking()
                         .Where(m =>
-                            (m.ApplicationUser_SenderId == senderId && m.ApplicationUser_ReceiverId == receiverId) || 
+                            (m.ApplicationUser_SenderId == senderId && m.ApplicationUser_ReceiverId == receiverId) ||
                             (m.ApplicationUser_ReceiverId == senderId && m.ApplicationUser_SenderId == receiverId)
                         )
+                        .Include(m=> m.File)
                         .Select(m => new MessageDto()
                         {
+                            UniqueId = m.UniqueId,
                             ReceiverId = m.ApplicationUser_ReceiverId,
                             SenderId = m.ApplicationUser_SenderId,
                             Content = m.Content,
                             Timestamp = m.SentOn,
+                            File = new() 
+                            {
+                                FileName = m.File.FileName,
+                                FileUrl = m.File.FileUrl,
+                                FileType = m.File.FileType
+                            }
                         })
                         .ToListAsync();
 
@@ -51,15 +50,23 @@ public class MessageService : IMessageService
 
     public async Task<Result> SendMessageAsync(MessageDto messageDto)
     {
-        if (string.IsNullOrWhiteSpace(messageDto.ReceiverId) || string.IsNullOrWhiteSpace(messageDto.Content))
+        if (string.IsNullOrWhiteSpace(messageDto.ReceiverId) || string.IsNullOrWhiteSpace(messageDto.SenderId))
             return new Result() { Success = false };
+
+        var file = (messageDto.File != null) ? new Data.Models.Chat.File
+        {
+            FileName = messageDto.File.FileName,
+            FileUrl = messageDto.File.FileUrl,
+            FileType = messageDto.File.FileType,
+        } : null;
 
         var message = new Message
         {
             ApplicationUser_SenderId = messageDto.SenderId,
             ApplicationUser_ReceiverId = messageDto.ReceiverId,
             Content = messageDto.Content,
-            SentOn = DateTime.Now
+            SentOn = DateTime.Now,
+            File = file,
         };
 
         await _context.Messages.AddAsync(message);
@@ -83,6 +90,19 @@ public class MessageService : IMessageService
         {
             return new Result() { Success = false };
         }
+    }
+
+    public async Task<bool> MarkRead(string messageId)
+    {
+        var message = await _context.Messages.FirstOrDefaultAsync(x => x.UniqueId == messageId);
+
+        if (message == null) { return false; }
+
+        message.IsRead = true;
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
     #endregion

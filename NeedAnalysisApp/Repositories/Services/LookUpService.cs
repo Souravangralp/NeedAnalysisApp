@@ -1,9 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NeedAnalysisApp.Data;
-using NeedAnalysisApp.Repositories.Interfaces;
-using NeedAnalysisApp.Shared.Dto;
-
-namespace NeedAnalysisApp.Repositories.Services;
+﻿namespace NeedAnalysisApp.Repositories.Services;
 
 public class LookUpService : ILookUpService
 {

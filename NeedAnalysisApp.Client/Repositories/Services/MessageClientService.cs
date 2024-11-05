@@ -42,5 +42,25 @@ public class MessageClientService : IMessageClientService
             throw new HttpRequestException($"Failed to send Messages. Status code: {response.StatusCode}");
         }
     }
+
+    public async Task<bool> MarkMessageRead(string messageId) 
+    {
+        if (string.IsNullOrWhiteSpace(messageId)) 
+        {
+            return false;
+        }
+
+        var response = await _httpClient.PostAsync($"https://localhost:7028/api/messages/{messageId}/markRead", null);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return true; //await response.Content.ReadFromJsonAsync<Result>(); // Deserializing the response to 'Result' object
+            //return result; // Return or use the result as needed
+        }
+        else
+        {
+            throw new HttpRequestException($"Failed to send Messages. Status code: {response.StatusCode}");
+        }
+    }
 }
 

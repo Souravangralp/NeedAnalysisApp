@@ -26,4 +26,7 @@ public class UserDto
 
     [DefaultValue(false)]
     public bool IsOnline { get; set; }
+
+    [DefaultValue(false)]
+    public int UnreadMessagesCount { get; set; } // Add this property
 }

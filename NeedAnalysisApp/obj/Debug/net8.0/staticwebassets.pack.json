@@ -17,6 +17,38 @@
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\ATS.png",
+      "PackagePath": "staticwebassets\\images\\ATS.png"
+    },
+    {
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\Screenshot 2024-08-12 165809.png",
+      "PackagePath": "staticwebassets\\images\\Screenshot 2024-08-12 165809.png"
+    },
+    {
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\Screenshot 2024-08-13 132009.png",
+      "PackagePath": "staticwebassets\\images\\Screenshot 2024-08-13 132009.png"
+    },
+    {
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\Screenshot 2024-08-20 190136.png",
+      "PackagePath": "staticwebassets\\images\\Screenshot 2024-08-20 190136.png"
+    },
+    {
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\image (1).png",
+      "PackagePath": "staticwebassets\\images\\image (1).png"
+    },
+    {
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\image (4).png",
+      "PackagePath": "staticwebassets\\images\\image (4).png"
+    },
+    {
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\image.png",
+      "PackagePath": "staticwebassets\\images\\image.png"
+    },
+    {
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\napkin-selection.png",
+      "PackagePath": "staticwebassets\\images\\napkin-selection.png"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.NeedAnalysisApp.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.SignalR;
-using NeedAnalysisApp.Shared;
-using NeedAnalysisApp.Shared.Dto;
 
 namespace NeedAnalysisApp.Hubs;
 

@@ -17,6 +17,7 @@ public static class ConfigureDependencies
         services.AddScoped<IOptionService, OptionService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IMessageService, MessageService>();
+        services.AddScoped<IFileService, FileService>();
 
         //services.AddTransient<HttpClient>();
 

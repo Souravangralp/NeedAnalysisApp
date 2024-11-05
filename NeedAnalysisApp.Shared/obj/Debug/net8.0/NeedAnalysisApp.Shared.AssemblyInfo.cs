@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NeedAnalysisApp.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45b1be5798d13903602b13e760a63a2f5ceea35a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a48babff250b5b08dd1ce719290d866d53284f62")]
 [assembly: System.Reflection.AssemblyProductAttribute("NeedAnalysisApp.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NeedAnalysisApp.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -20,6 +20,7 @@ internal class Program
         builder.Services.AddScoped<IQuestionClientService, QuestionClientService>();
         builder.Services.AddScoped<IUserClientService, UserClientService>();
         builder.Services.AddScoped<IMessageClientService, MessageClientService>();
+        builder.Services.AddScoped<IFilesClientService, FilesClientService>();
 
 
         await builder.Build().RunAsync();

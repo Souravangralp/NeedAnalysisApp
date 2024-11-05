@@ -1,6 +1,4 @@
-﻿using NeedAnalysisApp.Data.Models.Common;
-
-namespace NeedAnalysisApp.Data.Models.Chat;
+﻿namespace NeedAnalysisApp.Data.Models.Chat;
 
 public class File : BaseEntity
 {

@@ -1,21 +1,23 @@
 ﻿@page "/chat/{UserId}"
-@using NeedAnalysisApp.Shared
 
-@if (IsDefault)
-{
-    <h3>Panel</h3>
-}
-else
-{
-    <AuthorizeView>
+<MudContainer Style="height: 500px; overflow-y: auto;">
 
+    @if (IsDefault)
+    {
+        <MudItem Class="d-flex justify-center align-center">
+            <MudText Align="Align.Center">Please choose a person to chat with</MudText>
+        </MudItem>
+    }
+    else
+    {
         <MudGrid>
 
+            @*--------------chat header--------------*@
             <MudItem xs="12">
                 <MudList T="string">
                     <MudListItem Text="@(ChatPerson.FirstName)">
                         <AvatarContent>
-                            <MudBadge Dot="@(ChatPerson.IsOnline)" Color="@(ChatPerson.IsOnline ? Color.Success : Color.Error)" Class="mx-6 my-4">
+                            <MudBadge Color="@(ChatPerson.IsOnline ? Color.Success : Color.Error)" Class="mx-6 my-4">
                                 <MudAvatar>
                                     <MudImage Src="@ChatPerson.ProfilePictureUrl" />
                                 </MudAvatar>
@@ -25,273 +27,116 @@ else
                 </MudList>
             </MudItem>
 
+            @*--------------chat container--------------*@
             <MudItem Class="mt-1" xs="12">
-                <MudContainer id="chatContainer" Style="height: 300px; overflow-y: auto;">
 
-                    @foreach (var message in Messages)
+                <MudContainer id="chatContainer" Style="height: 280px; overflow-y: auto;">
+
+                    @foreach (var chat in Chats)
                     {
-                        @* Sender messages *@
-                        @if (message.SenderId == CurrentPerson.Id)
+                        @if (chat.Message != null)
                         {
-                            <MudItem xs="12" Class="d-flex justify-content-end mb-2">
+                            @*-------------Sender messages------------*@
+                            @if (chat.Message.SenderId == CurrentPerson.Id)
+                            {
+                                <MudItem xs="12">
+                                    <MudItem Class="d-flex justify-content-end">
 
-                                <MudChip T="string" Style="min-height: 50px; display: flex; align-items: center;">
-                                    <AvatarContent>
-                                        <MudAvatar>
-                                            <MudImage Src="@(CurrentPerson.ProfilePictureUrl)"></MudImage>
-                                        </MudAvatar>
-                                    </AvatarContent>
-                                    <ChildContent>
-                                        @message.Content
-                                    </ChildContent>
-                                </MudChip>
-                            </MudItem>
-                        }
-                        @* Receiver messages *@
-                        else
-                        {
-                            <MudItem xs="12" Class="d-flex justify-content-start mb-2">
-                                <MudChip T="string" Style="min-height: 50px; display: flex; align-items: center;">
-                                    <AvatarContent>
-                                        <MudAvatar>
-                                            <MudImage Src="@(ChatPerson.ProfilePictureUrl)"></MudImage>
-                                        </MudAvatar>
-                                    </AvatarContent>
-                                    <ChildContent>@message.Content</ChildContent>
-                                </MudChip>
-                            </MudItem>
+                                        @if (chat.Message.File != null && !string.IsNullOrWhiteSpace(chat.Message.File.FileUrl))
+                                        {
+                                            <MudImage Height="150" Width="200" Src="@(chat.Message.File.FileUrl)"></MudImage>
+                                        }
+                                        else
+                                        {
+                                            <MudChip T="string" Style="min-height: 50px; display: flex; align-items: center;" Color="Color.Default">
+                                                <AvatarContent>
+                                                    <MudAvatar>
+                                                        <MudImage Src="@(CurrentPerson.ProfilePictureUrl)"></MudImage>
+                                                    </MudAvatar>
+                                                </AvatarContent>
+                                                <ChildContent>
+                                                    @chat.Message.Content
+                                                </ChildContent>
+                                            </MudChip>
+                                        }
+                                    </MudItem>
+
+                                    <MudItem Class="d-flex justify-content-end mb-2" Style="min-height: 50px; display: flex; align-items: center; margin-top: -16px; padding: 7px;">
+                                        <MudText Typo="Typo.subtitle2">@chat.Message.Timestamp.Value.ToShortTimeString()</MudText>
+                                    </MudItem>
+                                </MudItem>
+                            }
+
+                            @*-------------Receiver messages------------*@
+                            else
+                            {
+                                <MudItem xs="12">
+                                    <MudItem Class="d-flex justify-content-start">
+
+                                        @if (chat.Message.File != null && !string.IsNullOrWhiteSpace(chat.Message.File.FileUrl))
+                                        {
+                                            <MudImage Height="150" Width="200" Src="@(chat.Message.File.FileUrl)"></MudImage>
+                                        }
+                                        else
+                                        {
+                                            <MudChip T="string" Style="min-height: 50px; display: flex; align-items: center;" Color="Color.Success">
+                                                <AvatarContent>
+                                                    <MudAvatar>
+                                                        <MudImage Src="@(ChatPerson.ProfilePictureUrl)"></MudImage>
+                                                    </MudAvatar>
+                                                </AvatarContent>
+                                                <ChildContent>
+                                                    @chat.Message.Content
+                                                </ChildContent>
+                                            </MudChip>
+                                        }
+                                    </MudItem>
+
+                                    <MudItem Class="d-flex justify-content-start mb-2" Style="min-height: 50px; display: flex; align-items: center; margin-top: -16px; padding: 7px;">
+                                        <MudText Typo="Typo.subtitle2">@chat.Message.Timestamp.Value.ToShortTimeString()</MudText>
+                                    </MudItem>
+                                </MudItem>
+                            }
                         }
                     }
+
+
                 </MudContainer>
+
+                @*--------------selected images--------------*@
+                @if (_files.Any())
+                {
+                    <MudList T="string" Class="mt-2" xs="12">
+                        @foreach (var file in _files)
+                        {
+                            <MudListItem Icon="@Icons.Material.Filled.AttachFile" @key="@file">
+                                @file.Name <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Cancel" OnClick="RemoveImage"></MudIconButton>
+                            </MudListItem>
+                        }
+                    </MudList>
+                }
 
             </MudItem>
 
+            @*--------------action buttons--------------*@
             <MudItem Class="mt-2" xs="12">
                 <MudContainer>
-                    <MudGrid>
-                        <MudTextField Class="ms-2 xs=12 sm-8" @bind-Value="MessageText" Label="Type a message" Variant="Variant.Outlined" />
-                        <MudButton Class="xs=12 sm-4" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="SendMessage">Send</MudButton>
-                    </MudGrid>
 
+                    <MudGrid>
+                        <MudFileUpload Class="ms-1 xs=12 sm-3" Style="margin: 5px;" T="IBrowserFile" FilesChanged="UploadFiles" Accept=".png, .jpg .pdf">
+                            <ActivatorContent>
+                                <MudFab Color="Color.Success"
+                                        StartIcon="@Icons.Material.Filled.AttachFile" />
+                            </ActivatorContent>
+                        </MudFileUpload>
+                        <MudTextField Class="ms-1 xs=12 sm-5" @bind-Value="MessageText" Label="Type a message" Variant="Variant.Outlined" />
+                        <MudButton Class="ms-1 xs=12 sm-4" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="SendMessage">Send</MudButton>
+                    </MudGrid>
 
                 </MudContainer>
             </MudItem>
 
         </MudGrid>
-
-    </AuthorizeView>
-}
-
-@code {
-    [Inject] public IUserClientService _userClientService { get; set; } = null!;
-    [Inject] public IMessageClientService _messageClientService { get; set; } = null!;
-    [Inject] public AuthenticationStateProvider PersistentAuthenticationStateProvider { get; set; } = null!;
-    [Inject] public NavigationManager _navigationManager { get; set; } = null!;
-    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
-
-    private HubConnection? _hubConnection;
-
-    // logged in person
-    UserDto CurrentPerson { get; set; } = new();
-
-    // selected person
-    UserDto ChatPerson { get; set; } = new();
-
-    [Parameter] public required string UserId { get; set; }
-
-    [Parameter] public bool IsDefault { get; set; }
-
-    private bool _scrollToBottom = false;
-
-    private List<UserDto> Users = [];
-
-    private List<MessageTT> Messages { get; set; } = [];
-
-    private MessageDto NewMessage { get; set; } = new();
-
-    private string MessageText { get; set; } = "";
-
-    protected override async Task OnInitializedAsync()
-    {
-        _hubConnection = ConfigureHubConnection();
-
-        await _hubConnection.StartAsync();
-
-        if (!string.IsNullOrWhiteSpace(UserId))
-        {
-            await LoadMessagesAsync();
-        }
-
-        Users = await _userClientService.GetAll(null);
     }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (!string.IsNullOrWhiteSpace(UserId))
-        {
-            ChatPerson = await _userClientService.GetWithId(UserId);
-
-            await LoadMessagesAsync();
-
-            var currentUserId = await GetCurrentUserId();
-
-            CurrentPerson = await _userClientService.GetWithId(currentUserId);
-
-            _scrollToBottom = true;
-
-            Users = await _userClientService.GetAll(null);
-        }
-
-        StateHasChanged();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (_scrollToBottom)
-        {
-            _scrollToBottom = false;
-        }
-
-        await JsRuntime.InvokeVoidAsync("scrollToBottom", "chatContainer");
-    }
-
-    private async Task<string> GetCurrentUserId()
-    {
-        string userId = "";
-
-        var authState = await PersistentAuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        }
-
-        return userId;
-    }
-
-    private async Task LoadMessagesAsync()
-    {
-        Messages.Clear();
-
-        var senderId = await GetCurrentUserId();
-
-        var sender = await _userClientService.GetWithId(senderId);
-
-        var messages = await _messageClientService.GetAll(senderId, UserId);
-
-        List<MessageTT> newMessages = [];
-
-        foreach (var message in messages)
-        {
-            newMessages.Add(new MessageTT()
-                {
-                    Content = message.Content,
-                    User = await _userClientService.GetWithId(message.SenderId),
-                    SenderId = message.SenderId,
-                    ReceiverId = message.ReceiverId
-                });
-        }
-
-        Messages = newMessages;
-
-        _scrollToBottom = true;
-
-        StateHasChanged();
-    }
-
-    private async Task SendMessage()
-    {
-        if (!string.IsNullOrWhiteSpace(MessageText))
-        {
-            var messageDto = new MessageDto
-                {
-                    Content = MessageText,
-                    SenderId = CurrentPerson.Id, // Ensure you have the current user's ID
-                    ReceiverId = ChatPerson.Id, // Ensure you have the current user's ID
-                };
-
-            var response = await _messageClientService.Send(messageDto);
-
-            if (response)
-            {
-                MessageText = ""; // Clear the input field
-
-                await LoadMessagesAsync();
-
-                _scrollToBottom = true;
-
-                StateHasChanged();
-            }
-        }
-
-    }
-
-    private HubConnection ConfigureHubConnection()
-    {
-        var hubConnection = new HubConnectionBuilder()
-            .WithUrl(_navigationManager.ToAbsoluteUri("/hubs/blazing-chat"))
-            .Build();
-
-        hubConnection.On<UserDto>(nameof(IBlazingChatHubClient.UserConnected), (newUser) =>
-        {
-            Users.Add(newUser);
-            StateHasChanged();
-        });
-
-        hubConnection.On<ICollection<UserDto>>(nameof(IBlazingChatHubClient.OnlineUsersList), (onlineUsers) =>
-        {
-            foreach (var user in Users)
-            {
-                if (onlineUsers.Any(u => u.Id == user.Id))
-                {
-                    user.IsOnline = true;
-                }
-            }
-            StateHasChanged();
-        });
-
-        hubConnection.On<string>(nameof(IBlazingChatHubClient.UserIsOnline), (userId) =>
-        {
-            var user = Users.FirstOrDefault(u => u.Id == userId);
-            if (user is not null)
-            {
-                user.IsOnline = true;
-                StateHasChanged();
-            }
-        });
-
-        hubConnection.On<MessageDto>(nameof(IBlazingChatHubClient.MessageReceived), (messageDto) =>
-        {
-            var fromUser = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
-
-            if (ChatPerson?.Id == messageDto.SenderId)
-            {
-                Messages.Add(new MessageTT()
-                {
-                    ReceiverId = messageDto.ReceiverId,
-                    SenderId = messageDto.SenderId,
-                    User = CurrentPerson,
-                    Content = messageDto.Content
-                });
-            }
-            StateHasChanged();
-        });
-
-        return hubConnection;
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_hubConnection is not null)
-            await _hubConnection.DisposeAsync();
-    }
-
-    public class MessageTT
-    {
-        public string SenderId { get; set; }
-        public string ReceiverId { get; set; }
-        public string Content { get; set; }
-        public UserDto User { get; set; }
-    }
-}
+</MudContainer>
