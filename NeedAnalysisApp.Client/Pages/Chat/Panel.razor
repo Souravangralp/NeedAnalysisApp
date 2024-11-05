@@ -17,13 +17,14 @@
                 <MudList T="string">
                     <MudListItem Text="@(ChatPerson.FirstName)">
                         <AvatarContent>
-                            <MudBadge Color="@(ChatPerson.IsOnline ? Color.Success : Color.Error)" Class="mx-6 my-4">
+                            <MudBadge Dot="true" Color="Color.Success" Class="mx-6 my-4">
                                 <MudAvatar>
                                     <MudImage Src="@ChatPerson.ProfilePictureUrl" />
                                 </MudAvatar>
                             </MudBadge>
                         </AvatarContent>
                     </MudListItem>
+                    <MudDivider DividerType="DividerType.Inset" />
                 </MudList>
             </MudItem>
 
@@ -44,25 +45,28 @@
 
                                         @if (chat.Message.File != null && !string.IsNullOrWhiteSpace(chat.Message.File.FileUrl))
                                         {
+                                            <MudAvatar>
+                                                <MudImage Src="@(CurrentPerson.ProfilePictureUrl)"></MudImage>
+                                            </MudAvatar>
                                             <MudImage Height="150" Width="200" Src="@(chat.Message.File.FileUrl)"></MudImage>
                                         }
                                         else
                                         {
-                                            <MudChip T="string" Style="min-height: 50px; display: flex; align-items: center;" Color="Color.Default">
-                                                <AvatarContent>
-                                                    <MudAvatar>
-                                                        <MudImage Src="@(CurrentPerson.ProfilePictureUrl)"></MudImage>
-                                                    </MudAvatar>
-                                                </AvatarContent>
-                                                <ChildContent>
+                                            <MudPaper Elevation="2" Class="mud-theme-success py-4 px-6 rounded-l-xl">
+                                                <MudAvatar>
+                                                    <MudImage Src="@(CurrentPerson.ProfilePictureUrl)" />
+                                                </MudAvatar>
+                                                <MudText Typo="Typo.body1" Align="Align.Start"
+                                                         Style="max-width: 500px; word-wrap: break-word; overflow-wrap: break-word;">
                                                     @chat.Message.Content
-                                                </ChildContent>
-                                            </MudChip>
+                                                </MudText>
+                                            </MudPaper>
+
                                         }
                                     </MudItem>
 
                                     <MudItem Class="d-flex justify-content-end mb-2" Style="min-height: 50px; display: flex; align-items: center; margin-top: -16px; padding: 7px;">
-                                        <MudText Typo="Typo.subtitle2">@chat.Message.Timestamp.Value.ToShortTimeString()</MudText>
+                                        <MudText Typo="Typo.caption">@chat.Message.Timestamp.Value.ToShortTimeString()</MudText>
                                     </MudItem>
                                 </MudItem>
                             }
@@ -75,25 +79,27 @@
 
                                         @if (chat.Message.File != null && !string.IsNullOrWhiteSpace(chat.Message.File.FileUrl))
                                         {
+                                            <MudAvatar>
+                                                <MudImage Src="@(ChatPerson.ProfilePictureUrl)"></MudImage>
+                                            </MudAvatar>
                                             <MudImage Height="150" Width="200" Src="@(chat.Message.File.FileUrl)"></MudImage>
                                         }
                                         else
                                         {
-                                            <MudChip T="string" Style="min-height: 50px; display: flex; align-items: center;" Color="Color.Success">
-                                                <AvatarContent>
-                                                    <MudAvatar>
-                                                        <MudImage Src="@(ChatPerson.ProfilePictureUrl)"></MudImage>
-                                                    </MudAvatar>
-                                                </AvatarContent>
-                                                <ChildContent>
+                                            <MudPaper Elevation="2" Class="py-4 px-6 rounded-r-xl" Style="@($"color:{Colors.BlueGray.Lighten5} background:{Colors.BlueGray.Darken3}")">
+                                                <MudAvatar>
+                                                    <MudImage Src="@(ChatPerson.ProfilePictureUrl)" />
+                                                </MudAvatar>
+                                                <MudText Typo="Typo.body1" Align="Align.Start"
+                                                         Style="max-width: 500px; word-wrap: break-word; overflow-wrap: break-word;">
                                                     @chat.Message.Content
-                                                </ChildContent>
-                                            </MudChip>
+                                                </MudText>
+                                            </MudPaper>
                                         }
                                     </MudItem>
 
                                     <MudItem Class="d-flex justify-content-start mb-2" Style="min-height: 50px; display: flex; align-items: center; margin-top: -16px; padding: 7px;">
-                                        <MudText Typo="Typo.subtitle2">@chat.Message.Timestamp.Value.ToShortTimeString()</MudText>
+                                        <MudText Typo="Typo.caption">@chat.Message.Timestamp.Value.ToShortTimeString()</MudText>
                                     </MudItem>
                                 </MudItem>
                             }

@@ -18,6 +18,8 @@
                             @user.FirstName
                         </ChildContent>
                     </MudListItem>
+                    <MudDivider DividerType="DividerType.Inset" />
+
                     @if (user.UnreadMessagesCount > 0)
                     {
                         <MudBadge Color="Color.Error" Class="ms-2">
