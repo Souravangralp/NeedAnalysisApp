@@ -1,14 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using NeedAnalysisApp.Client.Pages.Assessments.Templates;
-using NeedAnalysisApp.Client.Repositories.Interfaces;
-using NeedAnalysisApp.Shared.Common.Utilities;
-using NeedAnalysisApp.Shared.Dto;
-using Newtonsoft.Json;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-
-namespace NeedAnalysisApp.Client.Pages.Assessments;
+﻿namespace NeedAnalysisApp.Client.Pages.Assessments;
 
 public partial class Section
 {
@@ -49,10 +39,6 @@ public partial class Section
             var questions = JsonConvert.DeserializeObject<List<QuestionDto>>(result.Model.ToString() ?? string.Empty);
 
             Questions = questions.Where(x => x.GeneralLookUp_SectionTypeId == SectionUtility.GetSectionId(SectionName)).ToList();
-
-            //SelectedQuestion = Questions.OrderByDescending(x => x.DisplayOrder).FirstOrDefault();
-
-            //await GetTemplate((int)SelectedQuestion.GeneralLookUp_QuestionTypeId);
         }
 
         StateHasChanged();
@@ -66,7 +52,7 @@ public partial class Section
         parameters["QuestionUniqueId"] = questionDto.UniqueId;
         parameters["AssessmentUniqueId"] = AssessmentId;
         parameters["IsTemplate"] = false;
-        parameters["OnDelete"] = EventCallback.Factory.Create<bool>(
+        parameters["OnDeleteAsync"] = EventCallback.Factory.Create<bool>(
                                                 this, HandleQuestionDelete);
         parameters["OnSave"] = EventCallback.Factory.Create<bool>(
                                                 this, HandleQuestionSave);
@@ -132,19 +118,6 @@ public partial class Section
             5 => Type.GetType(typeof(Label).ToString()),
             _ => null,
         };
-    }
-
-    public void GetTemplate(int selectedQuestionTypeId)
-    {
-        parameters["QuestionUniqueId"] = "";
-        parameters["AssessmentUniqueId"] = AssessmentId;
-        parameters["IsTemplate"] = false;
-        parameters["OnDelete"] = EventCallback.Factory.Create<bool>(
-                                                this, HandleQuestionDelete);
-        parameters["OnSave"] = EventCallback.Factory.Create<bool>(
-                                                this, HandleQuestionSave);
-
-        SelectedQuestionTemplate = GetQuestionTemplate(selectedQuestionTypeId);
     }
 
     public async Task SaveQuestion()

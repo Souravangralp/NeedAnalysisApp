@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "NeedAnalysisApp.Client",
   "resources": {
-    "hash": "sha256-60x9WhDg5iPfa0hCqRkHmH7m66q18DGQW5/xJ918vd0=",
+    "hash": "sha256-L3sdCdXhO7SMQ7nPEpzFcqrbxuZL5hvDWfKdVO2H6u0=",
     "jsModuleNative": {
       "dotnet.native.8.0.10.qnf4pv5oae.js": "sha256-QVxMlY7ohmjgde/bZMA0dlWDAeuUP+tEfkiSdg4DFcE="
     },
@@ -34,6 +34,7 @@
       "Microsoft.AspNetCore.SignalR.Common.wasm": "sha256-86kmUlSmkAgnB0ZopC9A2Z4/lQzqArtAy4LhVAo1ROc=",
       "Microsoft.AspNetCore.SignalR.Protocols.Json.wasm": "sha256-sznoDoxrzzRge/0zLIHcSoxWGlnX+nhxB1IYeeXyG+c=",
       "Microsoft.AspNetCore.WebUtilities.wasm": "sha256-bCMbFPwtzEJ7pwAX4Ox2nCa4wlpifcvx00Yupfa56Qw=",
+      "Microsoft.EntityFrameworkCore.Abstractions.wasm": "sha256-CfYJimpm2eEVxfaALuhb91gDx7hEU2ADtxlP6iFJLlM=",
       "Microsoft.Extensions.Configuration.wasm": "sha256-UDGEQR7J3WTfzYMgOzxVIBwFQtKEeJvO8UgrWagypdE=",
       "Microsoft.Extensions.Configuration.Abstractions.wasm": "sha256-yNdqbqDWGiJo943D7LPak5xryCBEsNH0wtdiuU1R9VE=",
       "Microsoft.Extensions.Configuration.Binder.wasm": "sha256-fNNlyyW44y8Gp6dvOtsvHoVNzpT8lrKmPleg5CDhRAo=",
@@ -225,12 +226,12 @@
       "mscorlib.wasm": "sha256-KvqZaNpjwhrOuzE4b4aMFsI+VUTyiWfoDI4zn4l9BM8=",
       "netstandard.wasm": "sha256-v+s7sWxtOM6bnOvC0jFrtnm6uMfbDymwl2nHNgbS2LM=",
       "System.Private.CoreLib.wasm": "sha256-pklll63uFQoY6vaD3vbluS9osYiJWLLLmob1yHFgepI=",
-      "NeedAnalysisApp.Shared.wasm": "sha256-29am2LDc8ci4lZ89j32k65YnF/qKzK1HFAFopwnUU/o=",
-      "NeedAnalysisApp.Client.wasm": "sha256-BQc/CT3d4cBjxnOwcb6Unba6xTo/Sc9JNudb6GXE0PE="
+      "NeedAnalysisApp.Shared.wasm": "sha256-3r0Ok26dcMR8E/5OyNmUtLZBEsrPhNCots6zAXcaEPA=",
+      "NeedAnalysisApp.Client.wasm": "sha256-TKiRVEkqSKDNkUH2bq9Y+zK744sC44a48aqqE0iPLhk="
     },
     "pdb": {
-      "NeedAnalysisApp.Shared.pdb": "sha256-grWGCdXXT4NLietI+hnWWTAiQUqUvm2suiMdiHRRw7E=",
-      "NeedAnalysisApp.Client.pdb": "sha256-1lQaLL96ZhvRivdEo7pauDjvicLVUZvmXOykRSd0WZ8="
+      "NeedAnalysisApp.Shared.pdb": "sha256-fdQ5gn5v7z/QRIch6cTV/52jr0p/ij2RgVvLnFIBEmA=",
+      "NeedAnalysisApp.Client.pdb": "sha256-WqOuX9r6InPyDOJ6kf+9DULqvf4K4u2grf9UGcUr19s="
     }
   },
   "cacheBootResources": true,

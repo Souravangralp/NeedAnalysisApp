@@ -1,19 +1,28 @@
-﻿using NeedAnalysisApp.Shared.Dto.Chat;
-
-namespace NeedAnalysisApp.Client.Repositories.Services;
+﻿namespace NeedAnalysisApp.Client.Repositories.Services;
 
 public class MessageClientService : IMessageClientService
 {
+    #region     Fields
+
     private readonly HttpClient _httpClient;
+
+    #endregion
+
+    #region Ctor
 
     public MessageClientService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
+    #endregion
+
+    #region Methods
+
     public async Task<List<MessageDto>> GetAll(string senderId, string receiverId)
     {
-        var response = await _httpClient.GetAsync($"https://localhost:7028/api/messages?senderId={senderId}&receiverId={receiverId}");
+        //var response = await _httpClient.GetAsync($"https://localhost:7028/api/messages?senderId={senderId}&receiverId={receiverId}");
+        var response = await _httpClient.GetAsync(string.Format(Message.GetAll, senderId, receiverId));
 
         if (response.IsSuccessStatusCode)
         {
@@ -30,12 +39,12 @@ public class MessageClientService : IMessageClientService
 
     public async Task<bool> Send(MessageDto message)
     {
-        var response = await _httpClient.PostAsJsonAsync("https://localhost:7028/api/messages", message);
+        //var response = await _httpClient.PostAsJsonAsync("https://localhost:7028/api/messages", message);
+        var response = await _httpClient.PostAsJsonAsync(Message.Send, message);
 
         if (response.IsSuccessStatusCode)
         {
-            return true; //await response.Content.ReadFromJsonAsync<Result>(); // Deserializing the response to 'Result' object
-            //return result; // Return or use the result as needed
+            return true;
         }
         else
         {
@@ -43,24 +52,25 @@ public class MessageClientService : IMessageClientService
         }
     }
 
-    public async Task<bool> MarkMessageRead(string messageId) 
+    public async Task<bool> MarkMessageRead(string messageId, string receiverId)
     {
-        if (string.IsNullOrWhiteSpace(messageId)) 
+        if (string.IsNullOrWhiteSpace(messageId))
         {
             return false;
         }
 
-        var response = await _httpClient.PostAsync($"https://localhost:7028/api/messages/{messageId}/markRead", null);
+        //var response = await _httpClient.PostAsync($"https://localhost:7028/api/messages/{messageId}/markRead/{receiverId}", null);
+        var response = await _httpClient.PostAsync(Message.MarkRead, null);
 
         if (response.IsSuccessStatusCode)
         {
-            return true; //await response.Content.ReadFromJsonAsync<Result>(); // Deserializing the response to 'Result' object
-            //return result; // Return or use the result as needed
+            return true;
         }
         else
         {
             throw new HttpRequestException($"Failed to send Messages. Status code: {response.StatusCode}");
         }
     }
-}
 
+    #endregion
+}

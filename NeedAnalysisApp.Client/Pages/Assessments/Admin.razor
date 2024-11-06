@@ -1,14 +1,7 @@
 ﻿@page "/assessment"
+
 @using Microsoft.AspNetCore.Authorization
-@using NeedAnalysisApp.Client.Pages.Common
-@using NeedAnalysisApp.Client.Repositories.Interfaces
-@using NeedAnalysisApp.Client.Repositories.Services
-@using NeedAnalysisApp.Shared.Common
-@using NeedAnalysisApp.Shared.Dto
-@inject IAssessmentClientService AssessmentClientService;
-@inject IDialogService DialogService;
-@inject NavigationManager NavigationManager;
-@inject ISnackbar Snackbar;
+
 @attribute [Authorize]
 
 <AuthorizeView>
@@ -24,13 +17,13 @@
                                  Color="Color.Primary"
                                  Label="@(IncludeInActive is null ? "All" : IncludeInActive == true ? "Active" : "In Active")"
                                  TriState="true"
-                                 ValueChanged="OnChangeIncludeActive">
+                                 ValueChanged="OnChangeIncludeActiveAsync">
                     </MudCheckBox>
                     <MudSpacer />
 
                     <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     <MudSpacer />
-                    <MudButton Color="Color.Primary" Class="ms-2" StartIcon="@Icons.Material.Filled.AddCircle" OnClick="OnAddAssessment">Add</MudButton>
+                    <MudButton Color="Color.Primary" Class="ms-2" StartIcon="@Icons.Material.Filled.AddCircle" OnClick="OnAddAssessmentAsync">Add</MudButton>
                 </ToolBarContent>
                 <HeaderContent>
                     <MudTh>Name</MudTh>
@@ -47,13 +40,13 @@
                     <MudTd>
                         @if (rowData.IsLive)
                         {
-                            <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.Preview" OnClick="() => Preview(rowData.UniqueId)" />
-                            <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Download" OnClick="GeneratePdf" />
+                            <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.Preview" OnClick="() => PreviewAsync(rowData.UniqueId)" />
+                            <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Download" OnClick="GeneratePdfAsync" />
                         }
                         else
                         {
-                            <MudIconButton Color="Color.Warning" Icon="@Icons.Material.Filled.Edit" OnClick="(e) =>  OnEdit(rowData)" />
-                            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Delete" OnClick="(e) =>  OnDelete(rowData)" />
+                            <MudIconButton Color="Color.Warning" Icon="@Icons.Material.Filled.Edit" OnClick="(e) =>  OnEditAsync(rowData)" />
+                            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Delete" OnClick="(e) =>  OnDeleteAsync(rowData)" />
                         }
                     </MudTd>
                 </RowTemplate>
@@ -64,121 +57,3 @@
         </MudContainer>
     </Authorized>
 </AuthorizeView>
-
-@code {
-    private bool dense = true;
-    private bool hover = true;
-    private bool bordered = true;
-    private string searchString1 = "";
-    private AssessmentDto selectedItem1 = null;
-    private HashSet<AssessmentDto> selectedItems = new HashSet<AssessmentDto>();
-
-    public bool IsLoading { get; set; } = true;
-    public bool? IncludeInActive { get; set; } = null;
-
-    private List<AssessmentDto> Assessments = [];
-
-    protected override async Task OnInitializedAsync()
-    {
-        Assessments = await AssessmentClientService.GetAll();
-    }
-
-    private async Task GeneratePdf()
-    {
-    }
-
-    private async Task Preview(string assessmentId)
-    {
-        NavigationManager.NavigateTo($"/client/analysis/{assessmentId}?isPreview=true");
-    }
-
-    private bool FilterFunc1(AssessmentDto element) => FilterFunc(element, searchString1);
-
-    private bool FilterFunc(AssessmentDto element, string searchString)
-    {
-        if (string.IsNullOrWhiteSpace(searchString))
-            return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        if (element.IndustryType.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        if ($"{element.Name} {element.Name} {element.IndustryType}".Contains(searchString))
-            return true;
-        return false;
-    }
-
-    public async void OnAddAssessment()
-    {
-        NavigationManager.NavigateTo("/assessment/add-edit");
-    }
-
-    public async void OnEdit(AssessmentDto assessmentDto)
-    {
-        NavigationManager.NavigateTo($"/assessment/add-edit/{assessmentDto.UniqueId}");
-    }
-
-    public async void OnDelete(AssessmentDto assessmentDto)
-    {
-        var parameters = new DialogParameters<ConfirmDeleteDialog>
-        {
-            { x => x.ContentText, $"Do you really want to delete {assessmentDto.Name}? This process cannot be undone." },
-            { x => x.ButtonText, "Delete" },
-            { x => x.Color, Color.Error }
-        };
-
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Large };
-
-        var dialog = await DialogService.ShowAsync<ConfirmDeleteDialog>("Delete", parameters, options);
-
-        var result = await dialog.Result;
-
-        if (!result.Canceled)
-        {
-            var actionResult = await AssessmentClientService.Delete(assessmentDto.UniqueId);
-
-            if (!actionResult.Success && actionResult.Errors.Any())
-            {
-                foreach (var error in actionResult.Errors)
-                {
-                    Snackbar.Add(error.Message, Severity.Error);
-                }
-            }
-            else
-            {
-                Snackbar.Add("Industry Deleted", Severity.Success);
-            }
-
-            Assessments = await AssessmentClientService.GetAll();
-
-            StateHasChanged();
-        }
-    }
-
-    public async void OnChangeIncludeActive(bool? value)
-    {
-        IncludeInActive = value;
-
-        var assessments = await AssessmentClientService.GetAll();
-
-        IsLoading = true;
-
-        switch (value)
-        {
-            case null:
-                Assessments = assessments;
-                break;
-            case true:
-                Assessments = assessments.Where(x => x.IsLive).ToList();
-                break;
-            case false:
-                Assessments = assessments.Where(x => !x.IsLive).ToList();
-                break;
-        }
-
-        IncludeInActive = value;
-
-        IsLoading = false;
-
-        StateHasChanged();
-    }
-}

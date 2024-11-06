@@ -14,7 +14,7 @@ public class PdfService
         {
             GlobalSettings = {
                 ColorMode = ColorMode.Color,
-                Orientation = Orientation.Portrait,
+                //Orientation = Orientation.Portrait, <--- please correct the reference for Orientation
                 PaperSize = PaperKind.A4,
             },
             Objects = {

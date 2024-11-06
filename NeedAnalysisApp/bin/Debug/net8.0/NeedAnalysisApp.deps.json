@@ -2107,6 +2107,7 @@
           "Microsoft.AspNetCore.Components.WebAssembly.Authentication": "8.0.8",
           "Microsoft.AspNetCore.SignalR.Client": "8.0.8",
           "Microsoft.AspNetCore.WebUtilities": "8.0.10",
+          "Microsoft.EntityFrameworkCore.Abstractions": "8.0.8",
           "MudBlazor": "7.15.0",
           "NeedAnalysisApp.Shared": "1.0.0",
           "Newtonsoft.Json": "13.0.3"

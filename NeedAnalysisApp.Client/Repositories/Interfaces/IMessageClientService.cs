@@ -8,5 +8,5 @@ public interface IMessageClientService
 
     Task<List<MessageDto>> GetAll(string senderId, string receiverId);
 
-    Task<bool> MarkMessageRead(string messageId);
+    Task<bool> MarkMessageRead(string messageId, string receiverId);
 }

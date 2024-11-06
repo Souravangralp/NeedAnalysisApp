@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "P/rL9cHd94o=",
+  "dgSpecHash": "yQ/pHKkW2P0=",
   "success": true,
   "projectFilePath": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj",
   "expectedPackageFiles": [
@@ -22,6 +22,7 @@
     "C:\\Users\\Dell\\.nuget\\packages\\microsoft.aspnetcore.signalr.common\\8.0.8\\microsoft.aspnetcore.signalr.common.8.0.8.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\microsoft.aspnetcore.signalr.protocols.json\\8.0.8\\microsoft.aspnetcore.signalr.protocols.json.8.0.8.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\8.0.10\\microsoft.aspnetcore.webutilities.8.0.10.nupkg.sha512",
+    "C:\\Users\\Dell\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.8\\microsoft.entityframeworkcore.abstractions.8.0.8.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\microsoft.extensions.configuration\\8.0.0\\microsoft.extensions.configuration.8.0.0.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\microsoft.extensions.configuration.binder\\8.0.2\\microsoft.extensions.configuration.binder.8.0.2.nupkg.sha512",

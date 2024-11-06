@@ -2,24 +2,26 @@
 
 public partial class Home
 {
-    #region Injecting services
+    #region Fields
+
+    [Inject] public AuthenticationStateProvider PersistentAuthenticationStateProvider { get; set; } = null!;
 
     [Inject] public IUserClientService _userClientService { get; set; } = null!;
+
+    [Inject] public IMessageClientService _messageClientService { get; set; } = null!;
+
     [Inject] public NavigationManager _navigationManager { get; set; } = null!;
-    [Inject] IJSRuntime JsRuntime { get; set; } = null!;
-    [Inject] NavigationManager NavigationManager { get; set; } = null!;
-    [Inject] public AuthenticationStateProvider PersistentAuthenticationStateProvider { get; set; } = null!;
 
     private HubConnection? _hubConnection;
 
-    #endregion
-
-    #region Fields
-
     public UserDto ChatPerson { get; set; } = new();
+
     public UserDto CurrentPerson { get; set; } = new();
+
     public List<UserDto> Users { get; set; } = [];
+
     public List<ChatDto> Chats { get; set; } = [];
+
     public Dictionary<string, object> parameters { get; set; } = new();
 
     #endregion
@@ -28,48 +30,22 @@ public partial class Home
 
     protected override async Task OnInitializedAsync()
     {
-        _hubConnection = ConfigureHubConnection();
+        _hubConnection = ConfigureHub();
 
         await _hubConnection.StartAsync();
 
         parameters["IsDefault"] = true; // Set default state
 
-        var currentUserId = await GetCurrentUserId();
+        var currentUser = await GetCurrentUser();
 
-        var currentUser = await _userClientService.GetWithId(currentUserId);
-
-        var allUsers = await _userClientService.GetAll(null);
-
-        if (allUsers.Any(u => u.Id == currentUserId))
-        {
-            var existingUser = allUsers.FirstOrDefault(u => u.Id == currentUserId);
-            allUsers.Remove(existingUser);
-            allUsers.Insert(0, existingUser);
-        }
-
-        Users.AddRange(allUsers);
+        SetCurrentUserToTop(currentUser);
 
         await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), currentUser);
 
         StateHasChanged();
     }
 
-    private async Task<string> GetCurrentUserId()
-    {
-        string userId = "";
-
-        var authState = await PersistentAuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        }
-
-        return userId;
-    }
-
-    private HubConnection ConfigureHubConnection()
+    private HubConnection ConfigureHub()
     {
         var hubConnection = new HubConnectionBuilder()
             .WithUrl(_navigationManager.ToAbsoluteUri("/hubs/blazing-chat"))
@@ -93,17 +69,6 @@ public partial class Home
             StateHasChanged();
         });
 
-        hubConnection.On<string, int>(nameof(IBlazingChatHubClient.UpdateUnreadMessagesCount), (userId, unreadMessagesCount) =>
-        {
-            // Find the user and update the unread message count
-            var user = Users.FirstOrDefault(u => u.Id == userId);
-            if (user != null)
-            {
-                user.UnreadMessagesCount = unreadMessagesCount;
-                StateHasChanged();
-            }
-        });
-
         hubConnection.On<string>(nameof(IBlazingChatHubClient.UserIsOnline), (userId) =>
         {
             var user = Users.FirstOrDefault(u => u.Id == userId);
@@ -118,6 +83,7 @@ public partial class Home
         {
             var fromUser = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
 
+            // If the message is for the currently open chat
             if (ChatPerson?.Id == messageDto.SenderId)
             {
                 Chats.Add(new ChatDto()
@@ -126,18 +92,79 @@ public partial class Home
                     User = CurrentPerson
                 });
 
-                // Update the unread message count for the receiver (ChatPerson)
+                // UpdateAsync the unread message count for the receiver (ChatPerson)
                 var receiver = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
                 if (receiver != null)
                 {
-                    receiver.UnreadMessagesCount++;
+                    // If the receiver is not the current chat person, increase their unread message count
+                    if (ChatPerson?.Id != messageDto.ReceiverId)
+                    {
+                        receiver.UnreadMessagesCount++;
+                    }
                 }
             }
 
-            StateHasChanged();
+            StateHasChanged();  // Refresh UI after processing message
+        });
+
+        hubConnection.On<string, int>(nameof(IBlazingChatHubClient.UpdateUnreadMessagesCount), async (userId, unreadMessagesCount) =>
+        {
+            var user = Users.FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                user.UnreadMessagesCount = unreadMessagesCount;
+                StateHasChanged();
+            }
         });
 
         return hubConnection;
+    }
+
+    private async Task<UserDto> GetCurrentUser()
+    {
+        var userDto = new UserDto();
+
+        var authState = await PersistentAuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        var user = authState.User;
+
+        if (user != null && user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            userDto = await _userClientService.GetWithIdAsync(userId);
+        }
+
+        return userDto;
+    }
+
+    private async void SetCurrentUserToTop(UserDto currentUser)
+    {
+        var allUsers = await _userClientService.GetAllAsync(null);
+
+        //List<UserChatDto> userChats = [];
+
+        //foreach (var user in allUsers)
+        //{
+        //    var messages = await _messageClientService.GetAll(currentUser.Id, user.Id);
+
+        //    messages = messages.Where(x => !x.IsRead).ToList();
+
+        //    userChats.Add(new UserChatDto() { Messages = messages, User = user });
+        //}
+
+        //UserChats = userChats;
+
+        if (allUsers.Any(u => u.Id == currentUser.Id))
+        {
+            var existingUser = allUsers.FirstOrDefault(u => u.Id == currentUser.Id);
+            allUsers.Remove(existingUser);
+            allUsers.Insert(0, existingUser);
+        }
+
+        Users.AddRange(allUsers);
+
+        StateHasChanged();
     }
 
     public async ValueTask DisposeAsync()
@@ -148,18 +175,30 @@ public partial class Home
         }
     }
 
-    public void OpenChat(string id)
+    private void OpenChat(string id)
     {
         parameters.Remove("UserId");
         parameters.Remove("IsDefault");
         parameters["UserId"] = id;
         parameters["IsDefault"] = false;
+        parameters["OnReadAllMessages"] = EventCallback.Factory.Create<bool>(
+                                                this, HandleMessageRead);
 
         var user = Users.FirstOrDefault(u => u.Id == id);
+
         if (user != null)
         {
             user.UnreadMessagesCount = 0;
         }
+
+        StateHasChanged();
+    }
+
+    private async void HandleMessageRead()
+    {
+        var currentUser = await GetCurrentUser();
+
+        SetCurrentUserToTop(currentUser);
 
         StateHasChanged();
     }

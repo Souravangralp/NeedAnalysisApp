@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CZfiY6Z46v+gTGXA0NAox8+yXC6z+TtudMdi1o0eEGA=",
+  "Hash": "DPlZKMRwb6pyrOvM3o1xdCFfUijfvLI3yRwEc8a5hNI=",
   "Source": "NeedAnalysisApp.Client",
   "BasePath": "/",
   "Mode": "Default",
@@ -623,6 +623,25 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\webcil\\Microsoft.CSharp.wasm"
+    },
+    {
+      "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\Microsoft.EntityFrameworkCore.Abstractions.wasm",
+      "SourceId": "NeedAnalysisApp.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.EntityFrameworkCore.Abstractions.wasm",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "WasmResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\webcil\\Microsoft.EntityFrameworkCore.Abstractions.wasm"
     },
     {
       "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\Microsoft.Extensions.Configuration.Abstractions.wasm",
@@ -7406,6 +7425,25 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\System.ServiceProcess.wasm"
+    },
+    {
+      "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\compressed\\npqwwpc82o.gz",
+      "SourceId": "NeedAnalysisApp.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.EntityFrameworkCore.Abstractions.wasm.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\Microsoft.EntityFrameworkCore.Abstractions.wasm",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\Microsoft.EntityFrameworkCore.Abstractions.wasm"
     },
     {
       "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\compressed\\nscs7ocupz.gz",

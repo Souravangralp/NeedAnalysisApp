@@ -2,11 +2,11 @@
 
 public interface IIndustryClientService
 {
-    Task<List<IndustryDto>> GetAll();
+    Task<Result> CreateAsync(IndustryDto industry);
 
-    Task<Result> Create(IndustryDto industry);
+    Task<List<IndustryDto>> GetAllAsync();
 
-    Task<Result> Update(IndustryDto industry);
+    Task<Result> UpdateAsync(IndustryDto industry);
 
-    Task<Result> Delete(string uniqueId);
+    Task<Result> DeleteAsync(string uniqueId);
 }

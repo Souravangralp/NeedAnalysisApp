@@ -316,6 +316,19 @@
           }
         }
       },
+      "Microsoft.EntityFrameworkCore.Abstractions/8.0.8": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.Extensions.Configuration/8.0.0": {
         "type": "package",
         "dependencies": {
@@ -2298,6 +2311,19 @@
         },
         "runtime": {
           "lib/net8.0/Microsoft.AspNetCore.WebUtilities.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Abstractions/8.0.8": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
             "related": ".xml"
           }
         }
@@ -4376,6 +4402,21 @@
         "lib/net8.0/Microsoft.AspNetCore.WebUtilities.xml",
         "microsoft.aspnetcore.webutilities.8.0.10.nupkg.sha512",
         "microsoft.aspnetcore.webutilities.nuspec"
+      ]
+    },
+    "Microsoft.EntityFrameworkCore.Abstractions/8.0.8": {
+      "sha512": "9mMQkZsfL1c2iifBD8MWRmwy59rvsVtR9NOezJj7+g1j4P7g49MJHd8k8faC/v7d5KuHkQ6KOQiSItvoRt9PXA==",
+      "type": "package",
+      "path": "microsoft.entityframeworkcore.abstractions/8.0.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
+        "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.xml",
+        "microsoft.entityframeworkcore.abstractions.8.0.8.nupkg.sha512",
+        "microsoft.entityframeworkcore.abstractions.nuspec"
       ]
     },
     "Microsoft.Extensions.Configuration/8.0.0": {
@@ -8865,6 +8906,7 @@
       "Microsoft.AspNetCore.Components.WebAssembly.Authentication >= 8.0.8",
       "Microsoft.AspNetCore.SignalR.Client >= 8.0.8",
       "Microsoft.AspNetCore.WebUtilities >= 8.0.10",
+      "Microsoft.EntityFrameworkCore.Abstractions >= 8.0.8",
       "Microsoft.NET.ILLink.Tasks >= 8.0.10",
       "Microsoft.NET.Sdk.WebAssembly.Pack >= 8.0.10",
       "MudBlazor >= 7.*",
@@ -8945,6 +8987,10 @@
           "Microsoft.AspNetCore.WebUtilities": {
             "target": "Package",
             "version": "[8.0.10, )"
+          },
+          "Microsoft.EntityFrameworkCore.Abstractions": {
+            "target": "Package",
+            "version": "[8.0.8, )"
           },
           "Microsoft.NET.ILLink.Tasks": {
             "suppressParent": "All",

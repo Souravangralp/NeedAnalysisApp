@@ -7,7 +7,7 @@ public class Message : BaseEntity
     public string? Content { get; set; }
     public string? FileUrl { get; set; }
     public DateTime? SentOn { get; set; }
-    public bool? IsRead { get; set; }
+    public bool IsRead { get; set; }
     public File? File { get; set; }
 
     public ApplicationUser? ApplicationUser_Sender { get; set; }

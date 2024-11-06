@@ -1,5 +1,4 @@
-﻿@using NeedAnalysisApp.Shared.Dto
-<MudDialog>
+﻿<MudDialog>
     <DialogContent>
         <MudContainer>
             <MudTextField @bind-Value="Label.Value" Label="Label" Variant="Variant.Text"></MudTextField>
@@ -10,25 +9,3 @@
         <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
     </DialogActions>
 </MudDialog>
-
-
-@code {
-    [Parameter] public QuestionDto? Label { get; set; }
-
-    // public QuestionDto Question { get; set; } = new();
-
-    [CascadingParameter]
-    private MudDialogInstance MudDialog { get; set; }
-
-    private void Submit() => MudDialog.Close(DialogResult.Ok(Label));
-
-    private void Cancel() => MudDialog.Cancel();
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (Label == null)
-        {
-            Label = new QuestionDto() { GeneralLookUp_QuestionTypeId = 5, Value = "Add your label here" };
-        }
-    }
-}

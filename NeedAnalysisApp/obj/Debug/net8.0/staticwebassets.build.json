@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "WvUCR4W83/F9QhReL16BEApRVs4emXSqcgt6Ggt8iR4=",
+  "Hash": "yYU1neEbgOPOHtL29wbJQ9Oh2WbVbd/JT9oP4wICBBs=",
   "Source": "NeedAnalysisApp",
   "BasePath": "_content/NeedAnalysisApp",
   "Mode": "Default",
@@ -661,6 +661,25 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\webcil\\Microsoft.CSharp.wasm"
+    },
+    {
+      "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\Microsoft.EntityFrameworkCore.Abstractions.wasm",
+      "SourceId": "NeedAnalysisApp.Client",
+      "SourceType": "Project",
+      "ContentRoot": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.EntityFrameworkCore.Abstractions.wasm",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "WasmResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\webcil\\Microsoft.EntityFrameworkCore.Abstractions.wasm"
     },
     {
       "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\Microsoft.Extensions.Configuration.Abstractions.wasm",
@@ -7446,6 +7465,25 @@
       "OriginalItemSpec": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\System.ServiceProcess.wasm"
     },
     {
+      "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\compressed\\npqwwpc82o.gz",
+      "SourceId": "NeedAnalysisApp.Client",
+      "SourceType": "Project",
+      "ContentRoot": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.EntityFrameworkCore.Abstractions.wasm.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\Microsoft.EntityFrameworkCore.Abstractions.wasm",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\Microsoft.EntityFrameworkCore.Abstractions.wasm"
+    },
+    {
       "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\obj\\Debug\\net8.0\\compressed\\nscs7ocupz.gz",
       "SourceId": "NeedAnalysisApp.Client",
       "SourceType": "Project",
@@ -8755,6 +8793,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Screenshot 2024-08-12 165809.png"
+    },
+    {
+      "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\Screenshot 2024-08-13 132940.png",
+      "SourceId": "NeedAnalysisApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\",
+      "BasePath": "_content/NeedAnalysisApp",
+      "RelativePath": "images/Screenshot 2024-08-13 132940.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Screenshot 2024-08-13 132940.png"
     },
     {
       "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\Screenshot 2024-08-13 134322.png",

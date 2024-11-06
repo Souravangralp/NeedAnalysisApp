@@ -2168,6 +2168,7 @@ D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwr
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.SignalR.Protocols.Json.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.WebUtilities.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.CSharp.wasm
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.EntityFrameworkCore.Abstractions.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.Extensions.Configuration.Abstractions.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.Extensions.Configuration.Binder.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.Extensions.Configuration.FileExtensions.wasm
@@ -2525,6 +2526,7 @@ D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwr
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\System.Text.Encoding.Extensions.wasm.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.Extensions.Configuration.wasm.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\System.ServiceProcess.wasm.gz
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.EntityFrameworkCore.Abstractions.wasm.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\System.IO.Pipes.AccessControl.wasm.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\System.IO.Pipelines.wasm.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\WindowsBase.wasm.gz
@@ -2605,6 +2607,7 @@ D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\Micr
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Common.dll
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\Microsoft.AspNetCore.WebUtilities.dll
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
@@ -2831,6 +2834,7 @@ D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webc
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.SignalR.Common.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.SignalR.Protocols.Json.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.WebUtilities.wasm
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\Microsoft.EntityFrameworkCore.Abstractions.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\Microsoft.Extensions.Configuration.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\Microsoft.Extensions.Configuration.Abstractions.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\Microsoft.Extensions.Configuration.Binder.wasm
@@ -3055,6 +3059,7 @@ D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\comp
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\p5shja1trv.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\fqqr1ei7ub.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\x364etph5l.gz
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\npqwwpc82o.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\myut3ah169.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\kb71bghgs5.gz
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\vvto1ytgyh.gz

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using NeedAnalysisApp.Client;
@@ -9,7 +8,7 @@ internal class Program
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-        builder.Services.AddTransient<HttpClient>();
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
         builder.Services.AddMudServices();
         builder.Services.AddAuthorizationCore();

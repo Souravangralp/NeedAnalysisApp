@@ -2,18 +2,32 @@
 
 public class UserClientService : IUserClientService
 {
+    #region Fields
+
     private readonly HttpClient _httpClient;
+
+    #endregion
+
+    #region Ctor
 
     public UserClientService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
-    public async Task<List<UserDto>> GetAll(string? role)
+    #endregion
+
+    #region Methods
+
+    public async Task<List<UserDto>> GetAllAsync(string? role)
     {
+        //var response = string.IsNullOrWhiteSpace(role)
+        //    ? await _httpClient.GetAsync($"https://localhost:7028/api/users")
+        //    : await _httpClient.GetAsync($"https://localhost:7028/api/users?role={role}");
+
         var response = string.IsNullOrWhiteSpace(role)
-            ? await _httpClient.GetAsync($"https://localhost:7028/api/users")
-            : await _httpClient.GetAsync($"https://localhost:7028/api/users?role={role}");
+            ? await _httpClient.GetAsync(User.GetAll)
+            : await _httpClient.GetAsync(string.Format(User.GetAllWithRole, role));
 
         if (response.IsSuccessStatusCode)
         {
@@ -27,9 +41,10 @@ public class UserClientService : IUserClientService
         }
     }
 
-    public async Task<UserDto> GetWithId(string id)
+    public async Task<UserDto> GetWithIdAsync(string userId)
     {
-        var response = await _httpClient.GetAsync($"https://localhost:7028/api/users/{id}");
+        //var response = await _httpClient.GetAsync($"https://localhost:7028/api/users/{userId}");
+        var response = await _httpClient.GetAsync(string.Format(User.GetWithId, userId));
 
         if (response.IsSuccessStatusCode)
         {
@@ -42,4 +57,6 @@ public class UserClientService : IUserClientService
             throw new HttpRequestException($"Failed to retrieve industries. Status code: {response.StatusCode}");
         }
     }
+
+    #endregion
 }

@@ -1,9 +1,5 @@
 ﻿@page "/scoreCategories"
 
-@using NeedAnalysisApp.Client.Repositories.Interfaces
-@using NeedAnalysisApp.Shared.Dto
-@inject IDialogService DialogService;
-@inject ISnackbar Snackbar;
 <AuthorizeView>
     <Authorized>
         <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large">
@@ -17,10 +13,10 @@
                 <MudItem xs="12">
                     <MudPaper Elevation="2" Class="p-3">
                         <MudToolBar>
-                            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                            <MudTextField @bind-Value="searchedValue" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                             <MudSpacer />
 
-                            <MudButton Color="Color.Primary" Class="ms-2" StartIcon="@Icons.Material.Filled.AddCircle" OnClick="OnAddScoreCategory">Add</MudButton>
+                            <MudButton Color="Color.Primary" Class="ms-2" StartIcon="@Icons.Material.Filled.AddCircle" OnClick="OnAddScoreCategoryAsync">Add</MudButton>
                             <MudSpacer />
                         </MudToolBar>
                         <MudGrid Spacing="20" Justify="Justify.Center">
@@ -30,7 +26,7 @@
                                     <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-8">
                                         <MudText Typo="Typo.h6" Align="Align.Center">@scoreCategory.Value</MudText>
                                         <MudText Typo="Typo.caption" Align="Align.Center">(@scoreCategory.PointsFrom - @scoreCategory.PointsTo)</MudText>
-                                        <MudButton Color="Color.Warning" Class="ms-2" StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OnEditScoreCategory(scoreCategory)">Edit</MudButton>
+                                        <MudButton Color="Color.Warning" Class="ms-2" StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OnEditScoreCategoryAsync(scoreCategory)">Edit</MudButton>
                                     </MudPaper>
                                 </MudItem>
                             }
@@ -42,81 +38,3 @@
         </MudContainer>
     </Authorized>
 </AuthorizeView>
-
-@code {
-    [Inject] IAssessmentClientService _assessmentClientService { get; set; } = null!;
-
-    List<ScoreCategoryDto> ScoreCategories = [];
-
-    int TotalScore = 300;
-
-    private string searchString1 = "";
-
-    protected override async Task OnInitializedAsync()
-    {
-        var result = await _assessmentClientService.GetAllScoreCategory();
-
-        if (result.Success)
-        {
-            ScoreCategories = JsonConvert.DeserializeObject<List<ScoreCategoryDto>>(result.Model.ToString() ?? string.Empty);
-        }
-    }
-
-    public async void OnAddScoreCategory()
-    {
-        var parameters = new DialogParameters<AddEdit>
-        {
-            { x => x.ScoreCategoryId, string.Empty }
-        };
-
-        var options = new DialogOptions() { CloseButton = true, FullWidth = true, MaxWidth = MaxWidth.Medium };
-
-        var dialog = await DialogService.ShowAsync<AddEdit>("Add new", parameters, options);
-
-        var result = await dialog.Result;
-
-        if (!result.Canceled)
-        {
-            if ((bool)result.Data)
-            {
-                var assessmentResult = await _assessmentClientService.GetAllScoreCategory();
-
-                if (assessmentResult.Success)
-                {
-                    ScoreCategories = JsonConvert.DeserializeObject<List<ScoreCategoryDto>>(assessmentResult.Model.ToString() ?? string.Empty);
-                }
-            }
-        }
-        
-        StateHasChanged();
-    }
-
-    public async void OnEditScoreCategory(ScoreCategoryDto scoreCategory)
-    {
-        var parameters = new DialogParameters<AddEdit>
-        {
-            { x => x.ScoreCategoryId, scoreCategory.UniqueId}
-        };
-
-        var options = new DialogOptions() { CloseButton = true, FullWidth = true, MaxWidth = MaxWidth.Medium };
-
-        var dialog = await DialogService.ShowAsync<AddEdit>("Add new", parameters, options);
-
-        var result = await dialog.Result;
-
-        if (!result.Canceled)
-        {
-            if ((bool)result.Data)
-            {
-                var assessmentResult = await _assessmentClientService.GetAllScoreCategory();
-
-                if (assessmentResult.Success)
-                {
-                    ScoreCategories = JsonConvert.DeserializeObject<List<ScoreCategoryDto>>(assessmentResult.Model.ToString() ?? string.Empty);
-                }
-            }
-        }
-
-        StateHasChanged();
-    }
-}

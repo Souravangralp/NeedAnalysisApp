@@ -1,6 +1,4 @@
-﻿@using NeedAnalysisApp.Shared.Dto
-
-<MudDialog>
+﻿<MudDialog>
     <DialogContent>
         <MudText>@ContentText</MudText>
     </DialogContent>
@@ -9,15 +7,3 @@
         <MudButton EndIcon="@Icons.Material.Outlined.Save" Color="Color.Success" OnClick="UpdateRange">UpdateRange</MudButton>
     </DialogActions>
 </MudDialog>
-
-@code {
-    [CascadingParameter]
-    private MudDialogInstance MudDialog { get; set; }
-
-    [Parameter]
-    public string ContentText { get; set; }
-
-    private void UpdateRange() => MudDialog.Close(DialogResult.Ok(true));
-
-    private void Cancel() => MudDialog.Cancel();
-}

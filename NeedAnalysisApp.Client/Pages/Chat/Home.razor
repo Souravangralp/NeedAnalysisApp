@@ -1,9 +1,16 @@
 ﻿@page "/chat"
 
-<MudGrid>
+<MudGrid Class="p-3">
     <MudItem xs="4">
-        <MudPaper Elevation="2" Style="height: 500px; overflow-y: auto;">
-            <MudList T="string">
+        <MudPaper Elevation="2" Style="height: 500px; overflow-y: auto;" Class="rounded-xl">
+            <MudItem Class="mx-3 p-2">
+                <MudAutocomplete T="string" Label="SearchUser" @bind-Value="SerachedUser" SearchFunc="@Search2"
+                                 ResetValueOnEmptyText=" true"
+                                 CoerceValue="@coerceValue"
+                                 sel
+                                 AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+            </MudItem>
+            <MudList T="string" Style="@($"color: {Colors.BlueGray.Lighten4}; background:{Colors.BlueGray.Darken4};")">
                 @foreach (var user in Users)
                 {
                     <MudListItem OnClick="() => OpenChat(user.Id)">
@@ -15,25 +22,73 @@
                             </MudBadge>
                         </AvatarContent>
                         <ChildContent>
-                            @user.FirstName
+                            @if (user.UnreadMessagesCount != 0)
+                            {
+                                <MudBadge Content="@user.UnreadMessagesCount" Color="Color.Info" Class="mx-6 my-4">
+                                    @user.FirstName
+                                </MudBadge>
+                            }
+                            else
+                            {
+                                @user.FirstName
+                            }
                         </ChildContent>
                     </MudListItem>
                     <MudDivider DividerType="DividerType.Inset" />
-
-                    @if (user.UnreadMessagesCount > 0)
-                    {
-                        <MudBadge Color="Color.Error" Class="ms-2">
-                            @user.UnreadMessagesCount
-                        </MudBadge>
-                    }
                 }
+
+                @* @foreach (var user in UserChats)
+                {
+                <MudListItem OnClick="() => OpenChat(user.User.Id)">
+                <AvatarContent>
+                <MudBadge Dot="@(user.User.IsOnline ? true : false)" Color="@(user.User.IsOnline ? Color.Success : Color.Error)" Class="mx-6 my-4">
+                <MudAvatar>
+                <MudImage Src="@user.User.ProfilePictureUrl" />
+                </MudAvatar>
+                </MudBadge>
+                </AvatarContent>
+                <ChildContent>
+                @if (user.Messages.Any())
+                {
+                <MudBadge Content="@user.Messages.Count()" Color="Color.Info" Class="mx-6 my-4">
+                @user.User.FirstName
+                </MudBadge>
+                }
+                else
+                {
+                @user.User.FirstName
+                }
+                </ChildContent>
+                </MudListItem>
+                <MudDivider DividerType="DividerType.Inset" />
+                } *@
             </MudList>
         </MudPaper>
     </MudItem>
 
     <MudItem xs="8">
-        <MudPaper Elevation="2">
-            <DynamicComponent Type="typeof(Panel)" Parameters="parameters" />
-        </MudPaper>
+        <DynamicComponent Type="typeof(Panel)" Parameters="parameters" />
     </MudItem>
 </MudGrid>
+
+@code
+{
+    private bool resetValueOnEmptyText;
+    private bool coerceText;
+    private bool coerceValue;
+    private string SerachedUser;
+
+    private List<UserChatDto> UserChats { get; set; } = [];
+
+    private async Task<IEnumerable<string>> Search2(string value, CancellationToken token)
+    {
+        // In real life use an asynchronous function for fetching data from an api.
+        await Task.Delay(5, token);
+
+        // if text is null or empty, don't return values (drop-down will not open)
+        if (string.IsNullOrEmpty(value))
+            return new string[0];
+
+        return Users.Where(x => x.FirstName.Contains(value, StringComparison.InvariantCultureIgnoreCase)).Select(x => x.FirstName);
+    }
+}

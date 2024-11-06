@@ -1,21 +1,19 @@
-﻿using Microsoft.AspNetCore.Components;
-using MudBlazor;
-
-namespace NeedAnalysisApp.Client.Pages.Assessments;
+﻿namespace NeedAnalysisApp.Client.Pages.Assessments;
 
 public partial class QuestionDialog
 {
-    [CascadingParameter]
-    private MudDialogInstance MudDialog { get; set; }
+    #region Fields
+
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
     public List<QuestionType> QuestionTypes { get; set; } = [];
 
     public int SelectedQuestionTypeId { get; set; }
 
-    private void Submit() => MudDialog.Close(DialogResult.Ok(SelectedQuestionTypeId));
+    #endregion
 
-    private void Cancel() => MudDialog.Cancel();
-
+    #region Methods
+    
     protected override async Task OnInitializedAsync()
     {
         QuestionTypes = new List<QuestionType>()
@@ -29,17 +27,16 @@ public partial class QuestionDialog
         SelectedQuestionTypeId = 1;
     }
 
-    public void onOptionSelect(int id)
+    public void OnOptionSelect(int id)
     {
         SelectedQuestionTypeId = id;
 
         StateHasChanged();
     }
 
-    public class QuestionType
-    {
-        public int Id { get; set; }
+    private void Submit() => MudDialog.Close(DialogResult.Ok(SelectedQuestionTypeId));
 
-        public string Question { get; set; }
-    }
+    private void Cancel() => MudDialog.Cancel();
+
+    #endregion
 }

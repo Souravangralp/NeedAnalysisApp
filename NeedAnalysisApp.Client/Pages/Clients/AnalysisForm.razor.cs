@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.WebUtilities;
-using MudBlazor;
-using NeedAnalysisApp.Client.Repositories.Interfaces;
-using NeedAnalysisApp.Shared.Dto;
-using Newtonsoft.Json;
-
-namespace NeedAnalysisApp.Client.Pages.Clients;
+﻿namespace NeedAnalysisApp.Client.Pages.Clients;
 
 public partial class AnalysisForm
 {
+    #region Fideld
+
     [Inject] ISnackbar Snackbar { get; set; } = null!;
 
     [Inject] NavigationManager NavigationManager { get; set; } = null!;
@@ -17,10 +12,10 @@ public partial class AnalysisForm
 
     [Inject] IAssessmentClientService _assessmentClientService { get; set; } = null!;
 
-    [Parameter] public string AssessmentId { get; set; } = ""; 
+    [Parameter] public string AssessmentId { get; set; } = "";
 
-    [Parameter] public bool IsPreview { get; set; } = false; 
-    
+    [Parameter] public bool IsPreview { get; set; } = false;
+
     public List<QuestionDto> Questions { get; set; } = [];
 
     public bool Dense_Radio { get; set; } = false;
@@ -30,16 +25,21 @@ public partial class AnalysisForm
     private Dictionary<string, string> SelectedOptions = new Dictionary<string, string>();
 
     //[Comment("This property is being used to get the Selected Option")]
-    string SelectedOption { get; set; }
+    //string SelectedOption { get; set; }
 
     MudTabs tabs;
     MudTabPanel WhoWeAreTab;
     MudTabPanel WhatWeDoTab;
     MudTabPanel HowWeDoItTab;
 
+    #endregion
+
+    #region Methods
+
     protected override async Task OnInitializedAsync()
     {
         var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+
         var query = QueryHelpers.ParseQuery(uri.Query);
 
         if (query.TryGetValue("isPreview", out var isPreviewValue))
@@ -47,7 +47,7 @@ public partial class AnalysisForm
             IsPreview = bool.TryParse(isPreviewValue, out var isPreview) && isPreview;
         }
 
-        Model = await _assessmentClientService.GetWithId(AssessmentId);
+        Model = await _assessmentClientService.GetWithIdAsync(AssessmentId);
 
         var result = await _questionClientService.GetAll(AssessmentId);
 
@@ -140,4 +140,6 @@ public partial class AnalysisForm
         }
         Snackbar.Add($"You have got {marks} out of {totalMarks}", Severity.Success);
     }
+
+    #endregion
 }

@@ -2,27 +2,27 @@
 
 public interface IAssessmentClientService
 {
-    Task<List<AssessmentDto>> GetAll();
+    Task<Result> CreateAsync(AssessmentDto assessmentDto);
 
-    Task<AssessmentDto> GetWithId(string uniqueId);
+    Task<List<AssessmentDto>> GetAllAsync();
 
-    Task<Result> Create(AssessmentDto assessmentDto);
+    Task<AssessmentDto> GetWithIdAsync(string assessmentId);
 
-    Task<Result> Update(AssessmentDto assessmentDto);
+    Task<Result> UpdateAsync(AssessmentDto assessmentDto);
 
-    Task<Result> Delete(string uniqueId);
+    Task<Result> DeleteAsync(string assessmentId);
 
-    Task<Result> GetAllScoreCategory();
+    Task<Result> CreateScoreCategoriesAsync(List<ScoreCategoryDto> scoreCategories);
 
-    Task<Result> CreateScoreCategories(List<ScoreCategoryDto> scoreCategories);
+    Task<Result> CreateScoreCategoryAsync(ScoreCategoryDto scoreCategory);
 
-    Task<Result> GetScoreCategoryWithId(string uniqueId);
+    Task<Result> GetAllScoreCategoryAsync();
 
-    Task<Result> CreateScoreCategory(ScoreCategoryDto scoreCategory);
+    Task<Result> GetScoreCategoryWithIdAsync(string scoreCategoryId);
 
-    Task<Result> UpdateScoreCategory(ScoreCategoryDto scoreCategory);
+    Task<Result> UpdateScoreCategoryAsync(ScoreCategoryDto scoreCategory);
 
-    Task<Result> AssignAssessment(string assessmentId, string userId);
+    Task<Result> AssignAssessmentAsync(string assessmentId, string userId);
 
-    Task<Result> GetUserAssessment(string userId);
+    Task<Result> GetUserAssessmentAsync(string userId);
 }

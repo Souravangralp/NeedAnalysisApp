@@ -6,7 +6,7 @@
                     <MudList T="string">
                         @foreach (var item in QuestionTypes)
                         {
-                            <MudListItem Text="@item.Question" Icon="@Icons.Material.Filled.Inbox" OnClick="() => onOptionSelect(item.Id)" />
+                            <MudListItem Text="@item.Question" Icon="@Icons.Material.Filled.Inbox" OnClick="() => OnOptionSelect(item.Id)" />
                         }
                     </MudList>
                 </MudItem>

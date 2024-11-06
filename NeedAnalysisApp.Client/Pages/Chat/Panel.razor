@@ -1,6 +1,6 @@
 ﻿@page "/chat/{UserId}"
 
-<MudContainer Style="height: 500px; overflow-y: auto;">
+<MudContainer Class="rounded-xl" Style="@($"height: 500px; overflow-y: auto; color: {Colors.BlueGray.Lighten4}; background:{Colors.BlueGray.Darken4};")">
 
     @if (IsDefault)
     {
@@ -116,7 +116,7 @@
                         @foreach (var file in _files)
                         {
                             <MudListItem Icon="@Icons.Material.Filled.AttachFile" @key="@file">
-                                @file.Name <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Cancel" OnClick="RemoveImage"></MudIconButton>
+                                @file.Name <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Cancel" OnClick="RemoveImageAsync"></MudIconButton>
                             </MudListItem>
                         }
                     </MudList>
@@ -131,12 +131,12 @@
                     <MudGrid>
                         <MudFileUpload Class="ms-1 xs=12 sm-3" Style="margin: 5px;" T="IBrowserFile" FilesChanged="UploadFiles" Accept=".png, .jpg .pdf">
                             <ActivatorContent>
-                                <MudFab Color="Color.Success"
+                                <MudFab Style="@($"background: {Colors.BlueGray.Lighten5}")"
                                         StartIcon="@Icons.Material.Filled.AttachFile" />
                             </ActivatorContent>
                         </MudFileUpload>
-                        <MudTextField Class="ms-1 xs=12 sm-5" @bind-Value="MessageText" Label="Type a message" Variant="Variant.Outlined" />
-                        <MudButton Class="ms-1 xs=12 sm-4" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="SendMessage">Send</MudButton>
+                        <MudTextField Class="ms-1 xs=12 sm-5 mx-4 rounded-xl" Style="@($"background:{Colors.Gray.Lighten5};")" @bind-Value="MessageText" Label="Type a message" Variant="Variant.Outlined" />
+                        <MudButton Class="ms-1 xs=12 sm-4 mx-4 rounded-xl" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="SendMessageAsync">Send</MudButton>
                     </MudGrid>
 
                 </MudContainer>

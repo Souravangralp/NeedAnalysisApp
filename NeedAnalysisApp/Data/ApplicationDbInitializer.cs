@@ -108,7 +108,7 @@ public class ApplicationDbInitializer
             }
         }
 
-        // Create a default admin user
+        // CreateAsync a default admin user
         var userCollections = DatabaseSeeder.GetDemoUserCollection();
 
         foreach (var userCollection in userCollections)

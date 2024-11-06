@@ -1,17 +1,9 @@
 ﻿@page "/industries"
-@using NeedAnalysisApp.Client.Pages.Common
-@using NeedAnalysisApp.Client.Repositories.Interfaces
-@using NeedAnalysisApp.Client.Repositories.Services
-@using NeedAnalysisApp.Shared.Common
-@using NeedAnalysisApp.Shared.Dto
-@inject IIndustryClientService IIndustryClientService;
-@inject IDialogService DialogService;
-@inject ISnackbar Snackbar;
 
 <AuthorizeView>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large">
 
-        <MudTable Items="@Industries" Dense="@dense" Hover="@hover" Bordered="@bordered" Filter="new Func<IndustryDto,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1" Loading="IsLoading">
+        <MudTable Items="@Industries" Dense="@dense" Hover="@hover" Bordered="@bordered" Filter="new Func<IndustryDto,bool>(FilterFunc1)" @bind-SelectedItem="selectedIndustry" Loading="IsLoading">
             <ToolBarContent>
                 <MudText Typo="Typo.h6">Industries</MudText>
                 <MudSpacer />
@@ -21,14 +13,14 @@
                              Color="Color.Primary"
                              Label="@(IncludeInActive is null ? "All" : IncludeInActive == true ? "Active" : "In Active")"
                              TriState="true"
-                             ValueChanged="OnChangeIncludeActive">
+                             ValueChanged="OnChangeIncludeActiveAsync">
                 </MudCheckBox>
                 <MudSpacer />
 
-                <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                <MudTextField @bind-Value="searchedValue" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                 <MudSpacer />
 
-                <MudButton Color="Color.Primary" Class="ms-2" StartIcon="@Icons.Material.Filled.AddCircle" OnClick="OnAddIndustry">Add</MudButton>
+                <MudButton Color="Color.Primary" Class="ms-2" StartIcon="@Icons.Material.Filled.AddCircle" OnClick="AddIndustryAsync">Add</MudButton>
             </ToolBarContent>
             <HeaderContent>
                 <MudTh>Name</MudTh>
@@ -41,8 +33,8 @@
                 <MudTd DataLabel="Code">@rowData.Code</MudTd>
                 <MudTd DataLabel="Description">@rowData.Description</MudTd>
                 <MudTd>
-                    <MudIconButton Color="Color.Warning" Icon="@Icons.Material.Filled.Edit" OnClick="(e) =>  OnEdit(rowData)" />
-                    <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Delete" OnClick="(e) =>  OnDelete(rowData)" />
+                    <MudIconButton Color="Color.Warning" Icon="@Icons.Material.Filled.Edit" OnClick="(e) =>  OnEditAsync(rowData)" />
+                    <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Delete" OnClick="(e) =>  OnDeleteAsync(rowData)" />
                 </MudTd>
             </RowTemplate>
             <PagerContent>
@@ -52,148 +44,3 @@
 
     </MudContainer>
 </AuthorizeView>
-
-@code {
-    public bool IsLoading { get; set; } = true;
-    public bool? IncludeInActive { get; set; } = null;
-    private bool dense = true;
-    private bool hover = true;
-    private bool bordered = true;
-    private string searchString1 = "";
-    private IndustryDto selectedItem1 = null;
-    private HashSet<IndustryDto> selectedItems = new HashSet<IndustryDto>();
-
-
-    public async void OnChangeIncludeActive(bool? value)
-    {
-        IncludeInActive = value;
-
-        List<IndustryDto> industries = [];
-
-        industries = await IIndustryClientService.GetAll();
-
-        IsLoading = true;
-
-        if (IncludeInActive == null)
-        {
-            Industries = industries;
-        }
-        if (IncludeInActive == true)
-        {
-            Industries = industries.Where(x => x.IsActive == true).ToList();
-        }
-        if (IncludeInActive == false)
-        {
-            Industries = industries.Where(x => x.IsActive == false).ToList();
-        }
-
-        IsLoading = false;
-
-        StateHasChanged();
-    }
-
-    private List<IndustryDto> Industries = [];
-
-    protected override async Task OnInitializedAsync()
-    {
-        IsLoading = true;
-
-        var industries = await IIndustryClientService.GetAll();
-
-        Industries = industries.Where(x => x.IsActive == true).ToList();
-
-        IncludeInActive = true;
-
-        IsLoading = false;
-
-        StateHasChanged();
-    }
-
-    private bool FilterFunc1(IndustryDto element) => FilterFunc(element, searchString1);
-
-    private bool FilterFunc(IndustryDto element, string searchString)
-    {
-        if (string.IsNullOrWhiteSpace(searchString))
-            return true;
-        if (element.Code.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        if ($"{element.Code} {element.Name} {element.Description}".Contains(searchString))
-            return true;
-        return false;
-    }
-
-    public async void OnAddIndustry()
-    {
-        var parameters = new DialogParameters<AddEdit>
-        {
-            { x => x.Model, null }
-        };
-
-        var options = new DialogOptions() { CloseButton = true, FullWidth = true, MaxWidth = MaxWidth.Medium };
-
-        var dialog = await DialogService.ShowAsync<AddEdit>("Add new", parameters, options);
-
-        var result = await dialog.Result;
-
-        Industries = await IIndustryClientService.GetAll();
-
-        StateHasChanged();
-    }
-
-    public async void OnEdit(IndustryDto industry)
-    {
-        var parameters = new DialogParameters<AddEdit>
-    {
-    { x => x.Model, industry }
-    };
-
-        var options = new DialogOptions() { CloseButton = true, FullWidth = true, MaxWidth = MaxWidth.Medium };
-
-        var dialog = await DialogService.ShowAsync<AddEdit>($"edit :{industry.Name}", parameters, options);
-
-        var result = await dialog.Result;
-
-        Industries = await IIndustryClientService.GetAll();
-
-        StateHasChanged();
-    }
-
-    public async void OnDelete(IndustryDto industry)
-    {
-        var parameters = new DialogParameters<ConfirmDeleteDialog>
-    {
-    { x => x.ContentText, $"Do you really want to delete {industry.Name}? This process cannot be undone." },
-    { x => x.ButtonText, "Delete" },
-    { x => x.Color, Color.Error }
-    };
-
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Large };
-
-        var dialog = await DialogService.ShowAsync<ConfirmDeleteDialog>("Delete", parameters, options);
-
-        var result = await dialog.Result;
-
-        if (!result.Canceled)
-        {
-            var actionResult = await IIndustryClientService.Delete(industry.UniqueId);
-
-            if (!actionResult.Success && actionResult.Errors.Any())
-            {
-                foreach (var error in actionResult.Errors)
-                {
-                    Snackbar.Add(error.Message, Severity.Error);
-                }
-            }
-            else
-            {
-                Snackbar.Add("Industry Deleted", Severity.Success);
-            }
-
-            Industries = await IIndustryClientService.GetAll();
-
-            StateHasChanged();
-        }
-    }
-}

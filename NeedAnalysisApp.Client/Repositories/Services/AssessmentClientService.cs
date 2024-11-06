@@ -2,15 +2,27 @@
 
 public class AssessmentClientService : IAssessmentClientService
 {
-    private readonly HttpClient httpClient;
+    #region Fields
+
+    private readonly HttpClient _httpClient;
+
+    #endregion
+
+    #region Ctor
 
     public AssessmentClientService(HttpClient httpClient)
     {
-        this.httpClient = httpClient;
+        _httpClient = httpClient;
     }
-    public async Task<Result> Create(AssessmentDto assessmentDto)
+
+    #endregion
+
+    #region Methods
+
+    public async Task<Result> CreateAsync(AssessmentDto assessmentDto)
     {
-        var response = await httpClient.PostAsJsonAsync("https://localhost:7028/api/assessment", assessmentDto);
+        //var response = await _httpClient.PostAsJsonAsync("https://localhost:7028/api/assessment", assessmentDto);
+        var response = await _httpClient.PostAsJsonAsync(Assessment.Create, assessmentDto);
 
         if (response.IsSuccessStatusCode)
         {
@@ -23,24 +35,10 @@ public class AssessmentClientService : IAssessmentClientService
         }
     }
 
-    public async Task<Result> Delete(string uniqueId)
+    public async Task<List<AssessmentDto>> GetAllAsync()
     {
-        var response = await httpClient.DeleteAsync($"https://localhost:7028/api/assessment/{uniqueId}");
-
-        if (response.IsSuccessStatusCode)
-        {
-            return await response.Content.ReadFromJsonAsync<Result>(); // Deserializing the response to 'Result' object
-            //return result; // Return or use the result as needed
-        }
-        else
-        {
-            throw new HttpRequestException($"Failed to create industry. Status code: {response.StatusCode}");
-        }
-    }
-
-    public async Task<List<AssessmentDto>> GetAll()
-    {
-        var response = await httpClient.GetAsync("https://localhost:7028/api/assessment");
+        //var response = await _httpClient.GetAsync("https://localhost:7028/api/assessment");
+        var response = await _httpClient.GetAsync(Assessment.GetAll);
 
         if (response.IsSuccessStatusCode)
         {
@@ -53,11 +51,12 @@ public class AssessmentClientService : IAssessmentClientService
         }
     }
 
-    public async Task<AssessmentDto> GetWithId(string uniqueId)
+    public async Task<AssessmentDto> GetWithIdAsync(string assessmentId)
     {
         try
         {
-            var response = await httpClient.GetAsync($"https://localhost:7028/api/assessment/{uniqueId}");
+            //var response = await _httpClient.GetAsync($"https://localhost:7028/api/assessment/{assessmentId}");
+            var response = await _httpClient.GetAsync(string.Format(Assessment.Get, assessmentId));
 
             if (response.IsSuccessStatusCode)
             {
@@ -76,9 +75,24 @@ public class AssessmentClientService : IAssessmentClientService
         }
     }
 
-    public async Task<Result> Update(AssessmentDto assessmentDto)
+    public async Task<Result> UpdateAsync(AssessmentDto assessmentDto)
     {
-        var response = await httpClient.PatchAsJsonAsync("https://localhost:7028/api/assessment", assessmentDto);
+        var response = await _httpClient.PatchAsJsonAsync(Assessment.Update, assessmentDto);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<Result>();
+        }
+        else
+        {
+            throw new HttpRequestException($"Failed to create industry. Status code: {response.StatusCode}");
+        }
+    }
+
+    public async Task<Result> DeleteAsync(string assessmentId)
+    {
+        //var response = await _httpClient.DeleteAsync($"https://localhost:7028/api/assessment/{assessmentId}");
+        var response = await _httpClient.DeleteAsync(string.Format(Assessment.Delete, assessmentId));
 
         if (response.IsSuccessStatusCode)
         {
@@ -91,11 +105,44 @@ public class AssessmentClientService : IAssessmentClientService
         }
     }
 
-    public async Task<Result> GetAllScoreCategory()
+    #region score category
+
+    public async Task<Result> CreateScoreCategoriesAsync(List<ScoreCategoryDto> scoreCategories)
+    {
+        //var response = await _httpClient.PostAsJsonAsync("https://localhost:7028/api/assessment/scoreCategories/add", scoreCategories);
+        var response = await _httpClient.PostAsJsonAsync(Assessment.ScoreCategory.Create, scoreCategories);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<Result>() ?? new Result();
+        }
+        else
+        {
+            throw new HttpRequestException($"Failed to create industry. Status code: {response.StatusCode}");
+        }
+    }
+
+    public async Task<Result> CreateScoreCategoryAsync(ScoreCategoryDto scoreCategory)
+    {
+        //var response = await _httpClient.PostAsJsonAsync("https://localhost:7028/api/assessment/scoreCategories/add-new", scoreCategory);
+        var response = await _httpClient.PostAsJsonAsync(Assessment.ScoreCategory.CreateSingle, scoreCategory);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<Result>() ?? new Result(); // Deserializing the response to 'Result' object
+        }
+        else
+        {
+            throw new HttpRequestException($"Failed to create industry. Status code: {response.StatusCode}");
+        }
+    }
+
+    public async Task<Result> GetAllScoreCategoryAsync()
     {
         try
         {
-            var response = await httpClient.GetAsync($"https://localhost:7028/api/assessment/scoreCategories");
+            //var response = await _httpClient.GetAsync($"https://localhost:7028/api/assessment/scoreCategories");
+            var response = await _httpClient.GetAsync(Assessment.ScoreCategory.GetAll);
 
             if (response.IsSuccessStatusCode)
             {
@@ -113,9 +160,10 @@ public class AssessmentClientService : IAssessmentClientService
         }
     }
 
-    public async Task<Result> CreateScoreCategories(List<ScoreCategoryDto> scoreCategories)
+    public async Task<Result> GetScoreCategoryWithIdAsync(string uniqueId)
     {
-        var response = await httpClient.PostAsJsonAsync("https://localhost:7028/api/assessment/scoreCategories/add", scoreCategories);
+        //var response = await _httpClient.GetAsync($"https://localhost:7028/api/assessment/scoreCategories/{uniqueId}");
+        var response = await _httpClient.GetAsync(string.Format(Assessment.ScoreCategory.Get, uniqueId));
 
         if (response.IsSuccessStatusCode)
         {
@@ -127,9 +175,10 @@ public class AssessmentClientService : IAssessmentClientService
         }
     }
 
-    public async Task<Result> GetScoreCategoryWithId(string uniqueId)
+    public async Task<Result> UpdateScoreCategoryAsync(ScoreCategoryDto scoreCategory)
     {
-        var response = await httpClient.GetAsync($"https://localhost:7028/api/assessment/scoreCategories/{uniqueId}");
+        //var response = await _httpClient.PostAsJsonAsync("https://localhost:7028/api/assessment/scoreCategories/update", scoreCategory);
+        var response = await _httpClient.PostAsJsonAsync(Assessment.ScoreCategory.Update, scoreCategory);
 
         if (response.IsSuccessStatusCode)
         {
@@ -141,37 +190,15 @@ public class AssessmentClientService : IAssessmentClientService
         }
     }
 
-    public async Task<Result> CreateScoreCategory(ScoreCategoryDto scoreCategory)
+    #endregion
+
+    #region assign
+
+    public async Task<Result> AssignAssessmentAsync(string assessmentId, string userId)
     {
-        var response = await httpClient.PostAsJsonAsync("https://localhost:7028/api/assessment/scoreCategories/add-new", scoreCategory);
+        //var response = await _httpClient.PostAsJsonAsync($"https://localhost:7028/api/assessment/assign/{userId}/{assessmentId}", new { });
 
-        if (response.IsSuccessStatusCode)
-        {
-            return await response.Content.ReadFromJsonAsync<Result>() ?? new Result(); // Deserializing the response to 'Result' object
-        }
-        else
-        {
-            throw new HttpRequestException($"Failed to create industry. Status code: {response.StatusCode}");
-        }
-    }
-
-    public async Task<Result> UpdateScoreCategory(ScoreCategoryDto scoreCategory)
-    {
-        var response = await httpClient.PostAsJsonAsync("https://localhost:7028/api/assessment/scoreCategories/update", scoreCategory);
-
-        if (response.IsSuccessStatusCode)
-        {
-            return await response.Content.ReadFromJsonAsync<Result>() ?? new Result(); // Deserializing the response to 'Result' object
-        }
-        else
-        {
-            throw new HttpRequestException($"Failed to create industry. Status code: {response.StatusCode}");
-        }
-    }
-
-    public async Task<Result> AssignAssessment(string assessmentId, string userId)
-    {
-        var response = await httpClient.PostAsJsonAsync($"https://localhost:7028/api/assessment/assign/{userId}/{assessmentId}", new { });
+        var response = await _httpClient.PostAsJsonAsync(string.Format(Assessment.User.Assign, userId, assessmentId), new { });
 
         if (response.IsSuccessStatusCode)
         {
@@ -184,9 +211,10 @@ public class AssessmentClientService : IAssessmentClientService
         }
     }
 
-    public async Task<Result> GetUserAssessment(string userId)
+    public async Task<Result> GetUserAssessmentAsync(string userId)
     {
-        var response = await httpClient.GetAsync($"https://localhost:7028/api/assessment/user/{userId}");
+        //var response = await _httpClient.GetAsync($"https://localhost:7028/api/assessment/user/{userId}");
+        var response = await _httpClient.GetAsync(string.Format(Assessment.User.Get, userId));
 
         if (response.IsSuccessStatusCode)
         {
@@ -197,4 +225,8 @@ public class AssessmentClientService : IAssessmentClientService
             throw new HttpRequestException($"Failed to create industry. Status code: {response.StatusCode}");
         }
     }
+
+    #endregion
+
+    #endregion
 }

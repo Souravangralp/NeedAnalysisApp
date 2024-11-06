@@ -1,22 +1,20 @@
-﻿using Microsoft.AspNetCore.Components;
-using NeedAnalysisApp.Client.Repositories.Interfaces;
-using NeedAnalysisApp.Shared.Dto;
-
-namespace NeedAnalysisApp.Client.Pages.Admins;
+﻿namespace NeedAnalysisApp.Client.Pages.Admins;
 
 public partial class Dashboard
 {
-    [Inject] public IIndustryClientService _industryClientService { get; set; } = null!;
+    #region Fields
 
-    [Inject] public IAssessmentClientService _assessmentClientService { get; set; } = null!;
+    [Inject] private IIndustryClientService _industryClientService { get; set; } = null!;
 
-    [Inject] public IUserClientService _userClientService { get; set; } = null!;
+    [Inject] private IAssessmentClientService _assessmentClientService { get; set; } = null!;
 
-    [Inject] public NavigationManager NavigationManager { get; set; } = null!;
+    [Inject] private IUserClientService _userClientService { get; set; } = null!;
 
-    public double[] data = Array.Empty<double>();
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
-    public string[] labels = Array.Empty<string>();
+    private double[] data = Array.Empty<double>();
+
+    private string[] labels = Array.Empty<string>();
 
     private int Index = 1; //default value cannot be 0 -> first selected index is 0.
 
@@ -24,23 +22,27 @@ public partial class Dashboard
 
     private List<UserDto> Users = [];
 
-    public double SelectedIndex { get; set; } = 0;
+    private double SelectedIndex { get; set; } = 0;
 
-    public int ActiveAssessment { get; set; } = 0;
+    private int ActiveAssessment { get; set; } = 0;
 
-    public int InActiveAssessment { get; set; } = 0;
+    private int InActiveAssessment { get; set; } = 0;
 
-    public string SelectedIndustryType { get; set; } = "";
+    private string SelectedIndustryType { get; set; } = "";
+
+    #endregion
+
+    #region Methods
 
     protected override async Task OnInitializedAsync()
     {
-        Users = await _userClientService.GetAll("User");
+        Users = await _userClientService.GetAllAsync("User");
 
-        Industries = await _industryClientService.GetAll();
+        Industries = await _industryClientService.GetAllAsync();
 
         labels = Industries.Select(x => x.Name).ToArray();
 
-        var assessments = await _assessmentClientService.GetAll();
+        var assessments = await _assessmentClientService.GetAllAsync();
 
         ActiveAssessment = assessments.Where(x => x.IsLive).Count();
 
@@ -50,11 +52,9 @@ public partial class Dashboard
 
         foreach (var assessment in assessments)
         {
-            // Check if the IndustryType of the assessment is in the labels
             var index = Array.IndexOf(labels, assessment.IndustryType);
             if (index >= 0)
             {
-                // Increment the count at the found index
                 data[index]++;
             }
         }
@@ -68,12 +68,10 @@ public partial class Dashboard
 
         var selectedIndustryType = labels[currentValue];
 
-        // Get the count of assessments for the selected index
-        var assessments = await _assessmentClientService.GetAll();
+        var assessments = await _assessmentClientService.GetAllAsync();
 
         var count = assessments.Count(assessment => assessment.IndustryType == selectedIndustryType);
 
-        // You can store the count in a field if needed
         SelectedIndex = count;
 
         SelectedIndustryType = selectedIndustryType;
@@ -86,7 +84,5 @@ public partial class Dashboard
         NavigationManager.NavigateTo("/assessment");
     }
 
-
-
-
+    #endregion
 }
