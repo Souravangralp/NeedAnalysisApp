@@ -24,6 +24,10 @@ public partial class Home
 
     public Dictionary<string, object> parameters { get; set; } = new();
 
+    private string SearchedUser = "";
+
+    private List<UserChatDto> UserChats { get; set; } = [];
+
     #endregion
 
     #region Methods
@@ -120,6 +124,43 @@ public partial class Home
         return hubConnection;
     }
 
+    private async Task<IEnumerable<string>> OnSearch(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+        {
+            var userCollection = await _userClientService.GetAllAsync(null);
+            var currentUser = await GetCurrentUser();
+
+            Users.Clear();
+            SetCurrentUserToTop(currentUser);
+
+            return Enumerable.Empty<string>();
+        }
+
+        SearchedUser = value;
+
+        var matchedUsers = Users
+            .Where(x =>
+                x.FirstName.StartsWith(value, StringComparison.InvariantCultureIgnoreCase) ||
+                x.FirstName.Equals(value, StringComparison.InvariantCultureIgnoreCase)
+            )
+            .ToList();
+
+        var finalUsers = Users
+            .Where(x => x.FirstName.Contains(value, StringComparison.InvariantCultureIgnoreCase))
+            .ToList();
+
+        var combinedUsers = finalUsers.Concat(matchedUsers).Distinct().ToList();
+
+        Users = combinedUsers;
+
+        StateHasChanged();
+
+        return combinedUsers.Select(x => x.FirstName);
+    }
+
     private async Task<UserDto> GetCurrentUser()
     {
         var userDto = new UserDto();
@@ -175,16 +216,16 @@ public partial class Home
         }
     }
 
-    private void OpenChat(string id)
+    private async void OpenChat(string userId)
     {
         parameters.Remove("UserId");
         parameters.Remove("IsDefault");
-        parameters["UserId"] = id;
+        parameters["UserId"] = userId;
         parameters["IsDefault"] = false;
         parameters["OnReadAllMessages"] = EventCallback.Factory.Create<bool>(
                                                 this, HandleMessageRead);
 
-        var user = Users.FirstOrDefault(u => u.Id == id);
+        var user = Users.FirstOrDefault(u => u.Id == userId);
 
         if (user != null)
         {
@@ -196,9 +237,9 @@ public partial class Home
 
     private async void HandleMessageRead()
     {
-        var currentUser = await GetCurrentUser();
+        //var currentUser = await GetCurrentUser();
 
-        SetCurrentUserToTop(currentUser);
+        //SetCurrentUserToTop(currentUser);
 
         StateHasChanged();
     }

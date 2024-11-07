@@ -283,7 +283,6 @@ public partial class Panel
         _files.Add(file);
     }
 
-
     public async ValueTask DisposeAsync()
     {
         if (_hubConnection is not null)

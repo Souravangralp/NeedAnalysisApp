@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "NeedAnalysisApp.Client",
   "resources": {
-    "hash": "sha256-L3sdCdXhO7SMQ7nPEpzFcqrbxuZL5hvDWfKdVO2H6u0=",
+    "hash": "sha256-HDaHS/AoPDZuPiXPzV5iacYgmFdRN5wNmr1i8uFmK5o=",
     "jsModuleNative": {
       "dotnet.native.8.0.10.qnf4pv5oae.js": "sha256-QVxMlY7ohmjgde/bZMA0dlWDAeuUP+tEfkiSdg4DFcE="
     },
@@ -227,11 +227,11 @@
       "netstandard.wasm": "sha256-v+s7sWxtOM6bnOvC0jFrtnm6uMfbDymwl2nHNgbS2LM=",
       "System.Private.CoreLib.wasm": "sha256-pklll63uFQoY6vaD3vbluS9osYiJWLLLmob1yHFgepI=",
       "NeedAnalysisApp.Shared.wasm": "sha256-3r0Ok26dcMR8E/5OyNmUtLZBEsrPhNCots6zAXcaEPA=",
-      "NeedAnalysisApp.Client.wasm": "sha256-TKiRVEkqSKDNkUH2bq9Y+zK744sC44a48aqqE0iPLhk="
+      "NeedAnalysisApp.Client.wasm": "sha256-VqQRVGZZ786j8hBlbJfb40TEYkqvMzf+ncU34WeOE0M="
     },
     "pdb": {
       "NeedAnalysisApp.Shared.pdb": "sha256-fdQ5gn5v7z/QRIch6cTV/52jr0p/ij2RgVvLnFIBEmA=",
-      "NeedAnalysisApp.Client.pdb": "sha256-WqOuX9r6InPyDOJ6kf+9DULqvf4K4u2grf9UGcUr19s="
+      "NeedAnalysisApp.Client.pdb": "sha256-3dZHqEW2cEtovExrXdz08GnEJzr8vA9UyOjJ87e+k3o="
     }
   },
   "cacheBootResources": true,
