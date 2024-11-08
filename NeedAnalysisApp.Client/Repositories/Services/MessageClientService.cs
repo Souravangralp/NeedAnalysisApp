@@ -52,15 +52,15 @@ public class MessageClientService : IMessageClientService
         }
     }
 
-    public async Task<bool> MarkMessageRead(string messageId, string receiverId)
+    public async Task<bool> MarkMessageRead(MessageDto message)
     {
-        if (string.IsNullOrWhiteSpace(messageId))
+        if (string.IsNullOrWhiteSpace(message.UniqueId))
         {
             return false;
         }
 
         //var response = await _httpClient.PostAsync($"https://localhost:7028/api/messages/{messageId}/markRead/{receiverId}", null);
-        var response = await _httpClient.PostAsync(Message.MarkRead, null);
+        var response = await _httpClient.PostAsync(string.Format(Message.MarkRead, message.UniqueId, message.SenderId, message.ReceiverId), null);
 
         if (response.IsSuccessStatusCode)
         {

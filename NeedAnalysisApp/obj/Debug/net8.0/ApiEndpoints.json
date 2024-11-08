@@ -627,18 +627,23 @@
   {
     "ContainingType": "NeedAnalysisApp.Controllers.MessagesController",
     "Method": "MarkRead",
-    "RelativePath": "api/messages/{messageId}/markRead/{receiverId}",
+    "RelativePath": "api/messages/{messageId}/markRead/senderId:{senderId}/receiverId:{receiverId}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "messageId",
+        "Name": "senderId",
         "Type": "System.String",
         "IsRequired": true
       },
       {
         "Name": "receiverId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "messageId",
         "Type": "System.String",
         "IsRequired": true
       }

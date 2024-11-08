@@ -10,7 +10,7 @@ public static class Routes
 
         public const string Send = "api/messages";
 
-        public const string MarkRead = "api/messages/{0}/markRead/{1}";
+        public const string MarkRead = "api/messages/{0}/markRead/senderId:{1}/receiverId:{2}";
     }
 
     public static class Assessment

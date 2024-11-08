@@ -6,7 +6,7 @@ public interface IMessageService
 
     Task<List<MessageDto>> GetMessages(string otherUserId, string receiverId);
 
-    Task<bool> MarkRead(string messageId, string receiverId);
+    Task<bool> MarkReadAsync(string senderId, string receiverId, string messageId);
 
     Task<MessageDto> GetMessageByIdAsync(Guid messageId);
 }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yYU1neEbgOPOHtL29wbJQ9Oh2WbVbd/JT9oP4wICBBs=",
+  "Hash": "5oDUE176tr0YxuCrjtRTZ8H/doPVGGcXjHGTzBrIlVk=",
   "Source": "NeedAnalysisApp",
   "BasePath": "_content/NeedAnalysisApp",
   "Mode": "Default",
@@ -8793,6 +8793,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Screenshot 2024-08-12 165809.png"
+    },
+    {
+      "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\Screenshot 2024-08-13 132009.png",
+      "SourceId": "NeedAnalysisApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\",
+      "BasePath": "_content/NeedAnalysisApp",
+      "RelativePath": "images/Screenshot 2024-08-13 132009.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Screenshot 2024-08-13 132009.png"
     },
     {
       "Identity": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\Screenshot 2024-08-13 132940.png",

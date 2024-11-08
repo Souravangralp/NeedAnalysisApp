@@ -1,5 +1,7 @@
 ﻿@page "/chat/{UserId}"
 
+@implements IAsyncDisposable
+
 <MudContainer Class="rounded-xl" Style="@($"height: 500px; overflow-y: auto; color: {Colors.BlueGray.Lighten4}; background:{Colors.BlueGray.Darken4};")">
 
     @if (IsDefault)
@@ -17,7 +19,7 @@
                 <MudList T="string">
                     <MudListItem Text="@(ChatPerson.FirstName)">
                         <AvatarContent>
-                            <MudBadge Dot="true" Color="Color.Success" Class="mx-6 my-4">
+                            <MudBadge Dot="ChatPerson.IsOnline" Color="@(ChatPerson.IsOnline ? Color.Success : Color.Error)" Class="mx-6 my-4">
                                 <MudAvatar>
                                     <MudImage Src="@ChatPerson.ProfilePictureUrl" />
                                 </MudAvatar>

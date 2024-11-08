@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using System.Data;
-using System.Security.Claims;
-
 namespace NeedAnalysisApp.Client
 {
     // This is a client-side AuthenticationStateProvider that determines the user's authentication state by

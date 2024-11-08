@@ -1,5 +1,4 @@
-﻿
-public class PdfService
+﻿public class PdfService
 {
     private readonly IConverter _converter;
 

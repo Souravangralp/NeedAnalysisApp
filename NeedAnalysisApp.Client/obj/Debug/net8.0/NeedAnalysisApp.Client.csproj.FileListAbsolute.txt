@@ -2139,6 +2139,13 @@ D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Client\obj\Debug\net8.0\compre
 D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\f9279nq45h.gz
 D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\fokpljnudv.gz
 D:\LpInfotech\work 2\NeedAnalysis\NeedAnalysisApp.Client\obj\Debug\net8.0\compressed\4214v3zn6n.gz
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.csproj.AssemblyReference.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.GeneratedMSBuildEditorConfig.editorconfig
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.AssemblyInfoInputs.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.AssemblyInfo.cs
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.csproj.CoreCompileInputs.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.MvcApplicationPartsAssemblyInfo.cache
+D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.sourcelink.json
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\blazor.boot.json
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\blazor.webassembly.js
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\wwwroot\_framework\DinkToPdf.wasm
@@ -2810,13 +2817,6 @@ D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\icud
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\icudt_no_CJK.dat
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\NeedAnalysisApp.Shared.dll
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\bin\Debug\net8.0\NeedAnalysisApp.Shared.pdb
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.csproj.AssemblyReference.cache
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.GeneratedMSBuildEditorConfig.editorconfig
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.AssemblyInfoInputs.cache
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.AssemblyInfo.cs
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.csproj.CoreCompileInputs.cache
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.MvcApplicationPartsAssemblyInfo.cache
-D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\NeedAnalysisApp.Client.sourcelink.json
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\DinkToPdf.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Authorization.wasm
 D:\LpInfotech\Vivek\NeedAnalysisApp\NeedAnalysisApp.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Components.wasm

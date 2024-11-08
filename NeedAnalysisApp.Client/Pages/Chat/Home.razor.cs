@@ -20,8 +20,6 @@ public partial class Home
 
     public List<UserDto> Users { get; set; } = [];
 
-    public List<ChatDto> Chats { get; set; } = [];
-
     public Dictionary<string, object> parameters { get; set; } = new();
 
     private string SearchedUser = "";
@@ -41,6 +39,8 @@ public partial class Home
         parameters["IsDefault"] = true; // Set default state
 
         var currentUser = await GetCurrentUser();
+
+        CurrentPerson = currentUser;
 
         SetCurrentUserToTop(currentUser);
 
@@ -87,24 +87,13 @@ public partial class Home
         {
             var fromUser = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
 
-            // If the message is for the currently open chat
-            if (ChatPerson?.Id == messageDto.SenderId)
+            var receiver = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
+            if (receiver != null)
             {
-                Chats.Add(new ChatDto()
+                // If the receiver is not the current chat person, increase their unread message count
+                if (ChatPerson?.Id != messageDto.SenderId)
                 {
-                    Message = messageDto,
-                    User = CurrentPerson
-                });
-
-                // UpdateAsync the unread message count for the receiver (ChatPerson)
-                var receiver = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
-                if (receiver != null)
-                {
-                    // If the receiver is not the current chat person, increase their unread message count
-                    if (ChatPerson?.Id != messageDto.ReceiverId)
-                    {
-                        receiver.UnreadMessagesCount++;
-                    }
+                    receiver.UnreadMessagesCount++;
                 }
             }
 
@@ -128,12 +117,14 @@ public partial class Home
     {
         await Task.Delay(5, token);
 
+        var currentUser = await GetCurrentUser();
+
         if (string.IsNullOrEmpty(value))
         {
             var userCollection = await _userClientService.GetAllAsync(null);
-            var currentUser = await GetCurrentUser();
-
+            
             Users.Clear();
+
             SetCurrentUserToTop(currentUser);
 
             return Enumerable.Empty<string>();
@@ -155,6 +146,10 @@ public partial class Home
         var combinedUsers = finalUsers.Concat(matchedUsers).Distinct().ToList();
 
         Users = combinedUsers;
+
+        //SetCurrentUserToTop(currentUser);
+
+        await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), currentUser);
 
         StateHasChanged();
 
@@ -205,6 +200,8 @@ public partial class Home
 
         Users.AddRange(allUsers);
 
+        await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), currentUser);
+
         StateHasChanged();
     }
 
@@ -224,6 +221,8 @@ public partial class Home
         parameters["IsDefault"] = false;
         parameters["OnReadAllMessages"] = EventCallback.Factory.Create<bool>(
                                                 this, HandleMessageRead);
+        parameters["OnMessageSent"] = EventCallback.Factory.Create<string>(
+                                                this, HandleMessageNotification);
 
         var user = Users.FirstOrDefault(u => u.Id == userId);
 
@@ -240,6 +239,27 @@ public partial class Home
         //var currentUser = await GetCurrentUser();
 
         //SetCurrentUserToTop(currentUser);
+
+        StateHasChanged();
+    }
+
+    private async void HandleMessageNotification(string receiverId)
+    {
+        if (parameters.ContainsKey("IsDefault") && parameters.ContainsKey("UserId")) { }
+
+        var currentPerson = await GetCurrentUser();
+
+        var messages = await _messageClientService.GetAll(currentPerson.Id, receiverId);
+
+        var unReadMessageCount = messages.Count(x => !x.IsRead);
+
+        foreach (var user in Users)
+        {
+            if (user.Id.Equals(receiverId)) 
+            {
+                user.UnreadMessagesCount = unReadMessageCount;
+            }
+        }
 
         StateHasChanged();
     }

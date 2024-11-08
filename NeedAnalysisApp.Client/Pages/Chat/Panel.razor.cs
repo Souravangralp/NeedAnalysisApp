@@ -1,8 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿namespace NeedAnalysisApp.Client.Pages.Chat;
 
-namespace NeedAnalysisApp.Client.Pages.Chat;
-
-public partial class Panel
+public partial class Panel : IAsyncDisposable
 {
     #region Fields
 
@@ -17,6 +15,10 @@ public partial class Panel
     [Inject] public IFilesClientService _filesClientService { get; set; } = null!;
 
     [Inject] public NavigationManager _navigationManager { get; set; } = null!;
+
+    [Inject] private ISnackbar Snackbar { get; set; } = null!;
+
+    [Parameter] public EventCallback<string> OnMessageSent { get; set; }
 
     [Parameter] public EventCallback<bool> OnReadAllMessages { get; set; }
 
@@ -57,6 +59,10 @@ public partial class Panel
 
         if (!string.IsNullOrWhiteSpace(UserId))
         {
+            //var chatUser = await _userClientService.GetWithIdAsync(UserId);
+
+            //await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), chatUser);
+
             await LoadMessagesAsync();
         }
 
@@ -82,6 +88,10 @@ public partial class Panel
             _files.Clear();
 
             Users = await _userClientService.GetAllAsync(null);
+
+            MessageText = string.Empty;
+
+            //await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), ChatPerson);
         }
 
         StateHasChanged();
@@ -97,7 +107,7 @@ public partial class Panel
 
             if (lastMessage != null && !lastMessage.IsRead)
             {
-                await MarkMessageAsReadAsync(lastMessage.UniqueId, ChatPerson.Id);
+                await MarkMessageAsReadAsync(lastMessage);
 
                 await OnReadAllMessages.InvokeAsync(true);
             }
@@ -144,6 +154,8 @@ public partial class Panel
         {
             var fromUser = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
 
+            ShowSnackBarWithAvatar(fromUser?.FirstName, messageDto.Content, fromUser.ProfilePictureUrl);
+
             if (ChatPerson?.Id == messageDto.SenderId)
             {
                 Chats.Add(new ChatDto()
@@ -155,9 +167,9 @@ public partial class Panel
             StateHasChanged();
         });
 
-        hubConnection.On<string, int>(nameof(IBlazingChatHubClient.UpdateUnreadMessagesCount), (userId, unreadMessagesCount) =>
+        hubConnection.On<string, string, int>(nameof(IBlazingChatHubClient.UpdateUnreadMessagesCount), (senderId, receiverId, unreadMessagesCount) =>
         {
-            var user = Users.FirstOrDefault(u => u.Id == userId);
+            var user = Users.FirstOrDefault(u => u.Id == receiverId);
             if (user != null)
             {
                 user.UnreadMessagesCount = unreadMessagesCount;
@@ -166,6 +178,27 @@ public partial class Panel
         });
 
         return hubConnection;
+    }
+
+    public void ShowSnackBarWithAvatar(string fromUserName, string messageContent, string avatarUrl)
+    {
+        Snackbar.Add(builder =>
+        {
+            builder.OpenElement(0, "div");
+            builder.AddAttribute(1, "class", "d-flex align-items-center");
+
+            builder.OpenComponent<MudAvatar>(2);
+            builder.AddAttribute(3, "Src", avatarUrl);  // Avatar image URL
+            builder.AddAttribute(4, "Size", Size.Large);  // You can adjust the size of the avatar here
+            builder.CloseComponent(); // Close MudAvatar
+
+            builder.OpenElement(5, "span");
+            builder.AddAttribute(6, "class", "ml-2");
+            builder.AddContent(7, $"Received a new message from: {fromUserName}");
+            builder.CloseElement();
+
+            builder.CloseElement(); // Close the div container
+        }, Severity.Info);
     }
 
     private async Task LoadMessagesAsync()
@@ -212,17 +245,17 @@ public partial class Panel
         return userDto;
     }
 
-    private async Task MarkMessageAsReadAsync(string messageId, string receiverId)
+    private async Task MarkMessageAsReadAsync(MessageDto message)
     {
-        var response = await _messageClientService.MarkMessageRead(messageId, receiverId);
+        var response = await _messageClientService.MarkMessageRead(message);
 
         if (response)
         {
-            var message = Chats.FirstOrDefault(chat => chat.Message.UniqueId == messageId)?.Message;
+            var messageToBeMarkedAsRead = Chats.FirstOrDefault(chat => chat.Message.UniqueId == message.UniqueId)?.Message;
 
-            if (message != null)
+            if (messageToBeMarkedAsRead != null)
             {
-                message.IsRead = true;
+                messageToBeMarkedAsRead.IsRead = true;
 
             }
 
@@ -243,19 +276,14 @@ public partial class Panel
     {
         if (!string.IsNullOrWhiteSpace(MessageText) || _files.Any())
         {
-            var messageDto = new MessageDto
-            {
-                Content = MessageText,
-                SenderId = CurrentPerson.Id, 
-                ReceiverId = ChatPerson.Id, 
-                Timestamp = DateTime.Now,
-                File = await GetFileAsync()
-            };
+            var messageDto = await GetMessageAsync();
 
             var response = await _messageClientService.Send(messageDto);
 
             if (response)
             {
+                await OnMessageSent.InvokeAsync(messageDto.ReceiverId);
+
                 MessageText = string.Empty;
 
                 await LoadMessagesAsync();
@@ -264,18 +292,27 @@ public partial class Panel
 
                 _files.Clear();
 
+                await _hubConnection.SendAsync(nameof(IBlazingChatHubClient.MessageSentConfirmation), messageDto);
+
                 StateHasChanged();
             }
         }
     }
 
-    private async Task<FileDto> GetFileAsync()
+    private async Task<MessageDto> GetMessageAsync()
     {
-        FileDto? file = null;
-
         var browserFile = _files.FirstOrDefault();
 
-        return browserFile != null ? await _filesClientService.Upload(browserFile) : new FileDto();
+        var file = browserFile != null ? await _filesClientService.Upload(browserFile) : new FileDto();
+
+        return new MessageDto
+        {
+            Content = MessageText,
+            SenderId = CurrentPerson.Id,
+            ReceiverId = ChatPerson.Id,
+            Timestamp = DateTime.Now,
+            File = file
+        };
     }
 
     private void UploadFiles(IBrowserFile file)

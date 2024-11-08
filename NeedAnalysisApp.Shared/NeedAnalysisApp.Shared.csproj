@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="App.razor" />
+    <None Remove="_Imports.razor" />
+  </ItemGroup>
+
 </Project>

@@ -35,7 +35,10 @@
 </div>
 
 @code {
-    // [Inject] PersistentAuthenticationStateProvider _persistentAuthenticationStateProvider { get; set; } = null!;
+    [Inject] AuthenticationStateProvider _persistentAuthenticationStateProvider { get; set; } = null!;
+
+    // [Inject] HttpClient HttpClient { get; set; } = null!;
+    [Inject] NavigationManager _navigationManager { get; set; } = null!;
 
     public string ImageUrl { get; set; } = "https://randomuser.me/api/portraits/women/47.jpg";
 
@@ -48,29 +51,18 @@
 
     protected async override void OnInitialized()
     {
-        // var authState = await _persistentAuthenticationStateProvider.GetAuthenticationStateAsync();
+        // var _hubConnection = ConfigureHub();
 
-        // var emailId = authState.User.FindFirst(ClaimTypes.Email)?.Value;
+        // _hubConnection.StartAsync();
 
-        // var user = await _userClientService.GetWithIdAsync(emailId);
+        // // var currentUser = await _persistentAuthenticationStateProvider.GetAuthenticationStateAsync();
 
-        // ImageUrl = user.ProfilePictureUrl;
+        // var currentUser = await GetCurrentUser(); 
 
-        StateHasChanged();
+        // await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), currentUser);
+
+        // StateHasChanged();
     }
-
-    // public async string GetImageUrl(string userId)
-    // {
-    //     var authState = await _persistentAuthenticationStateProvider.GetAuthenticationStateAsync();
-
-    //     var emailId = authState.User.FindFirst(ClaimTypes.Email)?.Value;
-
-    //     var user = await _userClientService.GetWithIdAsync(emailId);
-
-    //     ImageUrl = user.ProfilePictureUrl;
-
-    // }
-
 }
 
 

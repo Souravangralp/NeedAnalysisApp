@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using NeedAnalysisApp.Repositories.Interfaces;
-using NeedAnalysisApp.Shared.Common;
 
 namespace NeedAnalysisApp.Controllers;
 

@@ -1,4 +1,24 @@
-html, body {
+.avatar-image-class {
+    width: 40px; /* Avatar size */
+    height: 40px;
+    border-radius: 50%; /* Circle shape */
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+.mud-snackbar-content {
+    display: flex;
+    align-items: center;
+}
+
+
+.mud-avatar {
+    width: 50px; /* Set custom width */
+    height: 50px; /* Set custom height */
+    object-fit: cover; /* Ensures the image fits the container without distortion */
+}
+
+
+/*html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -49,3 +69,4 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+*/

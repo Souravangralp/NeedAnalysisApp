@@ -22,9 +22,9 @@ public class MessagesController : ControllerBase
         return await _messageService.GetMessages(senderId, receiverId);
     }
 
-    [HttpPost("api/messages/{messageId}/markRead/{receiverId}")]
-    public async Task<bool> MarkRead(string messageId, string receiverId)
+    [HttpPost("api/messages/{messageId}/markRead/senderId:{senderId}/receiverId:{receiverId}")]
+    public async Task<bool> MarkRead(string senderId, string receiverId, string messageId)
     {
-        return await _messageService.MarkRead(messageId, receiverId);
+        return await _messageService.MarkReadAsync(senderId, receiverId, messageId);
     }
 }

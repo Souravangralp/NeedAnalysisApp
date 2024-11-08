@@ -1,20 +1,59 @@
-﻿
-
-namespace NeedAnalysisApp.Repositories.Services;
+﻿namespace NeedAnalysisApp.Repositories.Services;
 
 public class MessageService : IMessageService
 {
+    #region Fields
 
     private readonly IHubContext<ChatHub, IBlazingChatHubClient> _hubContext;
     private readonly ApplicationDbContext _context;
 
-    public MessageService(ApplicationDbContext context, IHubContext<ChatHub, IBlazingChatHubClient> hubContext)
+    #endregion
+
+    #region Ctor
+
+    public MessageService(ApplicationDbContext context, 
+        IHubContext<ChatHub, IBlazingChatHubClient> hubContext)
     {
         _context = context;
         _hubContext = hubContext;
     }
 
-    #region Working Methods
+    #endregion
+
+    #region Methods
+
+    public async Task<Result> SendMessageAsync(MessageDto messageDto)
+    {
+        if (string.IsNullOrWhiteSpace(messageDto.ReceiverId) || string.IsNullOrWhiteSpace(messageDto.SenderId))
+            return new Result() { Success = false };
+
+        var message = GetMessageAsync(messageDto);
+
+        await _context.Messages.AddAsync(message);
+
+        if (await _context.SaveChangesAsync() > 0)
+        {
+            var responseMessageDto = new MessageDto()
+            {
+                ReceiverId = message.ApplicationUser_ReceiverId,
+                SenderId = message.ApplicationUser_SenderId,
+                Content = message.Content,
+                Timestamp = message.SentOn
+            };
+
+            await _hubContext.Clients.User(messageDto.ReceiverId).MessageReceived(messageDto);
+
+            var unreadMessageCount = await _context.Messages.Where(m => m.ApplicationUser_SenderId == responseMessageDto.SenderId && m.ApplicationUser_ReceiverId == responseMessageDto.ReceiverId).CountAsync(x => !x.IsRead);
+
+            await _hubContext.Clients.User(messageDto.SenderId).UpdateUnreadMessagesCount(messageDto.SenderId, messageDto.ReceiverId, unreadMessageCount);
+
+            return new Result() { Success = true };
+        }
+        else
+        {
+            return new Result() { Success = false };
+        }
+    }
 
     public async Task<List<MessageDto>> GetMessages(string senderId, string receiverId)
     {
@@ -50,56 +89,48 @@ public class MessageService : IMessageService
         throw new NotImplementedException();
     }
 
-    public async Task<Result> SendMessageAsync(MessageDto messageDto)
+    private static Message GetMessageAsync(MessageDto messageDto)
     {
-        if (string.IsNullOrWhiteSpace(messageDto.ReceiverId) || string.IsNullOrWhiteSpace(messageDto.SenderId))
-            return new Result() { Success = false };
+        #region remove this
+        //make use of auto mapper
 
-        var file = (messageDto.File != null) ? new Data.Models.Chat.File
-        {
-            FileName = messageDto.File.FileName,
-            FileUrl = messageDto.File.FileUrl,
-            FileType = messageDto.File.FileType,
-        } : null;
+        //var file = (messageDto.File != null) ? new Data.Models.Chat.File
+        //{
+        //    FileName = messageDto.File.FileName,
+        //    FileUrl = messageDto.File.FileUrl,
+        //    FileType = messageDto.File.FileType,
+        //} : null;
 
-        var message = new Message
+        //var message = new Message
+        //{
+        //    ApplicationUser_SenderId = messageDto.SenderId,
+        //    ApplicationUser_ReceiverId = messageDto.ReceiverId,
+        //    Content = messageDto.Content,
+        //    SentOn = DateTime.Now,
+        //    File = file,
+        //};
+
+        //return message;
+
+        #endregion
+
+        //make use of auto mapper
+        return new Message()
         {
             ApplicationUser_SenderId = messageDto.SenderId,
             ApplicationUser_ReceiverId = messageDto.ReceiverId,
             Content = messageDto.Content,
             SentOn = DateTime.Now,
-            File = file,
-        };
-
-        await _context.Messages.AddAsync(message);
-
-        if (await _context.SaveChangesAsync() > 0)
-        {
-            // Prepare the response message DTO
-            var responseMessageDto = new MessageDto()
+            File = (messageDto.File != null) ? new Data.Models.Chat.File
             {
-                ReceiverId = message.ApplicationUser_ReceiverId,
-                SenderId = message.ApplicationUser_SenderId,
-                Content = message.Content,
-                Timestamp = message.SentOn
-            };
-
-            // Send the message to the receiver
-            await _hubContext.Clients.User(messageDto.ReceiverId).MessageReceived(responseMessageDto);
-
-            // Increment the unread message count for the receiver
-            await _hubContext.Clients.User(messageDto.ReceiverId).UpdateUnreadMessagesCount(messageDto.ReceiverId, 1);
-
-            return new Result() { Success = true };
-        }
-        else
-        {
-            return new Result() { Success = false };
-        }
+                FileName = messageDto.File.FileName,
+                FileUrl = messageDto.File.FileUrl,
+                FileType = messageDto.File.FileType,
+            } : null
+        };
     }
 
-    // Mark a message as read and update unread message count
-    public async Task<bool> MarkRead(string messageId, string receiverId)
+    public async Task<bool> MarkReadAsync(string senderId, string receiverId, string messageId)
     {
         var message = await _context.Messages.FirstOrDefaultAsync(x => x.UniqueId == messageId);
 
@@ -110,16 +141,14 @@ public class MessageService : IMessageService
         await _context.SaveChangesAsync();
 
         // Decrement the unread message count for the receiver
-        await _hubContext.Clients.User(receiverId).UpdateUnreadMessagesCount(receiverId, 0);
+        await _hubContext.Clients.User(receiverId).UpdateUnreadMessagesCount(senderId, receiverId, 0);
 
         return true;
     }
 
     #endregion
 
-    #region Test (commented out)
-
-    #region Working
+    #region Do not remove below listed methods
 
     //private readonly IHubContext<ChatHub, IBlazingChatHubClient> _hubContext;
     //private readonly ApplicationDbContext _context;
@@ -209,7 +238,7 @@ public class MessageService : IMessageService
     //    }
     //}
 
-    //public async Task<bool> MarkRead(string messageId)
+    //public async Task<bool> MarkReadAsync(string messageId)
     //{
     //    var message = await _context.Messages.FirstOrDefaultAsync(x => x.UniqueId == messageId);
 
@@ -226,9 +255,7 @@ public class MessageService : IMessageService
 
     #endregion
 
-    #endregion
-
-    #region Test
+    #region Do not remove below listed methods
 
     //private readonly ApplicationDbContext _context; // Replace with your actual DbContext
     //private readonly IMapper _mapper; // Assuming you use AutoMapper
@@ -273,6 +300,5 @@ public class MessageService : IMessageService
     //    return message == null ? null : _mapper.Map<MessageDto>(message); // Map to DTO
     //}
 
-    #endregion
-
+    #endregion 
 }

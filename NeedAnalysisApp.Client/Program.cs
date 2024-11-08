@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using MudBlazor.Services;
-using NeedAnalysisApp.Client;
-using NeedAnalysisApp.Client.Repositories.Services;
 internal class Program
 {
     private static async Task Main(string[] args)
