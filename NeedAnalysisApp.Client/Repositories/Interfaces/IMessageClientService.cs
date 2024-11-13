@@ -7,4 +7,6 @@ public interface IMessageClientService
     Task<List<MessageDto>> GetAll(string senderId, string receiverId);
 
     Task<bool> MarkMessageRead(MessageDto message);
+
+    Task<bool> MarkAllMessageRead(string senderId, string receiverId);
 }

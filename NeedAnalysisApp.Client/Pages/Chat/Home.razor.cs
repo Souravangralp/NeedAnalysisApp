@@ -70,6 +70,7 @@ public partial class Home
                     user.IsOnline = true;
                 }
             }
+
             StateHasChanged();
         });
 
@@ -85,7 +86,7 @@ public partial class Home
 
         hubConnection.On<MessageDto>(nameof(IBlazingChatHubClient.MessageReceived), (messageDto) =>
         {
-            var fromUser = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
+            //var fromUser = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
 
             var receiver = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
             if (receiver != null)
@@ -93,8 +94,34 @@ public partial class Home
                 // If the receiver is not the current chat person, increase their unread message count
                 if (ChatPerson?.Id != messageDto.SenderId)
                 {
-                    receiver.UnreadMessagesCount++;
+                    //receiver.UnreadMessagesCount++;
+
+                    if (parameters != null && parameters.ContainsKey("UserId") && parameters["UserId"] is string userId && userId == receiver.Id)
+                    {
+                        receiver.UnreadMessagesCount = 0;
+                    }
+                    else
+                    {
+                        receiver.UnreadMessagesCount++;
+                    }
                 }
+            }
+
+            // Find the current user
+            var currentUser = Users.FirstOrDefault(u => u.Id == CurrentPerson.Id); // Replace `CurrentUserId` with the actual current user identifier
+
+            if (currentUser != null)
+            {
+                // First, remove the current user from the list (if they exist)
+                var otherUsers = Users.Where(u => u.Id != currentUser.Id).OrderByDescending(u => u.UnreadMessagesCount).ToList();
+
+                // Add the current user at the first position
+                Users = new List<UserDto> { currentUser }.Concat(otherUsers).ToList();
+            }
+            else
+            {
+                // If currentUser is not found, just sort the list by UnreadMessagesCount
+                Users = Users.OrderByDescending(u => u.UnreadMessagesCount).ToList();
             }
 
             StateHasChanged();  // Refresh UI after processing message
@@ -178,24 +205,20 @@ public partial class Home
     {
         var allUsers = await _userClientService.GetAllAsync(null);
 
-        //List<UserChatDto> userChats = [];
-
-        //foreach (var user in allUsers)
-        //{
-        //    var messages = await _messageClientService.GetAll(currentUser.Id, user.Id);
-
-        //    messages = messages.Where(x => !x.IsRead).ToList();
-
-        //    userChats.Add(new UserChatDto() { Messages = messages, User = user });
-        //}
-
-        //UserChats = userChats;
-
         if (allUsers.Any(u => u.Id == currentUser.Id))
         {
             var existingUser = allUsers.FirstOrDefault(u => u.Id == currentUser.Id);
             allUsers.Remove(existingUser);
             allUsers.Insert(0, existingUser);
+        }
+
+        foreach (var user in allUsers)
+        {
+            if (user.Id != currentUser.Id) 
+            {
+                var messages = await _messageClientService.GetAll(user.Id, currentUser.Id);
+                user.UnreadMessagesCount = messages.Count(x => !x.IsRead);
+            }
         }
 
         Users.AddRange(allUsers);
@@ -223,7 +246,8 @@ public partial class Home
                                                 this, HandleMessageRead);
         parameters["OnMessageSent"] = EventCallback.Factory.Create<string>(
                                                 this, HandleMessageNotification);
-
+        parameters["ChatPersonId"] = EventCallback.Factory.Create<string>(
+                                                this, HandleChatAlreadyOpen);
         var user = Users.FirstOrDefault(u => u.Id == userId);
 
         if (user != null)
@@ -242,6 +266,14 @@ public partial class Home
 
         StateHasChanged();
     }
+
+    private async void HandleChatAlreadyOpen(string chatPersonId)
+    {
+        await _messageClientService.MarkAllMessageRead(chatPersonId, CurrentPerson.Id);
+
+        StateHasChanged();
+    }
+
 
     private async void HandleMessageNotification(string receiverId)
     {

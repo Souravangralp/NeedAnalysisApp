@@ -11,6 +11,8 @@ public static class Routes
         public const string Send = "api/messages";
 
         public const string MarkRead = "api/messages/{0}/markRead/senderId:{1}/receiverId:{2}";
+
+        public const string MarkReadAll = "api/messages/markReadAll/senderId:{0}/receiverId:{1}";
     }
 
     public static class Assessment

@@ -19,7 +19,7 @@
             </MudItem>
 
             <MudList T="string" Style="@($"color: {Colors.BlueGray.Lighten4}; background:{Colors.BlueGray.Darken4};")">
-                @foreach (var user in Users)
+                @foreach (var user in Users.OrderByDescending(user => user.IsOnline))
                 {
                     <MudListItem OnClick="() => OpenChat(user.Id)">
                         <AvatarContent>

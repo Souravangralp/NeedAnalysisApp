@@ -661,6 +661,37 @@
     ]
   },
   {
+    "ContainingType": "NeedAnalysisApp.Controllers.MessagesController",
+    "Method": "MarkReadAllAsync",
+    "RelativePath": "api/messages/markReadAll/senderId:{senderId}/receiverId:{receiverId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "senderId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "receiverId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "NeedAnalysisApp.Controllers.QuestionsController",
     "Method": "DeleteOption",
     "RelativePath": "api/options/{optionId}",

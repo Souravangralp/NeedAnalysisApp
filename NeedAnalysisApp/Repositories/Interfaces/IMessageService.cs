@@ -8,5 +8,7 @@ public interface IMessageService
 
     Task<bool> MarkReadAsync(string senderId, string receiverId, string messageId);
 
+    Task<bool> MarkReadAllAsync(string senderId, string receiverId);
+
     Task<MessageDto> GetMessageByIdAsync(Guid messageId);
 }

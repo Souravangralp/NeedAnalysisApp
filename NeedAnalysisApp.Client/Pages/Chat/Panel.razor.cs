@@ -16,7 +16,7 @@ public partial class Panel : IAsyncDisposable
 
     [Inject] public NavigationManager _navigationManager { get; set; } = null!;
 
-    [Inject] private ISnackbar Snackbar { get; set; } = null!;
+    [Inject] private ISnackbar SnackBar { get; set; } = null!;
 
     [Parameter] public EventCallback<string> OnMessageSent { get; set; }
 
@@ -24,6 +24,8 @@ public partial class Panel : IAsyncDisposable
 
     [Comment("Logged-in person selected this person to send messages Receiver Id")]
     [Parameter] public required string UserId { get; set; }
+
+    [Parameter] public EventCallback<string> ChatPersonId { get; set; }
 
     [Comment("Used for displaying a blank panel when no chat is selected")]
     [Parameter] public bool IsDefault { get; set; }
@@ -59,6 +61,8 @@ public partial class Panel : IAsyncDisposable
 
         if (!string.IsNullOrWhiteSpace(UserId))
         {
+            await ChatPersonId.InvokeAsync(UserId);
+
             //var chatUser = await _userClientService.GetWithIdAsync(UserId);
 
             //await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), chatUser);
@@ -83,6 +87,8 @@ public partial class Panel : IAsyncDisposable
 
             CurrentPerson = await _userClientService.GetWithIdAsync(currentUser.Id);
 
+            await _messageClientService.MarkAllMessageRead(ChatPerson.Id, CurrentPerson.Id);
+
             _scrollToBottom = true;
 
             _files.Clear();
@@ -99,21 +105,25 @@ public partial class Panel : IAsyncDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_scrollToBottom)
+        //if (firstRender)
         {
-            _scrollToBottom = false;
-
-            var lastMessage = Chats.LastOrDefault()?.Message;
-
-            if (lastMessage != null && !lastMessage.IsRead)
+            if (_scrollToBottom)
             {
-                await MarkMessageAsReadAsync(lastMessage);
+                _scrollToBottom = false;
 
-                await OnReadAllMessages.InvokeAsync(true);
+                var lastMessage = Chats.LastOrDefault()?.Message;
+
+                if (lastMessage != null && !lastMessage.IsRead)
+                {
+                    await _messageClientService.MarkAllMessageRead(ChatPerson.Id, CurrentPerson.Id);
+
+                    await OnReadAllMessages.InvokeAsync(true);
+                }
             }
-        }
 
-        await JsRuntime.InvokeVoidAsync("scrollToBottom", "chatContainer");
+            // Scroll only after rendering and after marking messages read
+            await JsRuntime.InvokeVoidAsync("scrollToBottom", "chatContainer");
+        }
     }
 
     private HubConnection ConfigureHub()
@@ -182,7 +192,7 @@ public partial class Panel : IAsyncDisposable
 
     public void ShowSnackBarWithAvatar(string fromUserName, string messageContent, string avatarUrl)
     {
-        Snackbar.Add(builder =>
+        SnackBar.Add(builder =>
         {
             builder.OpenElement(0, "div");
             builder.AddAttribute(1, "class", "d-flex align-items-center");
@@ -209,20 +219,19 @@ public partial class Panel : IAsyncDisposable
 
         var messages = await _messageClientService.GetAll(currentUser.Id, UserId);
 
-        List<ChatDto> chats = [];
-
-        foreach (var message in messages)
+        var chats = await Task.WhenAll(messages.Select(async message =>
         {
-            chats.Add(new ChatDto()
+            var user = await _userClientService.GetWithIdAsync(message.SenderId);
+            return new ChatDto
             {
-                User = await _userClientService.GetWithIdAsync(message.SenderId),
+                User = user,
                 Message = message
-            });
-        }
+            };
+        }));
 
-        Chats = chats;
+        Chats = chats.ToList() ?? [];
 
-        _scrollToBottom = true;
+        //_scrollToBottom = true;
 
         StateHasChanged();
     }

@@ -72,5 +72,19 @@ public class MessageClientService : IMessageClientService
         }
     }
 
+    public async Task<bool> MarkAllMessageRead(string senderId, string receiverId)
+    {
+        var response = await _httpClient.PostAsync(string.Format(Message.MarkReadAll, senderId, receiverId), null);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return true;
+        }
+        else
+        {
+            throw new HttpRequestException($"Failed to send Messages. Status code: {response.StatusCode}");
+        }
+    }
+
     #endregion
 }

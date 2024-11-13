@@ -101,7 +101,7 @@ public class MessageService : IMessageService
         //    FileType = messageDto.File.FileType,
         //} : null;
 
-        //var message = new Message
+        //var unReadMessages = new Message
         //{
         //    ApplicationUser_SenderId = messageDto.SenderId,
         //    ApplicationUser_ReceiverId = messageDto.ReceiverId,
@@ -110,7 +110,7 @@ public class MessageService : IMessageService
         //    File = file,
         //};
 
-        //return message;
+        //return unReadMessages;
 
         #endregion
 
@@ -136,11 +136,31 @@ public class MessageService : IMessageService
 
         if (message == null) return false;
 
-        // Mark the message as read
+        // Mark the unReadMessages as read
         message.IsRead = true;
         await _context.SaveChangesAsync();
 
-        // Decrement the unread message count for the receiver
+        // Decrement the unread unReadMessages count for the receiver
+        await _hubContext.Clients.User(receiverId).UpdateUnreadMessagesCount(senderId, receiverId, 0);
+
+        return true;
+    }
+
+    public async Task<bool> MarkReadAllAsync(string senderId, string receiverId) 
+    {
+        var unReadMessages = await _context.Messages.Where(x => x.ApplicationUser_SenderId == senderId && 
+                x.ApplicationUser_ReceiverId == receiverId &&
+                !x.IsRead
+                ).ToListAsync();
+
+        if (unReadMessages == null) return false;
+
+        unReadMessages.ForEach(x => x.IsRead = true);
+
+        _context.UpdateRange(unReadMessages);
+        await _context.SaveChangesAsync();
+
+        // Decrement the unread unReadMessages count for the receiver
         await _hubContext.Clients.User(receiverId).UpdateUnreadMessagesCount(senderId, receiverId, 0);
 
         return true;
@@ -206,7 +226,7 @@ public class MessageService : IMessageService
     //        FileType = messageDto.File.FileType,
     //    } : null;
 
-    //    var message = new Message
+    //    var unReadMessages = new Message
     //    {
     //        ApplicationUser_SenderId = messageDto.SenderId,
     //        ApplicationUser_ReceiverId = messageDto.ReceiverId,
@@ -215,16 +235,16 @@ public class MessageService : IMessageService
     //        File = file,
     //    };
 
-    //    await _context.Messages.AddAsync(message);
+    //    await _context.Messages.AddAsync(unReadMessages);
 
     //    if (await _context.SaveChangesAsync() > 0)
     //    {
     //        var responseMessageDto = new MessageDto()
     //        {
-    //            ReceiverId = message.ApplicationUser_ReceiverId,
-    //            SenderId = message.ApplicationUser_SenderId,
-    //            Content = message.Content,
-    //            Timestamp = message.SentOn
+    //            ReceiverId = unReadMessages.ApplicationUser_ReceiverId,
+    //            SenderId = unReadMessages.ApplicationUser_SenderId,
+    //            Content = unReadMessages.Content,
+    //            Timestamp = unReadMessages.SentOn
     //        };
 
     //        await _hubContext.Clients.User(messageDto.ReceiverId.ToString())
@@ -240,11 +260,11 @@ public class MessageService : IMessageService
 
     //public async Task<bool> MarkReadAsync(string messageId)
     //{
-    //    var message = await _context.Messages.FirstOrDefaultAsync(x => x.UniqueId == messageId);
+    //    var unReadMessages = await _context.Messages.FirstOrDefaultAsync(x => x.UniqueId == messageId);
 
-    //    if (message == null) { return false; }
+    //    if (unReadMessages == null) { return false; }
 
-    //    message.IsRead = true;
+    //    unReadMessages.IsRead = true;
     //    await _context.SaveChangesAsync();
 
     //    await _hubContext.Clients.User("")
@@ -267,18 +287,18 @@ public class MessageService : IMessageService
     //}
 
 
-    //// Send a message
+    //// Send a unReadMessages
     //public async Task<MessageDto> SendMessageAsync(MessageDto messageDto)
     //{
-    //    var message = _mapper.Map<Data.Models.Chat.Message>(messageDto); // Map DTO to Entity
+    //    var unReadMessages = _mapper.Map<Data.Models.Chat.Message>(messageDto); // Map DTO to Entity
     //                    // Generate a new MessageId
-    //    message.SentOn = DateTime.UtcNow; // Set the timestamp
-    //    message.IsRead = false; // Default value
+    //    unReadMessages.SentOn = DateTime.UtcNow; // Set the timestamp
+    //    unReadMessages.IsRead = false; // Default value
 
-    //    await _context.Messages.AddAsync(message);
+    //    await _context.Messages.AddAsync(unReadMessages);
     //    await _context.SaveChangesAsync();
 
-    //    return _mapper.Map<MessageDto>(message); // Map back to DTO
+    //    return _mapper.Map<MessageDto>(unReadMessages); // Map back to DTO
     //}
 
     //// Get messages between two users
@@ -293,11 +313,11 @@ public class MessageService : IMessageService
     //    return _mapper.Map<IEnumerable<MessageDto>>(messages); // Map to DTOs
     //}
 
-    //// Get a specific message by ID
+    //// Get a specific unReadMessages by ID
     //public async Task<MessageDto> GetMessageByIdAsync(Guid messageId)
     //{
-    //    var message = await _context.Messages.FindAsync(messageId);
-    //    return message == null ? null : _mapper.Map<MessageDto>(message); // Map to DTO
+    //    var unReadMessages = await _context.Messages.FindAsync(messageId);
+    //    return unReadMessages == null ? null : _mapper.Map<MessageDto>(unReadMessages); // Map to DTO
     //}
 
     #endregion 

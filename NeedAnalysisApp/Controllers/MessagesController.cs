@@ -27,4 +27,10 @@ public class MessagesController : ControllerBase
     {
         return await _messageService.MarkReadAsync(senderId, receiverId, messageId);
     }
+
+    [HttpPost("api/messages/markReadAll/senderId:{senderId}/receiverId:{receiverId}")]
+    public async Task<bool> MarkReadAllAsync(string senderId, string receiverId)
+    {
+        return await _messageService.MarkReadAllAsync(senderId, receiverId);
+    }
 }
