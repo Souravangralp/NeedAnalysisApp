@@ -236,12 +236,10 @@ public partial class Home
 
     private async void OpenChat(string userId)
     {
-        //parameters.Remove("Users");
         parameters.Remove("UserId");
         parameters.Remove("IsDefault");
 
         parameters["UserId"] = userId;
-        //parameters["Users"] = Users;
         parameters["IsDefault"] = false;
         parameters["OnReadAllMessages"] = EventCallback.Factory.Create<bool>(
                                                 this, HandleMessageRead);
@@ -261,10 +259,6 @@ public partial class Home
 
     private async void HandleMessageRead()
     {
-        //var currentUser = await GetCurrentUser();
-
-        //SetCurrentUserToTop(currentUser);
-
         StateHasChanged();
     }
 
@@ -276,23 +270,29 @@ public partial class Home
     }
 
 
-    private async void HandleMessageNotification(string receiverId)
+    private async void HandleMessageNotification(string senderId)
     {
         if (parameters.ContainsKey("IsDefault") && parameters.ContainsKey("UserId")) { }
 
         var currentPerson = await GetCurrentUser();
 
-        var messages = await _messageClientService.GetAll(currentPerson.Id, receiverId);
+        var messages = await _messageClientService.GetAll(senderId, currentPerson.Id);
 
         var unReadMessageCount = messages.Count(x => !x.IsRead);
 
         foreach (var user in Users)
         {
-            if (user.Id.Equals(receiverId)) 
+            if (currentPerson.Id != senderId)
+            {
+                user.UnreadMessagesCount = 0;
+            }
+            else if(user.Id == senderId)
             {
                 user.UnreadMessagesCount = unReadMessageCount;
             }
         }
+
+        var test = Users;
 
         StateHasChanged();
     }

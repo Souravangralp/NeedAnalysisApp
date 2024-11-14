@@ -283,7 +283,7 @@ public partial class Panel : IAsyncDisposable
 
             if (response)
             {
-                await OnMessageSent.InvokeAsync(messageDto.ReceiverId);
+                await OnMessageSent.InvokeAsync(messageDto.SenderId);
 
                 MessageText = string.Empty;
 
