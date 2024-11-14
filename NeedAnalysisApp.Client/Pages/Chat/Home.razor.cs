@@ -36,7 +36,7 @@ public partial class Home
 
         await _hubConnection.StartAsync();
 
-        parameters["IsDefault"] = true; // Set default state
+        parameters["IsDefault"] = true;
 
         var currentUser = await GetCurrentUser();
 
@@ -174,8 +174,6 @@ public partial class Home
 
         Users = combinedUsers;
 
-        //SetCurrentUserToTop(currentUser);
-
         await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), currentUser);
 
         StateHasChanged();
@@ -238,9 +236,12 @@ public partial class Home
 
     private async void OpenChat(string userId)
     {
+        //parameters.Remove("Users");
         parameters.Remove("UserId");
         parameters.Remove("IsDefault");
+
         parameters["UserId"] = userId;
+        //parameters["Users"] = Users;
         parameters["IsDefault"] = false;
         parameters["OnReadAllMessages"] = EventCallback.Factory.Create<bool>(
                                                 this, HandleMessageRead);

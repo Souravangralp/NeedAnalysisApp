@@ -24,6 +24,8 @@ public partial class Panel : IAsyncDisposable
 
     [Comment("Logged-in person selected this person to send messages Receiver Id")]
     [Parameter] public required string UserId { get; set; }
+    
+    //[Parameter] public required List<UserDto> Users { get; set; } = [];
 
     [Parameter] public EventCallback<string> ChatPersonId { get; set; }
 
@@ -43,9 +45,8 @@ public partial class Panel : IAsyncDisposable
 
     List<IBrowserFile> _files = [];
 
-    private List<UserDto> Users = [];
-
     private List<ChatDto> Chats { get; set; } = [];
+    private List<UserDto> Users { get; set; } = [];
 
     private string MessageText { get; set; } = string.Empty;
 
@@ -55,22 +56,17 @@ public partial class Panel : IAsyncDisposable
 
     protected override async Task OnInitializedAsync()
     {
+        Users = await _userClientService.GetAllAsync(null);
+
         _hubConnection = ConfigureHub();
 
         await _hubConnection.StartAsync();
 
         if (!string.IsNullOrWhiteSpace(UserId))
         {
-            await ChatPersonId.InvokeAsync(UserId);
-
-            //var chatUser = await _userClientService.GetWithIdAsync(UserId);
-
-            //await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), chatUser);
-
             await LoadMessagesAsync();
         }
 
-        Users = await _userClientService.GetAllAsync(null);
 
         StateHasChanged();
     }
@@ -79,7 +75,9 @@ public partial class Panel : IAsyncDisposable
     {
         if (!string.IsNullOrWhiteSpace(UserId))
         {
-            ChatPerson = await _userClientService.GetWithIdAsync(UserId);
+            ChatPerson = Users.FirstOrDefault(user => user.Id == UserId) ?? new(); // await _userClientService.GetWithIdAsync(UserId);
+
+            await ChatPersonId.InvokeAsync(UserId);
 
             await LoadMessagesAsync();
 
@@ -93,11 +91,9 @@ public partial class Panel : IAsyncDisposable
 
             _files.Clear();
 
-            Users = await _userClientService.GetAllAsync(null);
+            //Users = await _userClientService.GetAllAsync(null);
 
             MessageText = string.Empty;
-
-            //await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), ChatPerson);
         }
 
         StateHasChanged();
@@ -105,25 +101,21 @@ public partial class Panel : IAsyncDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        //if (firstRender)
+        if (_scrollToBottom)
         {
-            if (_scrollToBottom)
+            _scrollToBottom = false;
+
+            var lastMessage = Chats.LastOrDefault()?.Message;
+
+            if (lastMessage != null && !lastMessage.IsRead)
             {
-                _scrollToBottom = false;
+                await _messageClientService.MarkAllMessageRead(ChatPerson.Id, CurrentPerson.Id);
 
-                var lastMessage = Chats.LastOrDefault()?.Message;
-
-                if (lastMessage != null && !lastMessage.IsRead)
-                {
-                    await _messageClientService.MarkAllMessageRead(ChatPerson.Id, CurrentPerson.Id);
-
-                    await OnReadAllMessages.InvokeAsync(true);
-                }
+                await OnReadAllMessages.InvokeAsync(true);
             }
-
-            // Scroll only after rendering and after marking messages read
-            await JsRuntime.InvokeVoidAsync("scrollToBottom", "chatContainer");
         }
+
+        await JsRuntime.InvokeVoidAsync("scrollToBottom", "chatContainer");
     }
 
     private HubConnection ConfigureHub()
@@ -138,17 +130,17 @@ public partial class Panel : IAsyncDisposable
             StateHasChanged();
         });
 
-        hubConnection.On<ICollection<UserDto>>(nameof(IBlazingChatHubClient.OnlineUsersList), (onlineUsers) =>
-        {
-            foreach (var user in Users)
-            {
-                if (onlineUsers.Any(u => u.Id == user.Id))
-                {
-                    user.IsOnline = true;
-                }
-            }
-            StateHasChanged();
-        });
+        //hubConnection.On<ICollection<UserDto>>(nameof(IBlazingChatHubClient.OnlineUsersList), (onlineUsers) =>
+        //{
+        //    foreach (var user in Users)
+        //    {
+        //        if (onlineUsers.Any(u => u.Id == user.Id))
+        //        {
+        //            user.IsOnline = true;
+        //        }
+        //    }
+        //    StateHasChanged();
+        //});
 
         hubConnection.On<string>(nameof(IBlazingChatHubClient.UserIsOnline), (userId) =>
         {

@@ -37,6 +37,10 @@
       "PackagePath": "staticwebassets\\images\\Screenshot 2024-08-13 135304.png"
     },
     {
+      "Id": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp\\wwwroot\\images\\Screenshot 2024-08-13 140029.png",
+      "PackagePath": "staticwebassets\\images\\Screenshot 2024-08-13 140029.png"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.NeedAnalysisApp.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

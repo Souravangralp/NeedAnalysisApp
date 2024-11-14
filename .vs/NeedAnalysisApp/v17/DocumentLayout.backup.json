@@ -3,20 +3,12 @@
   "WorkspaceRootPath": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|d:\\lpinfotech\\vivek\\needanalysisapp\\needanalysisapp.client\\pages\\chat\\home.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|solutionrelative:needanalysisapp.client\\pages\\chat\\home.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|d:\\lpinfotech\\vivek\\needanalysisapp\\needanalysisapp.client\\pages\\chat\\panel.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|solutionrelative:needanalysisapp.client\\pages\\chat\\panel.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|d:\\lpinfotech\\vivek\\needanalysisapp\\needanalysisapp.client\\pages\\chat\\panel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|solutionrelative:needanalysisapp.client\\pages\\chat\\panel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|d:\\lpinfotech\\vivek\\needanalysisapp\\needanalysisapp.client\\pages\\chat\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|solutionrelative:needanalysisapp.client\\pages\\chat\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|d:\\lpinfotech\\vivek\\needanalysisapp\\needanalysisapp.client\\pages\\chat\\home.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|solutionrelative:needanalysisapp.client\\pages\\chat\\home.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,54 +30,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Home.razor",
-              "DocumentMoniker": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor",
-              "RelativeDocumentMoniker": "NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor",
-              "ToolTip": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor",
-              "RelativeToolTip": "NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-13T10:16:47.422Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Home.razor.cs",
               "DocumentMoniker": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs",
               "RelativeDocumentMoniker": "NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs",
               "ToolTip": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs",
               "RelativeToolTip": "NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAAkwGkAAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAALcAAAAAAAAAAAAwwPMAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-13T10:01:33.246Z",
+              "WhenOpened": "2024-11-14T05:33:51.839Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Panel.razor",
-              "DocumentMoniker": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor",
-              "RelativeDocumentMoniker": "NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor",
-              "ToolTip": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor",
-              "RelativeToolTip": "NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-13T09:57:30.462Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Panel.razor.cs",
               "DocumentMoniker": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
               "RelativeDocumentMoniker": "NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
               "ToolTip": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
               "RelativeToolTip": "NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAwwF0AAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-13T07:29:21.65Z",
+              "WhenOpened": "2024-11-14T04:54:00.156Z",
               "EditorCaption": ""
             }
           ]
