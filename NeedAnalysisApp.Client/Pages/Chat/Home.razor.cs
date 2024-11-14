@@ -32,19 +32,19 @@ public partial class Home
 
     protected override async Task OnInitializedAsync()
     {
-        _hubConnection = ConfigureHub();
-
-        await _hubConnection.StartAsync();
-
-        parameters["IsDefault"] = true;
-
         var currentUser = await GetCurrentUser();
 
         CurrentPerson = currentUser;
 
+        _hubConnection = ConfigureHub();
+
+        await _hubConnection.StartAsync();
+
         SetCurrentUserToTop(currentUser);
 
         await _hubConnection.SendAsync(nameof(IBlazingChatHubServer.SetUserOnline), currentUser);
+
+        parameters["IsDefault"] = true;
 
         StateHasChanged();
     }
@@ -268,7 +268,6 @@ public partial class Home
 
         StateHasChanged();
     }
-
 
     private async void HandleMessageNotification(string senderId)
     {

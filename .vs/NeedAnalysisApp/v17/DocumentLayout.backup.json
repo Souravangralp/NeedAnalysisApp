@@ -3,15 +3,12 @@
   "WorkspaceRootPath": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Dell\\AppData\\Local\\SourceServer\\04ef1344991fa1a6604383dd50bef9f124036acaae2360e8b66b960826f8d5b7\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|d:\\lpinfotech\\vivek\\needanalysisapp\\needanalysisapp.client\\pages\\chat\\panel.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|solutionrelative:needanalysisapp.client\\pages\\chat\\panel.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|d:\\lpinfotech\\vivek\\needanalysisapp\\needanalysisapp.client\\pages\\chat\\home.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|solutionrelative:needanalysisapp.client\\pages\\chat\\home.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|d:\\lpinfotech\\vivek\\needanalysisapp\\needanalysisapp.client\\pages\\chat\\panel.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{59FB0BA7-D4AF-4383-A978-77D880E34C5C}|NeedAnalysisApp.Client\\NeedAnalysisApp.Client.csproj|solutionrelative:needanalysisapp.client\\pages\\chat\\panel.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,13 +31,15 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Home.razor.cs",
-              "DocumentMoniker": "C:\\Users\\Dell\\AppData\\Local\\SourceServer\\04ef1344991fa1a6604383dd50bef9f124036acaae2360e8b66b960826f8d5b7\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs",
-              "ToolTip": "C:\\Users\\Dell\\AppData\\Local\\SourceServer\\04ef1344991fa1a6604383dd50bef9f124036acaae2360e8b66b960826f8d5b7\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs [Read Only]",
-              "ViewState": "AgIAAA4BAAAAAAAAAAAswAAAAAAAAAAAAQAAAA==",
+              "Title": "Panel.razor.cs",
+              "DocumentMoniker": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
+              "RelativeDocumentMoniker": "NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
+              "ToolTip": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
+              "RelativeToolTip": "NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
+              "ViewState": "AgIAAKgAAAAAAAAAAAAvwL4AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-14T06:09:03.808Z",
-              "EditorCaption": " [Read Only]"
+              "WhenOpened": "2024-11-14T07:30:39.066Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -48,24 +47,11 @@
               "Title": "Home.razor.cs",
               "DocumentMoniker": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs",
               "RelativeDocumentMoniker": "NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs",
-              "ToolTip": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs*",
-              "RelativeToolTip": "NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs*",
-              "ViewState": "AgIAABQBAAAAAAAAAAAcwC0BAAAZAAAAAAAAAA==",
+              "ToolTip": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs",
+              "RelativeToolTip": "NeedAnalysisApp.Client\\Pages\\Chat\\Home.razor.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAA4wDMAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-14T05:33:51.839Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Panel.razor.cs",
-              "DocumentMoniker": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
-              "RelativeDocumentMoniker": "NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
-              "ToolTip": "D:\\LpInfotech\\Vivek\\NeedAnalysisApp\\NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
-              "RelativeToolTip": "NeedAnalysisApp.Client\\Pages\\Chat\\Panel.razor.cs",
-              "ViewState": "AgIAAPgAAAAAAAAAAAAAwBUBAABEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-14T04:54:00.156Z",
+              "WhenOpened": "2024-11-14T07:23:32.762Z",
               "EditorCaption": ""
             }
           ]

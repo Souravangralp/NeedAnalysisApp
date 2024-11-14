@@ -24,7 +24,7 @@ public partial class Panel : IAsyncDisposable
 
     [Comment("Logged-in person selected this person to send messages Receiver Id")]
     [Parameter] public required string UserId { get; set; }
-    
+
     //[Parameter] public required List<UserDto> Users { get; set; } = [];
 
     [Parameter] public EventCallback<string> ChatPersonId { get; set; }
@@ -66,7 +66,6 @@ public partial class Panel : IAsyncDisposable
         {
             await LoadMessagesAsync();
         }
-
 
         StateHasChanged();
     }
@@ -156,7 +155,7 @@ public partial class Panel : IAsyncDisposable
         {
             var fromUser = Users.FirstOrDefault(u => u.Id == messageDto.SenderId);
 
-            ShowSnackBarWithAvatar(fromUser?.FirstName, messageDto.Content, fromUser.ProfilePictureUrl);
+            ShowSnackBarWithAvatar(fromUser?.FirstName, messageDto.Content, fromUser?.ProfilePictureUrl);
 
             if (ChatPerson?.Id == messageDto.SenderId)
             {
@@ -184,23 +183,45 @@ public partial class Panel : IAsyncDisposable
 
     public void ShowSnackBarWithAvatar(string fromUserName, string messageContent, string avatarUrl)
     {
-        SnackBar.Add(builder =>
-        {
-            builder.OpenElement(0, "div");
-            builder.AddAttribute(1, "class", "d-flex align-items-center");
+        var markup = $@"
+            <div class='d-flex align-items-center'>
+                <div class='mr-2'>
+                    <img src='{avatarUrl}' alt='User Avatar' style='width: 40px; height: 40px; border-radius: 50%; object-fit: cover;' />
+                </div>
+                <div>
+                    <strong>{fromUserName}</strong> sent you a new message.
+                </div>
+            </div>
+        ";
 
-            builder.OpenComponent<MudAvatar>(2);
-            builder.AddAttribute(3, "Src", avatarUrl);  // Avatar image URL
-            builder.AddAttribute(4, "Size", Size.Large);  // You can adjust the size of the avatar here
-            builder.CloseComponent(); // Close MudAvatar
+        SnackBar.Add(new MarkupString(markup), Severity.Normal);
 
-            builder.OpenElement(5, "span");
-            builder.AddAttribute(6, "class", "ml-2");
-            builder.AddContent(7, $"Received a new message from: {fromUserName}");
-            builder.CloseElement();
+        #region If we want to open custom component inside of an snackbar this is how we do it.
 
-            builder.CloseElement(); // Close the div container
-        }, Severity.Info);
+        //SnackBar.Add(builder =>
+        //{
+        //    // Create a div for custom content
+        //    builder.OpenElement(0, "div");
+        //    builder.AddAttribute(1, "class", "d-flex align-items-center");
+
+        //    // MudAvatar component with MudImage inside
+        //    builder.OpenComponent<MudAvatar>(2);
+        //    builder.AddAttribute(3, "Size", Size.Large);  // Set avatar size
+        //    builder.OpenComponent<MudImage>(4);
+        //    builder.AddAttribute(5, "Src", avatarUrl);  // Set image URL inside MudAvatar
+        //    builder.CloseComponent();  // Close MudImage component
+        //    builder.CloseComponent();  // Close MudAvatar component
+
+        //    // Text next to the avatar
+        //    builder.OpenElement(6, "span");
+        //    builder.AddAttribute(7, "class", "ml-2");  // Add margin to the left of the avatar
+        //    builder.AddContent(8, $"Received a new message from: {fromUserName}");  // Text content
+        //    builder.CloseElement();  // Close span
+
+        //    builder.CloseElement();  // Close div container
+        //}, Severity.Info);
+
+        #endregion
     }
 
     private async Task LoadMessagesAsync()
@@ -222,8 +243,6 @@ public partial class Panel : IAsyncDisposable
         }));
 
         Chats = chats.ToList() ?? [];
-
-        //_scrollToBottom = true;
 
         StateHasChanged();
     }
