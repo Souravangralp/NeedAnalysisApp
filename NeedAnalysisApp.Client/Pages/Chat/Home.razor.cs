@@ -212,7 +212,17 @@ public partial class Home
 
         foreach (var user in allUsers)
         {
-            if (user.Id != currentUser.Id) 
+            //if (user.Id != currentUser.Id)
+            //{
+            //    user.UnreadMessagesCount = 0;
+            //}
+            //else
+            //{
+            //    var messages = await _messageClientService.GetAll(user.Id, currentUser.Id);
+            //    user.UnreadMessagesCount = messages.Count(x => !x.IsRead);
+            //}
+
+            if (user.Id != currentUser.Id)
             {
                 var messages = await _messageClientService.GetAll(user.Id, currentUser.Id);
                 user.UnreadMessagesCount = messages.Count(x => !x.IsRead);

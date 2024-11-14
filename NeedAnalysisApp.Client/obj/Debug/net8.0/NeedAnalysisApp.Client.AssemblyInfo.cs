@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NeedAnalysisApp.Client")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d9a024dced63afd4c83d290220f659a1fbf50fe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2dfcf22e82cd1114a1406a7b409adb46bc6cb779")]
 [assembly: System.Reflection.AssemblyProductAttribute("NeedAnalysisApp.Client")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NeedAnalysisApp.Client")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
